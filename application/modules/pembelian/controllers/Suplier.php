@@ -70,6 +70,7 @@ class Suplier extends CI_Controller
             redirect('pembelian');
         } else {
             # code...
+
             $data = [
                 'nama' => $this->input->post('nama'),
                 'phone' => $this->input->post('phone'),
