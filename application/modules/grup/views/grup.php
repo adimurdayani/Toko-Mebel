@@ -34,7 +34,6 @@
                                 <br>
                                 Jika anda ingin mengedit data, anda harus klik <code>kolom pada tabel kemudian isi nama grup user</code> dengan catatan nama grup tidak boleh dikosongkan.
                             </p>
-                            <?= $this->session->flashdata('success'); ?>
                             <table class="table table-hover">
                                 <thead>
                                     <tr>

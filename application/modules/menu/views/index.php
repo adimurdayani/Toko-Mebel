@@ -27,7 +27,7 @@
                 <div class="col-lg">
                     <div class="card">
                         <form action="<?= base_url('menu/hapus_all/') ?>" method="POST" id="form-delete">
-                            <div class="row p-3">
+                            <div class="row p-2">
                                 <div class="col-md-6">
                                     <button type="submit" class="btn btn-danger" id="hapus"><i class="fe-trash"></i> Hapus</button>
                                     <a href="javascript:void(0);" data-target="#tambah" data-toggle="modal" class="btn btn-outline-blue"><i class="fe-plus"></i> Tambah Menu</a>
@@ -40,6 +40,7 @@
                                         <tr>
                                             <th><input type="checkbox" id="chack-all"></th>
                                             <th>Nama Menu</th>
+                                            <th>Urutan Menu</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -50,6 +51,7 @@
                                             <tr>
                                                 <td><input type="checkbox" class="check-item" name="id[]" value="<?= $data->id_menu ?>"></td>
                                                 <td><?= $data->menu ?></td>
+                                                <td><?= $data->nomor_urut ?></td>
                                                 <td>
                                                     <a href="javascript:void(0);" data-target="#edit<?= $data->id_menu ?>" class="btn btn-outline-warning" data-toggle="modal" title="Edit Menu" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
                                                     <a href="<?= base_url('menu/hapus/') . $data->id_menu ?>" class="btn btn-outline-danger hapus" title="Hapus Menu" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>

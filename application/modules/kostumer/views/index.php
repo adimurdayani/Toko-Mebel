@@ -37,13 +37,13 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 50px;"><input type="checkbox" id="chack-all"></th>
+                                            <th class="text-center">Aksi</th>
                                             <th>Nama</th>
                                             <th>Nomor HP</th>
                                             <th>Email</th>
                                             <th>Alamat</th>
                                             <th>Status</th>
                                             <th>Tanggal Pos</th>
-                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
 
@@ -52,6 +52,10 @@
                                         <?php foreach ($get_kostumer as $data) : ?>
                                             <tr>
                                                 <td><input type="checkbox" class="check-item" name="id_kostumer[]" value="<?= $data->id_kostumer ?>"></td>
+                                                <td>
+                                                    <a href="javascript:void(0);" data-target="#edit<?= $data->id_kostumer ?>" class="btn btn-outline-warning" data-toggle="modal" title="Edit Kostumer" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                    <a href="<?= base_url('kostumer/hapus/') . base64_encode($data->id_kostumer) ?>" class="btn btn-outline-danger hapus" title="Hapus Kostumer" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
+                                                </td>
                                                 <td><?= $data->nama ?></td>
                                                 <td><?= $data->phone ?></td>
                                                 <td><?= $data->email ?> </td>
@@ -64,10 +68,6 @@
                                                     <?php endif ?>
                                                 </td>
                                                 <td><?= $data->updated_at ?></td>
-                                                <td>
-                                                    <a href="javascript:void(0);" data-target="#edit<?= $data->id_kostumer ?>" class="btn btn-outline-warning" data-toggle="modal" title="Edit Kostumer" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
-                                                    <a href="<?= base_url('kostumer/hapus/') . base64_encode($data->id_kostumer) ?>" class="btn btn-outline-danger hapus" title="Hapus Kostumer" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
-                                                </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

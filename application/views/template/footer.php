@@ -15,6 +15,7 @@
                     <a href="javascript:void(0);">About Us</a>
                     <a href="javascript:void(0);">Help</a>
                     <a href="javascript:void(0);">Contact Us</a>
+                    <a href="javascript:void(0);"><strong>Versi 0.1</strong></a>
                 </div>
             </div>
         </div>
@@ -66,8 +67,12 @@
 <script src="<?= base_url('assets/') ?>js/app.min.js"></script>
 
 <script>
+    $('.select3').select2();
+</script>
+
+<script>
     // datepicker
-    $('[data-toggle="select2"]').select2(), $('[data-toggle="flatpicker"]').flatpickr({
+    $('[data-toggle="select2"]').select2(), $('[data-select2-id="satuan"]').select2(), $('[data-toggle="flatpicker"]').flatpickr({
         altInput: !0,
         altFormat: "F j, Y",
         dateFormat: "Y-m-d"
@@ -179,18 +184,7 @@
                 }
             }
         });
-        // setInterval(function() {
-        //     $.ajax({
-        //         url: "<?= base_url('dashboard/total_data') ?>",
-        //         type: "POST",
-        //         dataType: "json",
-        //         data: {},
-        //         success: function(data) {
-        //             $("#totalmahasiswa").html(data.total_mahasiswa);
-        //             $("#totalregister").html(data.total_register);
-        //         }
-        //     });
-        // }, 2000)
+
     });
 
     $('.ubahakses').on('click', function() {
@@ -206,6 +200,74 @@
             },
             success: function() {
                 document.location.href = "<?= base_url('grup/akses/get_akses/') ?>" + btoa(userId);
+            }
+        })
+    })
+
+    $('.ubahKategori').on('click', function() {
+        const kategoriid = $(this).data('kategoriid');
+        const statuskategori = $(this).data('statuskategori');
+
+        $.ajax({
+            url: "<?= base_url('master/kategori/ubahaktif') ?>",
+            type: 'post',
+            data: {
+                kategoriid: kategoriid,
+                statuskategori: statuskategori
+            },
+            success: function() {
+                document.location.href = "<?= base_url('master/kategori/') ?>";
+            }
+        })
+    })
+
+    $('.ubahsatuan').on('click', function() {
+        const satuanid = $(this).data('satuanid');
+        const statussatuan = $(this).data('statussatuan');
+
+        $.ajax({
+            url: "<?= base_url('master/satuan/ubahaktif') ?>",
+            type: 'post',
+            data: {
+                satuanid: satuanid,
+                statussatuan: statussatuan
+            },
+            success: function() {
+                document.location.href = "<?= base_url('master/satuan/') ?>";
+            }
+        })
+    })
+
+    $('.ubahsuplier').on('click', function() {
+        const suplierid = $(this).data('suplierid');
+        const suplierstatus = $(this).data('suplierstatus');
+
+        $.ajax({
+            url: "<?= base_url('pembelian/suplier/ubahsuplier') ?>",
+            type: 'post',
+            data: {
+                suplierid: suplierid,
+                suplierstatus: suplierstatus
+            },
+            success: function() {
+                document.location.href = "<?= base_url('pembelian/suplier') ?>";
+            }
+        })
+    })
+
+    $('.ubahstatususer').on('click', function() {
+        const userid = $(this).data('userid');
+        const useractive = $(this).data('useractive');
+
+        $.ajax({
+            url: "<?= base_url('user/ubahuseractive') ?>",
+            type: 'post',
+            data: {
+                userid: userid,
+                useractive: useractive
+            },
+            success: function() {
+                document.location.href = "<?= base_url('user') ?>";
             }
         })
     })

@@ -2,47 +2,30 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Invoice_pembelian extends CI_Controller
+class Pembelian extends CI_Controller
 {
 
     public function __construct()
     {
         parent::__construct();
         $this->load->model('m_pembelian');
+        is_logged_in();
     }
 
     public function index()
     {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth', 'refresh');
-        } else if (!$this->ion_auth->is_admin()) {
-            redirect('auth/block', 'refresh');
         } else {
             $data['title'] = "Invoice Pembelian";
             $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
             $this->db->order_by('id', 'desc');
-            $data['get_pembelian'] = $this->db->get('tb_pembelian')->result();
+            $data['get_pembelian'] = $this->m_pembelian->get_all_pembelian();
+            $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
             $this->load->view('template/header', $data, FALSE);
             $this->load->view('template/topbar', $data, FALSE);
             $this->load->view('template/sidebar', $data, FALSE);
             $this->load->view('index', $data, FALSE);
-            $this->load->view('template/footer', $data, FALSE);
-        }
-    }
-
-    public function transaksi()
-    {
-        if (!$this->ion_auth->logged_in()) {
-            redirect('auth', 'refresh');
-        } else if (!$this->ion_auth->is_admin()) {
-            redirect('auth/block', 'refresh');
-        } else {
-            $data['title'] = "Transaksi Pembelian";
-            $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
-            $this->load->view('template/header', $data, FALSE);
-            $this->load->view('template/topbar', $data, FALSE);
-            $this->load->view('template/sidebar', $data, FALSE);
-            $this->load->view('transaksi', $data, FALSE);
             $this->load->view('template/footer', $data, FALSE);
         }
     }
@@ -95,11 +78,64 @@ class Invoice_pembelian extends CI_Controller
         }
     }
 
+    public function cetak_nota($kode_barang)
+    {
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth', 'refresh');
+        } else {
+            $data['title'] = "Nota Pembelian";
+            $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+
+            $data['get_suplier'] = $this->m_pembelian->get_suplier();
+            $getKode = base64_decode($kode_barang);
+            $data['get_invoice_pembelian'] = $this->m_pembelian->get_all_invoice($getKode);
+            $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+
+            $this->load->view('cetak-nota-pembelian', $data, FALSE);
+        }
+    }
+
+    public function cetak_nota_hutang($kode_barang)
+    {
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth', 'refresh');
+        } else {
+            $data['title'] = "Nota Hutang";
+            $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+
+            $data['get_suplier'] = $this->m_pembelian->get_suplier();
+            $getKode = base64_decode($kode_barang);
+            $data['get_invoice_pembelian'] = $this->m_pembelian->get_all_invoice($getKode);
+            $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+
+            $this->load->view('cetak-nota-hutang', $data, FALSE);
+        }
+    }
+
+    public function cetak_nota_lunas($kode_barang)
+    {
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth', 'refresh');
+        } else {
+            $data['title'] = "Nota Lunas";
+            $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+
+            $data['get_suplier'] = $this->m_pembelian->get_suplier();
+            $getKode = base64_decode($kode_barang);
+            $data['get_invoice_pembelian'] = $this->m_pembelian->get_all_invoice($getKode);
+            $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+
+            $this->load->view('cetak-nota-lunas', $data, FALSE);
+        }
+    }
+
     public function hapus_all()
     {
-        $id = $_POST['id'];
-        $this->db->where_in('id', $id);
+        $id = $_POST['invoice_parent'];
+        $this->db->where_in('invoice_parent', $id);
         $this->m_pembelian->delete($id);
+        $this->m_pembelian->delete_detail($id);
+        $this->m_pembelian->delete_hutang($id);
         $this->session->set_flashdata(
             'success',
             '$(document).ready(function(e) {
@@ -110,13 +146,15 @@ class Invoice_pembelian extends CI_Controller
                 })
             })'
         );
-        redirect('log_user');
+        redirect('pembelian');
     }
 
     public function hapus($id)
     {
         $get_id = base64_decode($id);
-        $this->db->delete('tb_pembelian', ['id' => $get_id]);
+        $this->db->delete('tb_pembelian', ['invoice_parent' => $get_id]);
+        $this->db->delete('tb_pembelian_detail', ['pembelian_invoice_parent' => $get_id]);
+        $this->db->delete('tb_hutang', ['hutang_invoice_parent' => $get_id]);
         $this->session->set_flashdata(
             'success',
             '$(document).ready(function(e) {
@@ -127,23 +165,9 @@ class Invoice_pembelian extends CI_Controller
                 })
             })'
         );
-        redirect('kostumer');
+        redirect('pembelian');
     }
 
-    public function cetak()
-    {
-        if (!$this->ion_auth->logged_in()) {
-            redirect('auth', 'refresh');
-        } else if (!$this->ion_auth->is_admin()) {
-            redirect('auth/block', 'refresh');
-        } else {
-            $data['title'] = "Cetak Log Users";
-            $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
-            $this->db->order_by('id', 'desc');
-            $data['get_log'] = $this->db->get('tb_visitor')->result();
-            $this->load->view('cetak', $data, FALSE);
-        }
-    }
 }
 
 /* End of file Log_user.php */

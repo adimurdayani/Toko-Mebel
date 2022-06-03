@@ -41,8 +41,8 @@
                                             <th>Nama</th>
                                             <th>No. Whatshapp</th>
                                             <th>Nama Perusahaan</th>
-                                            <th>Status</th>
-                                            <th>Aksi</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
 
@@ -51,21 +51,17 @@
                                         <?php $no = 1;
                                         foreach ($get_suplier as $data) : ?>
                                             <tr>
-                                                <td><input type="checkbox" class="check-item" name="id[]" value="<?= $data->id ?>"></td>
+                                                <td><input type="checkbox" class="check-item" name="id[]" value="<?= $data->id_suplier ?>"></td>
                                                 <td><?= $no++ ?></td>
                                                 <td><?= $data->nama ?></td>
                                                 <td><?= $data->phone ?></td>
                                                 <td><?= $data->nama_perusahaan ?></td>
-                                                <td>
-                                                    <?php if ($data->status_suplier == 1) :  ?>
-                                                        <div class="badge badge-outline-success">Aktif</div>
-                                                    <?php else : ?>
-                                                        <div class="badge badge-outline-danger">Tidak Aktif</div>
-                                                    <?php endif ?>
+                                                <td class="text-center">
+                                                    <input type="checkbox" class="ubahsuplier" <?= check_suplier($data->status_suplier) ?> data-suplierid="<?= $data->id_suplier ?>" data-suplierstatus="<?= $data->status_suplier ?>">
                                                 </td>
-                                                <td>
-                                                    <a href="javascript:void(0);" data-target="#edit<?= $data->id ?>" class="btn btn-outline-warning" data-toggle="modal" title="Edit Kostumer" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
-                                                    <a href="<?= base_url('pembelian/suplier/hapus/') . base64_encode($data->id) ?>" class="btn btn-outline-danger hapus" title="Hapus Kostumer" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
+                                                <td class="text-center">
+                                                    <a href="<?= base_url('pembelian/suplier/edit/') . base64_encode($data->id_suplier) ?>" class="btn btn-outline-warning" title="Edit <?= $data->nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                    <a href="<?= base_url('pembelian/suplier/hapus/') . base64_encode($data->id_suplier) ?>" class="btn btn-outline-danger hapus" title="Hapus <?= $data->nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

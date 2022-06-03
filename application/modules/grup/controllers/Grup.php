@@ -9,27 +9,20 @@ class Grup extends CI_Controller
     {
         parent::__construct();
         $this->load->model('m_grup');
+        is_logged_in();
     }
 
 
     public function index()
     {
-        if (!$this->ion_auth->logged_in()) {
-            // redirect them to the login page
-            redirect('auth', 'refresh');
-        } else if (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
-        {
-            redirect('auth/block');
-        } else {
-            $data['title'] = 'Grup User';
-            $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
-            $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+        $data['title'] = 'Grup User';
+        $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+        $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
 
-            $this->load->view('template/header', $data, FALSE);
-            $this->load->view('template/topbar', $data, FALSE);
-            $this->load->view('template/sidebar', $data, FALSE);
-            $this->load->view('grup', $data, FALSE);
-        }
+        $this->load->view('template/header', $data, FALSE);
+        $this->load->view('template/topbar', $data, FALSE);
+        $this->load->view('template/sidebar', $data, FALSE);
+        $this->load->view('grup', $data, FALSE);
     }
 
     public function load_data()

@@ -13,16 +13,15 @@ class Menu extends CI_Controller
   public function index()
   {
     if (!$this->ion_auth->logged_in()) {
-
       redirect('auth', 'refresh');
     } else if (!$this->ion_auth->is_admin()) {
-
       redirect('auth/block', 'refresh');
     } else {
 
       $data['title'] = 'Menu';
       $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
       $data['get_menu'] = $this->db->get('tb_menu')->result();
+      $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
 
       $this->load->view('template/header', $data, FALSE);
       $this->load->view('template/topbar', $data, FALSE);

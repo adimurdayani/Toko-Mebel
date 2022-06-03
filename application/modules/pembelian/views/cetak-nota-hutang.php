@@ -27,16 +27,13 @@
 
             <tbody>
 
-                <?php $no = 1;
-                foreach ($get_log as $data) : ?>
-                    <tr>
-                        <td><?= $no++ ?></td>
-                        <td><?= $data->ip ?></td>
-                        <td><?= $data->os ?></td>
-                        <td><?= $data->browser ?> - <?= $data->versi ?></td>
-                        <td><?= $data->time ?></td>
-                    </tr>
-                <?php endforeach; ?>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
     </div>

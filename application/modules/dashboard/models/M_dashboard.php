@@ -26,6 +26,15 @@ class M_dashboard extends CI_Model
             ->get()
             ->result();
     }
+
+    public function get_total_pendapatan()
+    {
+        $bulan_sekarang = date_indo("Y-m-d");
+        $sql = "SELECT count(if(invoice_date='$bulan_sekarang', invoice_date, NULL)) as invoice_date,
+                        sum(if(invoice_date='$bulan_sekarang', invoice_sub_total, NULL)) as invoice_sub_total
+                        FROM tb_penjualan";
+        return $this->db->query($sql)->row();
+    }
 }
 
 /* End of file M_dashboard.php */

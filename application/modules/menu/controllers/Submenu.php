@@ -25,6 +25,7 @@ class Submenu extends CI_Controller
       $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
       $data['get_submenu'] = $this->m_submenu->get_all_submenu();
       $data['get_menu'] = $this->db->get('tb_menu')->result();
+      $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
 
       $this->load->view('template/header', $data, FALSE);
       $this->load->view('template/topbar', $data, FALSE);
@@ -183,6 +184,7 @@ class Submenu extends CI_Controller
       $data['get_menu_collapse'] = $this->m_submenu->get_all_menu_collapse($id_submenu);
       $data['get_menu'] = $this->db->get('tb_menu')->result();
       $data['get_submenu'] = $this->db->get('tb_submenu')->result();
+      $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
       $data['get_submenu_id'] = $this->db->get_where('tb_submenu', ['id_submenu' => $id_submenu])->row();
 
       $this->load->view('template/header', $data, FALSE);
@@ -320,12 +322,12 @@ class Submenu extends CI_Controller
     $this->session->set_flashdata(
       'success',
       '$(document).ready(function(e) {
-                Swal.fire({
-                    type: "success",
-                    title: "Sukses",
-                    text: "Semua data berhasil dihapus!"
-                })
-            })'
+          Swal.fire({
+              type: "success",
+              title: "Sukses",
+              text: "Semua data berhasil dihapus!"
+          })
+      })'
     );
   }
 }

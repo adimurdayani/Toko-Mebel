@@ -27,10 +27,10 @@
                 <div class="col-lg">
                     <div class="card">
                         <form action="<?= base_url('menu/submenu/hapus_all/') ?>" method="POST" id="form-delete">
-                            <div class="row p-3">
+                            <div class="row p-2">
                                 <div class="col-md-6">
                                     <button type="submit" class="btn btn-danger" id="hapus"><i class="fe-trash"></i> Hapus</button>
-                                    <a href="javascript:void(0);" data-target="#tambah" data-toggle="modal" class="btn btn-outline-blue"><i class="fe-plus"></i> Tambah Menu</a>
+                                    <a href="javascript:void(0);" data-target="#tambah" data-toggle="modal" class="btn btn-outline-blue"><i class="fe-plus"></i> Tambah Sub Menu</a>
                                 </div>
                             </div>
                             <div class="card-body table-responsive">
@@ -39,12 +39,12 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" id="chack-all"></th>
-                                            <th>Menu</th>
-                                            <th>Sub Menu</th>
-                                            <th>Posisi Ke</th>
-                                            <th>Icon</th>
-                                            <th>Url</th>
-                                            <th>Action</th>
+                                            <th class="text-center">Menu</th>
+                                            <th class="text-center">Posisi Ke</th>
+                                            <th class="text-center">Sub Menu</th>
+                                            <th class="text-center">Icon</th>
+                                            <th class="text-center">Url</th>
+                                            <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
 
@@ -54,11 +54,14 @@
                                             <tr>
                                                 <td><input type="checkbox" class="check-item" name="id[]" value="<?= $data->id_submenu ?>"></td>
                                                 <td><?= $data->menu ?></td>
+                                                <td>
+                                                    <?= $data->nomor_urut ?>
+                                                    <a href="" class="badge badge-success ml-2" data-target="#edit_urutan<?= $data->id_submenu ?>" data-toggle="modal" title="Edit Urutan Menu <?= $data->submenu ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                </td>
                                                 <td><?= $data->submenu ?></td>
-                                                <td><?= $data->nomor_urut ?></td>
                                                 <td><?= $data->icon ?></td>
                                                 <td><?= $data->url ?></td>
-                                                <td>
+                                                <td class="float-right">
                                                     <?php if ($data->collapse == 1) : ?>
                                                         <a href="javascript:void(0);" data-target="#add-collapse<?= $data->id_submenu ?>" data-toggle="modal" class="btn btn-outline-success" title="Tambah Menu Collapse <?= $data->submenu ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-plus"></i> </a>
                                                         <a href="<?= base_url('menu/submenu/detail_menu_collapse/') . base64_encode($data->id_submenu) ?>" class="btn btn-outline-info" title="Tambah Menu Collapse <?= $data->submenu ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i> </a>

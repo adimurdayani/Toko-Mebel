@@ -69,11 +69,7 @@
                                                     </ul>
                                                 </td>
                                                 <td>
-                                                    <?php if ($data->active == 1) : ?>
-                                                        <div class="badge badge-success"><i class="fa fa-check"></i></div>
-                                                    <?php else : ?>
-                                                        <div class="badge badge-danger"><i class="fe-x"></i></div>
-                                                    <?php endif; ?>
+                                                    <input type="checkbox" class="ubahstatususer" <?= check_user($data->active) ?> data-userid="<?= $data->id ?>" data-useractive="<?= $data->active ?>">
                                                 </td>
                                                 <td>
                                                     <a href="javascript:void(0);" data-target="#detail<?= $data->id ?>" class="btn btn-outline-info" data-toggle="modal" title="Detail User" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
@@ -160,15 +156,6 @@
                                 <?= form_error('password_confirm', '<small class="text-danger">', '</small>') ?>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="aktifasi" class="control-label">Aktifasi</label>
-                        <select name="active" id="active" class="form-control">
-                            <option>-- Pilih Aktifasi --</option>
-                            <option value="1">Aktif</option>
-                            <option value="0">Non-Aktif</option>
-                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -260,14 +247,6 @@
                                     <?= form_error('password_confirm', '<small class="text-danger">', '</small>') ?>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="aktifasi" class="control-label">Aktifasi</label>
-                            <select name="active" id="active" class="form-control">
-                                <option value="1" <?php if ($user->active == 1) : ?> selected <?php endif; ?>>Aktif</option>
-                                <option value="0" <?php if ($user->active == 0) : ?> selected <?php endif; ?>>Non-Aktif</option>
-                            </select>
                         </div>
 
                         <h4>Grup User</h4>

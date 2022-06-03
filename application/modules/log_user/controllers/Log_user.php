@@ -8,6 +8,7 @@ class Log_user extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        is_logged_in();
         $this->load->model('m_loguser');
     }
 
@@ -15,13 +16,12 @@ class Log_user extends CI_Controller
     {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth', 'refresh');
-        } else if (!$this->ion_auth->is_admin()) {
-            redirect('auth/block', 'refresh');
         } else {
             $data['title'] = "Log Users";
             $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
             $this->db->order_by('id', 'desc');
             $data['get_log'] = $this->db->get('tb_visitor')->result();
+            $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
             $this->load->view('template/header', $data, FALSE);
             $this->load->view('template/topbar', $data, FALSE);
             $this->load->view('template/sidebar', $data, FALSE);

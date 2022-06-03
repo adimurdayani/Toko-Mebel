@@ -15,7 +15,6 @@ class User extends CI_Controller
     public function index()
     {
         if (!$this->ion_auth->logged_in()) {
-            // redirect them to the login page
             redirect('auth', 'refresh');
         } else if (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
         {
@@ -31,6 +30,7 @@ class User extends CI_Controller
             $data['get_grup'] = $this->ion_auth->groups()->result_array();
             $data['get_user_grup'] = $this->db->get('users_groups')->result();
             $data['get_all_grup'] = $this->db->get('groups')->result();
+            $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
 
             foreach ($data['get_user'] as $k => $user) {
                 $data['get_user'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
@@ -75,7 +75,7 @@ class User extends CI_Controller
                 'username' => $this->input->post('username'),
                 'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
                 'email' => $this->input->post('email'),
-                'active' => $this->input->post('active'),
+                'active' => 1,
                 'first_name' => $this->input->post('first_name'),
                 'last_name' => $this->input->post('last_name'),
                 'company' => $this->input->post('company'),
@@ -129,7 +129,6 @@ class User extends CI_Controller
                 'username' => $this->input->post('username'),
                 'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
                 'email' => $this->input->post('email'),
-                'active' => $this->input->post('active'),
                 'first_name' => $this->input->post('first_name'),
                 'last_name' => $this->input->post('last_name'),
                 'company' => $this->input->post('company'),
@@ -214,6 +213,7 @@ class User extends CI_Controller
             $data['get_user'] = $this->db->get_where('users', ['id' => $id])->row();
             $data['get_user_grup'] = $this->db->get_where('users_groups', ['user_id' => $id])->row();
             $data['get_all_grup'] = $this->db->get('groups')->result();
+            $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
 
             $this->load->view('template/header', $data, FALSE);
             $this->load->view('template/topbar', $data, FALSE);
@@ -259,6 +259,52 @@ class User extends CI_Controller
                 })'
             );
             redirect('user');
+        }
+    }
+
+    public function ubahuseractive()
+    {
+
+        $userid = $this->input->post('userid');
+        $useractive = $this->input->post('useractive');
+
+        if ($useractive > 0) {
+
+            $data = [
+                'active' => 0
+            ];
+
+            $this->db->where('id', $userid);
+            $this->db->update('users', $data);
+
+            $this->session->set_flashdata(
+                'success',
+                '$(document).ready(function(e) {
+                    Swal.fire({
+                        type: "success",
+                        title: "Sukses",
+                        text: "User berhasil di Non-Aktifkan!"
+                    })
+                })'
+            );
+        } else {
+            $data = [
+                'active' => 1
+            ];
+
+            $this->db->where('id', $userid);
+            $this->db->update('users', $data);
+
+            $this->session->set_flashdata(
+                'success',
+                '$(document).ready(function(e) {
+                    Swal.fire({
+                        type: "success",
+                        title: "Sukses",
+                        text: "User berhasil di Aktifkan!"
+                    })
+                })'
+            );
         }
     }
 }

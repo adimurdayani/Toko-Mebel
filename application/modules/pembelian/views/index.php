@@ -30,13 +30,14 @@
                             <h4 class="header-title mb-2">Tabel <?= $title ?></h4>
                             <form action="<?= base_url('pembelian/hapus_all/') ?>" method="POST" id="form-delete">
 
-                                <a href="<?= base_url('pembelian/tambah') ?>" class="btn btn-outline-info mb-3"><i class="fe-plus"></i> Tambah Transaksi</a>
+                                <a href="<?= base_url('pembelian/transaksi_cash') ?>" class="btn btn-outline-info mb-3"><i class="fe-plus"></i> Tambah Transaksi Pembelian</a>
                                 <button type="submit" class="btn btn-outline-danger mb-3" id="hapus"><i class="fe-trash"></i> Hapus</button>
 
                                 <table id="basic-datatable" class="table nowrap w-100">
                                     <thead>
                                         <tr>
                                             <th style="width: 50px;"><input type="checkbox" id="chack-all"></th>
+                                            <th class="text-center">Aksi</th>
                                             <th>No</th>
                                             <th>Invoice</th>
                                             <th>Tanggal</th>
@@ -44,7 +45,6 @@
                                             <th>Total</th>
                                             <th>Bayar</th>
                                             <th>Kembali</th>
-                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
 
@@ -52,20 +52,24 @@
 
                                         <?php $no = 1;
                                         foreach ($get_pembelian as $data) : ?>
-                                            <tr>
-                                                <td><input type="checkbox" class="check-item" name="id[]" value="<?= $data->id ?>"></td>
-                                                <td><?= $no++ ?></td>
-                                                <td><?= $data->invoice ?></td>
-                                                <td><?= $data->updated_at ?></td>
-                                                <td><?= $data->suplier ?> - <?= $data->versi ?></td>
-                                                <td><?= $data->bayar ?></td>
-                                                <td><?= $data->kembali ?></td>
-                                                <td><?= $data->total ?></td>
-                                                <td>
-                                                    <a href="javascript:void(0);" data-target="#edit<?= $data->id_kostumer ?>" class="btn btn-outline-warning" data-toggle="modal" title="Edit Kostumer" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
-                                                    <a href="<?= base_url('kostumer/hapus/') . base64_encode($data->id_kostumer) ?>" class="btn btn-outline-danger hapus" title="Hapus Kostumer" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
-                                                </td>
-                                            </tr>
+                                            <?php if ($data->invoice_hutang == 0) : ?>
+                                                <tr>
+                                                    <td><input type="checkbox" class="check-item" name="invoice_parent[]" value="<?= $data->invoice_parent ?>"></td>
+                                                    <td class="text-center">
+                                                        <a href="<?= base_url('pembelian/hapus/') . base64_encode($data->invoice_parent) ?>" class="btn btn-outline-danger hapus" title="Hapus Pembelian" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
+                                                        <a href="<?= base_url('pembelian/invoice/detail_invoice/') . base64_encode($data->invoice_parent) ?>" class="btn btn-outline-info" title="Detail Invoice Pembelian" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
+                                                        <a href="<?= base_url('pembelian/invoice/detail/') . base64_encode($data->invoice_parent) ?>" class="btn btn-outline-warning" title="Retur Pembelian" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                        <a href="<?= base_url('pembelian/cetak_nota/') . base64_encode($data->invoice_parent) ?>" target="_blank" class="btn btn-outline-success" title="Cetak Nota" data-plugin="tippy" data-tippy-placement="top"><i class="fe-printer"></i> </a>
+                                                    </td>
+                                                    <td><?= $no++ ?></td>
+                                                    <td><?= $data->invoice_pembelian ?></td>
+                                                    <td><?= $data->invoice_created ?></td>
+                                                    <td><?= $data->nama_perusahaan ?> </td>
+                                                    <td>Rp.<?= rupiah($data->invoice_total) ?></td>
+                                                    <td>Rp.<?= rupiah($data->invoice_bayar) ?></td>
+                                                    <td>Rp.<?= rupiah($data->invoice_kembali) ?></td>
+                                                </tr>
+                                            <?php endif; ?>
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>

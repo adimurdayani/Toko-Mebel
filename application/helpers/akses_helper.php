@@ -49,3 +49,48 @@ function check_akses($user_id, $menu_id)
     return "checked='checked'";
   }
 }
+
+function check_kategori($id_kategori)
+{
+  $ci = get_instance();
+  $ci->db->where('status_kategori', $id_kategori);
+  $result = $ci->db->get('tb_kategori')->row_array();
+
+  if ($result['status_kategori'] > 0) {
+    return "checked='checked'";
+  }
+}
+
+function check_satuan($id_satuan)
+{
+  $ci = get_instance();
+  $ci->db->where('status_satuan', $id_satuan);
+  $result = $ci->db->get('tb_satuan')->row_array();
+
+  if ($result['status_satuan'] > 0) {
+    return "checked='checked'";
+  }
+}
+
+function check_suplier($status_suplier)
+{
+  $ci = get_instance();
+  $ci->db->where('status_suplier', $status_suplier);
+  $result = $ci->db->get('tb_suplier')->row();
+
+  if ($result->status_suplier > 0) {
+    return "checked='checked'";
+  }
+}
+
+
+function check_user($aktif)
+{
+  $ci = get_instance();
+  $ci->db->where('active', $aktif);
+  $result = $ci->db->get('users')->row();
+
+  if ($result->active > 0) {
+    return "checked='checked'";
+  }
+}
