@@ -44,7 +44,8 @@ class Dashboard extends CI_Controller
         $tglsekarang = date_indo('Y-m-d');
         $this->db->where('invoice_tipe_transaksi !=', 1);
         $this->db->where('invoice_date', $tglsekarang);
-        $data['total_invoice_penjualan'] =  $this->db->get('tb_penjualan')->num_rows();
+        $data['total_invoice_penjualan_cash'] =  $this->db->get('tb_penjualan')->num_rows();
+
         $data['total_barang'] =  $this->db->get_where('tb_barang')->result();
         $data['jml_barang'] =  $this->db->get_where('tb_barang')->num_rows();
         $data['jml_invoice_penjualan'] =  $this->db->get('tb_penjualan')->num_rows();
@@ -53,6 +54,7 @@ class Dashboard extends CI_Controller
         $this->load->view('template/topbar', $data, FALSE);
         $this->load->view('template/sidebar', $data, FALSE);
         $this->load->view('dashboard', $data, FALSE);
+        $this->load->view('template/footer', $data, FALSE);
     }
 }
 

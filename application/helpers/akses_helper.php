@@ -94,3 +94,14 @@ function check_user($aktif)
     return "checked='checked'";
   }
 }
+
+function check_status_barang($status)
+{
+  $ci = get_instance();
+  $ci->db->where('status_barang', $status);
+  $result = $ci->db->get('tb_barang')->row();
+
+  if ($result->status_barang > 0) {
+    return "checked='checked'";
+  }
+}

@@ -192,4 +192,50 @@ class Barang extends CI_Controller
         }
         return 'KB-' . date('Y') . '/' . date('m') . '/' . $string;
     }
+
+    public function ubahstatusbarang()
+    {
+
+        $statusid = $this->input->post('statusid');
+        $statusbarang = $this->input->post('statusbarang');
+
+        if ($statusbarang > 0) {
+
+            $data = [
+                'status_barang' => 0
+            ];
+
+            $this->db->where('id_barang', $statusid);
+            $this->db->update('tb_barang', $data);
+
+            $this->session->set_flashdata(
+                'success',
+                '$(document).ready(function(e) {
+                    Swal.fire({
+                        type: "success",
+                        title: "Sukses",
+                        text: "Barang masih dalam pesanan atau inden!"
+                    })
+                })'
+            );
+        } else {
+            $data = [
+                'status_barang' => 1
+            ];
+
+            $this->db->where('id_barang', $statusid);
+            $this->db->update('tb_barang', $data);
+
+            $this->session->set_flashdata(
+                'success',
+                '$(document).ready(function(e) {
+                    Swal.fire({
+                        type: "success",
+                        title: "Sukses",
+                        text: "Barang berhasil diterima!"
+                    })
+                })'
+            );
+        }
+    }
 }

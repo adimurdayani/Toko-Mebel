@@ -35,6 +35,15 @@ class M_dashboard extends CI_Model
                         FROM tb_penjualan";
         return $this->db->query($sql)->row();
     }
+
+    public function get_total_invoice_cash()
+    {
+        $bulan_sekarang = date_indo("Y-m-d");
+        $sql = "SELECT count(if(invoice_date='$bulan_sekarang', invoice_date, NULL)) as invoice_date,
+                        sum(if(invoice_date='$bulan_sekarang', invoice_tipe_transaksi, NULL)) as invoice_tipe_transaksi
+                        FROM tb_penjualan";
+        return $this->db->query($sql)->row();
+    }
 }
 
 /* End of file M_dashboard.php */

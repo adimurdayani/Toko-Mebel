@@ -271,6 +271,23 @@
             }
         })
     })
+
+    $('.ubahstatusbarang').on('click', function() {
+        const statusid = $(this).data('statusid');
+        const statusbarang = $(this).data('statusbarang');
+
+        $.ajax({
+            url: "<?= base_url('master/barang/ubahstatusbarang') ?>",
+            type: 'post',
+            data: {
+                statusid: statusid,
+                statusbarang: statusbarang
+            },
+            success: function() {
+                document.location.href = "<?= base_url('master/barang') ?>";
+            }
+        })
+    })
 </script>
 
 </body>

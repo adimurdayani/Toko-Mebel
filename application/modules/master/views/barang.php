@@ -44,6 +44,7 @@
                                             <th class="text-center">Harga Modal</th>
                                             <th class="text-center">Harga Jual</th>
                                             <th class="text-center">Stok</th>
+                                            <th class="text-center">Status</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -79,6 +80,7 @@
                                                         <div class="badge badge-outline-danger">Habis</div>
                                                     <?php endif; ?>
                                                 </td>
+                                                <td class="text-center"><input type="checkbox" class="ubahstatusbarang" <?= check_status_barang($data->status_barang) ?> data-statusid="<?= $data->id_barang ?>" data-statusbarang="<?= $data->status_barang ?>"></td>
                                                 <td class="text-center">
                                                     <a href="javascript:void(0);" class="btn btn-outline-info" data-target="#detail<?= $data->id_barang ?>" data-toggle="modal" title="Detail <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
                                                     <a href="<?= base_url('master/barang/edit/') . base64_encode($data->id_barang) ?>" class="btn btn-outline-warning" title="Edit <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
