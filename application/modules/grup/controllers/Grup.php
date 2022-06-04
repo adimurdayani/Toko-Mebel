@@ -15,14 +15,20 @@ class Grup extends CI_Controller
 
     public function index()
     {
-        $data['title'] = 'Grup User';
-        $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
-        $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+        if (!$this->ion_auth->logged_in()) {
+            // redirect them to the login page
+            redirect('auth', 'refresh');
+        } else {
 
-        $this->load->view('template/header', $data, FALSE);
-        $this->load->view('template/topbar', $data, FALSE);
-        $this->load->view('template/sidebar', $data, FALSE);
-        $this->load->view('grup', $data, FALSE);
+            $data['title'] = 'Grup User';
+            $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+            $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+
+            $this->load->view('template/header', $data, FALSE);
+            $this->load->view('template/topbar', $data, FALSE);
+            $this->load->view('template/sidebar', $data, FALSE);
+            $this->load->view('grup', $data, FALSE);
+        }
     }
 
     public function load_data()

@@ -14,21 +14,27 @@ class Akses extends CI_Controller
 
     public function get_akses($id)
     {
-        $data['title'] = 'Akses User';
-        $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
-        $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+        if (!$this->ion_auth->logged_in()) {
+            // redirect them to the login page
+            redirect('auth', 'refresh');
+        } else {
 
-        $this->db->where('id_menu !=', 4);
-        $data['get_menu'] = $this->db->get('tb_menu')->result();
+            $data['title'] = 'Akses User';
+            $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+            $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
 
-        $get_id = base64_decode($id);
-        $data['get_grup'] = $this->db->get_where('groups', ['id' => $get_id])->row_array();
+            $this->db->where('id_menu !=', 4);
+            $data['get_menu'] = $this->db->get('tb_menu')->result();
 
-        $this->load->view('template/header', $data, FALSE);
-        $this->load->view('template/topbar', $data, FALSE);
-        $this->load->view('template/sidebar', $data, FALSE);
-        $this->load->view('akses', $data, FALSE);
-        $this->load->view('template/footer', $data, FALSE);
+            $get_id = base64_decode($id);
+            $data['get_grup'] = $this->db->get_where('groups', ['id' => $get_id])->row_array();
+
+            $this->load->view('template/header', $data, FALSE);
+            $this->load->view('template/topbar', $data, FALSE);
+            $this->load->view('template/sidebar', $data, FALSE);
+            $this->load->view('akses', $data, FALSE);
+            $this->load->view('template/footer', $data, FALSE);
+        }
     }
 
 
