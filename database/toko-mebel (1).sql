@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 03 Jun 2022 pada 15.19
+-- Waktu pembuatan: 04 Jun 2022 pada 12.05
 -- Versi server: 10.4.21-MariaDB
 -- Versi PHP: 7.3.31
 
@@ -97,17 +97,19 @@ CREATE TABLE `tb_barang` (
   `barang_kategori_id` int(11) DEFAULT NULL,
   `barang_satuan_id` int(11) DEFAULT NULL,
   `barang_deskripsi` varchar(128) DEFAULT NULL,
-  `barang_terjual` int(11) DEFAULT NULL
+  `barang_terjual` int(11) DEFAULT NULL,
+  `status_barang` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `tb_barang`
 --
 
-INSERT INTO `tb_barang` (`id_barang`, `barang_kode`, `barang_kode_slug`, `barang_kode_count`, `barang_nama`, `barang_harga_beli`, `barang_harga`, `barang_stok`, `barang_tanggal`, `barang_kategori_id`, `barang_satuan_id`, `barang_deskripsi`, `barang_terjual`) VALUES
-(1, '001', '001', 1, 'Paku Payung', '20000', '20000', 24, '01 Juni 2022', 6, 5, 'paku payung', 1),
-(2, '002', '002', 2, 'Paku Besi', '20000', '20000', 23, '01 Juni 2022', 6, 5, 'paku besi', 1),
-(3, '003', '003', 3, 'Paku Beton ya', '20000', '120000', 25, '02 Juni 2022', 7, 6, 'paku beton ya', 1);
+INSERT INTO `tb_barang` (`id_barang`, `barang_kode`, `barang_kode_slug`, `barang_kode_count`, `barang_nama`, `barang_harga_beli`, `barang_harga`, `barang_stok`, `barang_tanggal`, `barang_kategori_id`, `barang_satuan_id`, `barang_deskripsi`, `barang_terjual`, `status_barang`) VALUES
+(1, '001', '001', 1, 'Paku Payung', '20000', '20000', 24, '01 Juni 2022', 6, 5, 'paku payung', 1, 1),
+(2, '002', '002', 2, 'Paku Besi', '20000', '20000', 23, '01 Juni 2022', 6, 5, 'paku besi', 1, 1),
+(3, '003', '003', 3, 'Paku Beton ya', '20000', '120000', 25, '02 Juni 2022', 7, 6, 'paku beton ya', 1, 0),
+(4, '004', '004', 4, 'Besi', '0', '2000000', 10, '04 Juni 2022', 6, 5, 'besi', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -146,7 +148,7 @@ CREATE TABLE `tb_kategori` (
 INSERT INTO `tb_kategori` (`id`, `nama_kategori`, `status_kategori`, `created_at`) VALUES
 (6, 'Paku', 1, '28 Mei 2022'),
 (7, 'Tripleks', 1, '28 Mei 2022'),
-(8, 'Lem', 1, '28 Mei 2022');
+(8, 'Lem', 1, '04 Juni 2022');
 
 -- --------------------------------------------------------
 
@@ -571,9 +573,9 @@ CREATE TABLE `tb_submenu_expan` (
 INSERT INTO `tb_submenu_expan` (`sub_id`, `menu_id`, `submenu_id`, `judul`, `url`, `is_active`, `nomor_urut`) VALUES
 (1, 3, 4, 'Users', 'user', 1, 1),
 (2, 3, 4, 'Grup Users', 'grup', 1, 2),
-(3, 2, 7, 'Invoice Penjualan', 'penjualan', 1, 3),
-(4, 2, 7, 'Piutang Belum Lunas', 'penjualan/piutang', 1, 4),
-(5, 2, 7, 'Piutang Lunas', 'penjualan/piutang/lunas', 1, 5),
+(3, 2, 7, 'Invoice Penjualan', 'penjualan', 1, 5),
+(4, 2, 7, 'Piutang Belum Lunas', 'penjualan/piutang', 1, 6),
+(5, 2, 7, 'Piutang Lunas', 'penjualan/piutang/lunas', 1, 7),
 (7, 2, 8, 'Invoice Pembelian', 'pembelian', 1, 3),
 (8, 2, 8, 'Hutang Belum Selesai', 'pembelian/belum_lunas', 1, 4),
 (9, 2, 8, 'Hutang Lunas', 'pembelian/lunas', 1, 5),
@@ -582,8 +584,8 @@ INSERT INTO `tb_submenu_expan` (`sub_id`, `menu_id`, `submenu_id`, `judul`, `url
 (12, 2, 11, 'Kategori', 'master/kategori', 1, 1),
 (13, 2, 11, 'Barang', 'master/barang', 1, 3),
 (14, 2, 11, 'Satuan', 'master/satuan', 1, 2),
-(16, 2, 7, 'Kostumer', 'kostumer', 1, 2),
-(17, 2, 7, 'Kasir', 'penjualan/transaksi_cash', 1, 1),
+(16, 2, 7, 'Kostumer', 'kostumer', 1, 4),
+(17, 2, 7, 'Kasir', 'penjualan/transaksi_cash', 1, 3),
 (18, 2, 12, 'Kasir', 'laporan', 1, 1),
 (19, 2, 12, 'Kostumer', 'laporan/kostumer', 1, 2),
 (20, 2, 13, 'Terlaris', 'laporan_barang', 1, 1),
@@ -594,7 +596,9 @@ INSERT INTO `tb_submenu_expan` (`sub_id`, `menu_id`, `submenu_id`, `judul`, `url
 (25, 2, 15, 'Per Periode', 'laporan_pembelian', 1, 1),
 (26, 2, 15, 'Per Produk', 'laporan_pembelian/produk', 1, 2),
 (27, 2, 15, 'Retur', 'laporan_pembelian/retur', 1, 3),
-(28, 2, 12, 'Suplier', 'laporan/suplier', 1, 3);
+(28, 2, 12, 'Suplier', 'laporan/suplier', 1, 3),
+(29, 2, 7, 'Pesanan', 'penjualan/pesanan', 1, 1),
+(30, 2, 7, 'Produksi', 'penjualan/produksi', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -917,7 +921,7 @@ ALTER TABLE `tb_akses_menu`
 -- AUTO_INCREMENT untuk tabel `tb_barang`
 --
 ALTER TABLE `tb_barang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_hutang`
@@ -989,7 +993,7 @@ ALTER TABLE `tb_penjualan_detail`
 -- AUTO_INCREMENT untuk tabel `tb_penjualan_keranjang`
 --
 ALTER TABLE `tb_penjualan_keranjang`
-  MODIFY `keranjang_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `keranjang_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_penjualan_piutang`
@@ -1013,7 +1017,7 @@ ALTER TABLE `tb_submenu`
 -- AUTO_INCREMENT untuk tabel `tb_submenu_expan`
 --
 ALTER TABLE `tb_submenu_expan`
-  MODIFY `sub_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `sub_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_suplier`
