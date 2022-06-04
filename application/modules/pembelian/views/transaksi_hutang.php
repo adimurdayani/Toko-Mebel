@@ -25,7 +25,7 @@
             <!-- end page title -->
 
             <?php
-            $kode_barang = $get_pembelian_session['pembelian_input'];
+            $kode_barang = isset($get_pembelian_session['pembelian_input']);
             if ($kode_barang == null) {
                 $kode_barang = 0;
             } else {

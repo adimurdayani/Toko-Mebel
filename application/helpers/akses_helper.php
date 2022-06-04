@@ -23,10 +23,10 @@ function is_logged_in()
     $menurl = $ci->uri->segment(2);
 
     $querymenu = $ci->db->get_where('tb_menu', ['menu' => $menurl])->row_array();
-    $menu_id = $querymenu['id_menu'];
+    $menu_id = isset($querymenu['id_menu']);
 
     $aksesmenu = $ci->db->get_where('tb_akses_menu', [
-      'user_id' => $group['group_id'],
+      'user_id' => isset($group['group_id']),
       'menu_id' => $menu_id
     ]);
 

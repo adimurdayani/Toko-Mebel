@@ -71,7 +71,9 @@
                                         <select name="barang_kategori_id" id="barang_kategori_id" class="form-control " data-toggle="select2">
                                             <option value="">-- Pilih kategori --</option>
                                             <?php foreach ($get_kategori as $kategori) : ?>
-                                                <option value="<?= $kategori->id ?>"><?= $kategori->nama_kategori ?></option>
+                                                <?php if ($kategori->status_kategori == 1) : ?>
+                                                    <option value="<?= $kategori->id ?>"><?= $kategori->nama_kategori ?></option>
+                                                <?php endif; ?>
                                             <?php endforeach; ?>
                                         </select>
                                         <small class="text-danger"><?= form_error('barang_kategori_id') ?></small>
@@ -82,7 +84,9 @@
                                         <select name="barang_satuan_id" id="barang_satuan_id" class="form-control " data-select2-id="satuan">
                                             <option value="">-- Pilih satuan --</option>
                                             <?php foreach ($get_satuan as $satuan) : ?>
-                                                <option value="<?= $satuan->id ?>"><?= $satuan->nama_satuan ?></option>
+                                                <?php if ($satuan->status_satuan == 1) : ?>
+                                                    <option value="<?= $satuan->id ?>"><?= $satuan->nama_satuan ?></option>
+                                                <?php endif; ?>
                                             <?php endforeach; ?>
                                         </select>
                                         <small class="text-danger"><?= form_error('barang_satuan_id') ?></small>
