@@ -74,7 +74,9 @@
                                                         <select name="invoice_barang_id" id="invoice_barang_id" class="form-control" data-toggle="select2">
                                                             <option value="">Kode Barang</option>
                                                             <?php foreach ($get_barang as $kode) : ?>
-                                                                <option value="<?= $kode->id_barang ?>"><?= $kode->barang_kode ?> - <?= $kode->barang_nama ?>- Rp.<?= rupiah($kode->barang_harga_beli) ?></option>
+                                                                <?php if ($kode->status_barang > 0) : ?>
+                                                                    <option value="<?= $kode->id_barang ?>"><?= $kode->barang_kode ?> - <?= $kode->barang_nama ?> - Rp.<?= rupiah($kode->barang_harga_beli) ?></option>
+                                                                <?php endif; ?>
                                                             <?php endforeach; ?>
                                                         </select>
                                                     </div>
@@ -269,7 +271,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">No.</th>
-                                        <th class="text-center">Kode Barang</th>
+                                        <th class="text-center">Kode Produksi</th>
                                         <th class="text-center">Nama Barang</th>
                                         <th class="text-center">Harga</th>
                                         <th class="text-center">Stok</th>
@@ -279,28 +281,30 @@
                                 <tbody>
                                     <?php $no = 1;
                                     foreach ($get_barang as $data) : ?>
-                                        <tr>
-                                            <td class="text-center"><?= $no++ ?></td>
-                                            <td><?= $data->barang_kode ?></td>
-                                            <td><?= $data->barang_nama ?></td>
-                                            <td>Rp.<?= rupiah($data->barang_harga) ?></td>
-                                            <td>
-                                                <?php if ($data->barang_stok > 0) : ?>
-                                                    <?= $data->barang_stok ?>
-                                                <?php else : ?>
-                                                    <div class="badge badge-outline-danger">Habis</div>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <?php if ($data->barang_stok < 1) : ?>
-                                                    <button type="button" class="btn btn-outline-danger btn-sm btn-disabled"><i class="fe-x"></i> Habis</button>
-                                                <?php elseif ($data->barang_stok < 3) : ?>
-                                                    <button type="button" class="btn btn-outline-warning btn-sm btn-disabled"> Stok Sedikit</button>
-                                                <?php else : ?>
-                                                    <button type="button" id="idbarang" data-idbarang="<?= $data->id_barang; ?>" class="btn btn-outline-success btn-sm idbarang"><i class="fe-shopping-cart"></i> Pilih</button>
-                                                <?php endif; ?>
-                                            </td>
-                                        </tr>
+                                        <?php if ($data->is_active > 0) : ?>
+                                            <tr>
+                                                <td class="text-center"><?= $no++ ?></td>
+                                                <td><?= $data->produksi_invoice ?></td>
+                                                <td><?= $data->produksi_nama ?></td>
+                                                <td>Rp.<?= rupiah($data->produksi_harga_total) ?></td>
+                                                <td>
+                                                    <?php if ($data->produksi_stok > 0) : ?>
+                                                        <?= $data->produksi_stok ?>
+                                                    <?php else : ?>
+                                                        <div class="badge badge-outline-danger">Habis</div>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td class="text-center">
+                                                    <?php if ($data->produksi_stok < 1) : ?>
+                                                        <button type="button" class="btn btn-outline-danger btn-sm btn-disabled"><i class="fe-x"></i> Habis</button>
+                                                    <?php elseif ($data->produksi_stok < 3) : ?>
+                                                        <button type="button" class="btn btn-outline-warning btn-sm btn-disabled"> Stok Sedikit</button>
+                                                    <?php else : ?>
+                                                        <button type="button" id="idbarang" data-idbarang="<?= $data->id_produksi; ?>" class="btn btn-outline-success btn-sm idbarang"><i class="fe-shopping-cart"></i> Pilih</button>
+                                                    <?php endif; ?>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>

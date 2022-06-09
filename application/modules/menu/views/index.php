@@ -30,7 +30,7 @@
                             <div class="row p-2">
                                 <div class="col-md-6">
                                     <button type="submit" class="btn btn-danger" id="hapus"><i class="fe-trash"></i> Hapus</button>
-                                    <a href="javascript:void(0);" data-target="#tambah" data-toggle="modal" class="btn btn-outline-blue"><i class="fe-plus"></i> Tambah Menu</a>
+                                    <a href="javascript:void(0);" data-target="#tambah" data-toggle="modal" class="btn btn-outline-blue"><i class="fe-plus"></i> Menu</a>
                                 </div>
                             </div>
                             <div class="card-body table-responsive">

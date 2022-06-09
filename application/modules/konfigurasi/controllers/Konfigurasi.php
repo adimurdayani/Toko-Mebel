@@ -66,9 +66,25 @@ class Konfigurasi extends CI_Controller
                 $file_icon = $data_icon['file_name'];
             }
 
+            if (!empty($_FILES['logo_web'])) {
+                # code...
+                $this->upload->do_upload('logo_web');
+                $data_logo = $this->upload->data();
+                $file_logo = $data_logo['file_name'];
+            }
+
+            if (!empty($_FILES['logo_small_web'])) {
+                # code...
+                $this->upload->do_upload('logo_small_web');
+                $data_logo_small = $this->upload->data();
+                $file_logo_small = $data_logo_small['file_name'];
+            }
+
             $data = [
                 'nama_web' => $this->input->post('nama_web'),
                 'icon_web' => $file_icon,
+                'logo_web' => $file_logo,
+                'logo_small_web' => $file_logo_small,
                 'updated_at' => date_indo("Y-m-d"),
             ];
             $this->db->insert('tb_konfigurasi', $data);
@@ -121,15 +137,38 @@ class Konfigurasi extends CI_Controller
                 $file_icon = $data_icon['file_name'];
             }
 
+            if (!empty($_FILES['logo_web'])) {
+                # code...
+                $this->upload->do_upload('logo_web');
+                $data_logo = $this->upload->data();
+                $file_logo = $data_logo['file_name'];
+            }
+
+            if (!empty($_FILES['logo_small_web'])) {
+                # code...
+                $this->upload->do_upload('logo_small_web');
+                $data_logo_small = $this->upload->data();
+                $file_logo_small = $data_logo_small['file_name'];
+            }
+
+
             $data_img = $this->db->get_where('tb_konfigurasi', ['id' => $id])->row();
             if ($data_img->icon_web != null) {
                 $target_img = './assets/images/upload/' . $data_img->icon_web;
+                unlink($target_img);
+            } elseif ($data_img->logo_web != null) {
+                $target_img = './assets/images/upload/' . $data_img->logo_web;
+                unlink($target_img);
+            } elseif ($data_img->logo_small_web != null) {
+                $target_img = './assets/images/upload/' . $data_img->logo_small_web;
                 unlink($target_img);
             }
 
             $data = [
                 'nama_web' => $this->input->post('nama_web'),
                 'icon_web' => $file_icon,
+                'logo_web' => $file_logo,
+                'logo_small_web' => $file_logo_small,
                 'updated_at' => date_indo("Y-m-d"),
             ];
 
@@ -147,6 +186,50 @@ class Konfigurasi extends CI_Controller
             );
             redirect('konfigurasi', 'refresh');
         }
+    }
+
+    public function edit_logo_nota()
+    {
+        $id = $this->input->post('id');
+
+        $config['upload_path']    = './assets/images/upload/';
+        $config['allowed_types']  = 'jpg|png|jpeg|svg';
+        $config['max_size']       = '1024';
+        $config['encrypt_name']    = TRUE;
+
+        $this->load->library('upload', $config);
+
+        if (!empty($_FILES['logo_nota'])) {
+            # code...
+            $this->upload->do_upload('logo_nota');
+            $data_nota = $this->upload->data();
+            $file_nota = $data_nota['file_name'];
+        }
+
+        $data_img = $this->db->get_where('tb_konfigurasi', ['id' => $id])->row();
+        if ($data_img->logo_nota != null) {
+            $target_img = './assets/images/upload/' . $data_img->logo_nota;
+            unlink($target_img);
+        }
+
+        $data = [
+            'logo_nota' => $file_nota,
+            'updated_at' => date_indo("Y-m-d"),
+        ];
+
+        $this->db->where('id', $id);
+        $this->db->update('tb_konfigurasi', $data);
+        $this->session->set_flashdata(
+            'success',
+            '$(document).ready(function(e) {
+                    Swal.fire({
+                        type: "success",
+                        title: "Sukses",
+                        text: "Data berhasil disimpan!"
+                    })
+                })'
+        );
+        redirect('konfigurasi', 'refresh');
     }
 }
 

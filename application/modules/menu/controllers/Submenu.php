@@ -63,8 +63,9 @@ class Submenu extends CI_Controller
         'submenu' => $this->input->post('submenu'),
         'icon' => $this->input->post('icon'),
         'url' => $this->input->post('url'),
-        'collapse' => $this->input->post('collapse'),
-        'nomor_urut' => $this->input->post('nomor_urut')
+        'collapse' => 0,
+        'nomor_urut' => $this->input->post('nomor_urut'),
+        'active' => 1
       ];
 
       $this->db->insert('tb_submenu', $data);
@@ -112,8 +113,9 @@ class Submenu extends CI_Controller
         'submenu' => $this->input->post('submenu'),
         'icon' => $this->input->post('icon'),
         'url' => $this->input->post('url'),
-        'collapse' => $this->input->post('collapse'),
-        'nomor_urut' => $this->input->post('nomor_urut')
+        'collapse' => 0,
+        'nomor_urut' => $this->input->post('nomor_urut'),
+        'active' => 1
       ];
 
       $this->db->where('id_submenu', $id);
@@ -130,6 +132,99 @@ class Submenu extends CI_Controller
         })'
       );
       redirect('menu/submenu');
+    }
+  }
+
+  public function editaktif()
+  {
+
+    $statusid = $this->input->post('statusid');
+    $statussubmenu = $this->input->post('statussubmenu');
+
+    if ($statussubmenu > 0) {
+
+      $data = [
+        'active' => 0
+      ];
+
+      $this->db->where('id_submenu', $statusid);
+      $this->db->update('tb_submenu', $data);
+
+      $this->session->set_flashdata(
+        'success',
+        '$(document).ready(function(e) {
+                    Swal.fire({
+                        type: "success",
+                        title: "Sukses",
+                        text: "Submenu berhasil tidak di aktif!"
+                    })
+                })'
+      );
+    } else {
+      $data = [
+        'active' => 1
+      ];
+
+
+      $this->db->where('id_submenu', $statusid);
+      $this->db->update('tb_submenu', $data);
+
+      $this->session->set_flashdata(
+        'success',
+        '$(document).ready(function(e) {
+            Swal.fire({
+                type: "success",
+                title: "Sukses",
+                text: "Submenu berhasil di aktifkan!"
+            })
+        })'
+      );
+    }
+  }
+
+  public function editcollapse()
+  {
+
+    $statusid = $this->input->post('statusid');
+    $collapse = $this->input->post('collapse');
+
+    if ($collapse > 0) {
+
+      $data = [
+        'collapse' => 0
+      ];
+
+      $this->db->where('id_submenu', $statusid);
+      $this->db->update('tb_submenu', $data);
+
+      $this->session->set_flashdata(
+        'success',
+        '$(document).ready(function(e) {
+            Swal.fire({
+                type: "success",
+                title: "Sukses",
+                text: "Coollapse menu di Non-Aktifkan!"
+            })
+        })'
+      );
+    } else {
+      $data = [
+        'collapse' => 1
+      ];
+
+      $this->db->where('id_submenu', $statusid);
+      $this->db->update('tb_submenu', $data);
+
+      $this->session->set_flashdata(
+        'success',
+        '$(document).ready(function(e) {
+            Swal.fire({
+                type: "success",
+                title: "Sukses",
+                text: "Collapse menu di Aktifkan!"
+            })
+        })'
+      );
     }
   }
 
@@ -329,6 +424,52 @@ class Submenu extends CI_Controller
           })
       })'
     );
+  }
+
+  public function editcollapse_menu()
+  {
+
+    $statusid = $this->input->post('statusid');
+    $menucollapse = $this->input->post('menucollapse');
+
+    if ($menucollapse > 0) {
+
+      $data = [
+        'is_active' => 0
+      ];
+
+      $this->db->where('sub_id', $statusid);
+      $this->db->update('tb_submenu_expan', $data);
+
+      $this->session->set_flashdata(
+        'success',
+        '$(document).ready(function(e) {
+            Swal.fire({
+                type: "success",
+                title: "Sukses",
+                text: "Coollapse menu di Non-Aktifkan!"
+            })
+        })'
+      );
+    } else {
+      $data = [
+        'is_active' => 1
+      ];
+
+      $this->db->where('sub_id', $statusid);
+      $this->db->update('tb_submenu_expan', $data);
+
+      $this->session->set_flashdata(
+        'success',
+        '$(document).ready(function(e) {
+            Swal.fire({
+                type: "success",
+                title: "Sukses",
+                text: "Collapse menu di Aktifkan!"
+            })
+        })'
+      );
+    }
   }
 }
 

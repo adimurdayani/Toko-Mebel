@@ -288,6 +288,58 @@
             }
         })
     })
+
+    $('.editstatus').on('click', function() {
+        const statusid = $(this).data('statusid');
+        const statussubmenu = $(this).data('statussubmenu');
+
+        $.ajax({
+            url: "<?= base_url('menu/submenu/editaktif') ?>",
+            type: 'post',
+            data: {
+                statusid: statusid,
+                statussubmenu: statussubmenu
+            },
+            success: function() {
+                document.location.href = "<?= base_url('menu/submenu') ?>";
+            }
+        })
+    })
+
+    $('.editcollapse').on('click', function() {
+        const statusid = $(this).data('statusid');
+        const collapse = $(this).data('collapse');
+
+        $.ajax({
+            url: "<?= base_url('menu/submenu/editcollapse') ?>",
+            type: 'post',
+            data: {
+                statusid: statusid,
+                collapse: collapse
+            },
+            success: function() {
+                document.location.href = "<?= base_url('menu/submenu') ?>";
+            }
+        })
+    })
+
+    $('.editcollapsemenu').on('click', function() {
+        const statusid = $(this).data('statusid');
+        const menucollapse = $(this).data('menucollapse');
+        const submenuid = $(this).data('submenuid');
+
+        $.ajax({
+            url: "<?= base_url('menu/submenu/editcollapse_menu') ?>",
+            type: 'post',
+            data: {
+                statusid: statusid,
+                menucollapse: menucollapse
+            },
+            success: function() {
+                document.location.href = "<?= base_url('menu/submenu/detail_menu_collapse/') ?>" + btoa(submenuid);
+            }
+        })
+    })
 </script>
 
 </body>

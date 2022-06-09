@@ -42,24 +42,33 @@ class Transaksi_hutang extends CI_Controller
     {
         $id_barang = $this->input->post('id_barang');
         $data_barang = $this->db->get_where('tb_barang', ['id_barang' => $id_barang])->row();
+        $keranjang = $this->db->get_where('tb_penjualan_keranjang', ['barang_id' => $id_barang])->row();
 
         $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
         $group_id = $this->db->get_where('users_groups', ['user_id' => $user->id])->row();
         $get_penjualan = $this->db->get('tb_penjualan')->num_rows();
         $jml_penjualan = $get_penjualan + 1;
 
-        $data = [
-            'keranjang_nama' => $data_barang->barang_nama,
-            'keranjang_harga_beli' => $data_barang->barang_harga_beli,
-            'keranjang_harga' => $data_barang->barang_harga,
-            'barang_id' => $id_barang,
-            'barang_kode_slug' => $id_barang,
-            'keranjang_qty' => 1,
-            'keranjang_id_kasir' => $user->id,
-            'keranjang_id_cek' => $id_barang . $user->id . $jml_penjualan,
-            'keranjang_cabang' => $group_id->group_id
-        ];
-        $this->db->insert('tb_penjualan_keranjang', $data);
+        if ($keranjang->barang_id == $id_barang) {
+            $update_keranjang = [
+                'keranjang_qty' => $keranjang->keranjang_qty + 1,
+            ];
+            $this->db->where('barang_id', $keranjang->barang_id);
+            $this->db->update('tb_penjualan_keranjang', $update_keranjang);
+        } else {
+            $data = [
+                'keranjang_nama' => $data_barang->barang_nama,
+                'keranjang_harga_beli' => $data_barang->barang_harga_beli,
+                'keranjang_harga' => $data_barang->barang_harga,
+                'barang_id' => $id_barang,
+                'barang_kode_slug' => $id_barang,
+                'keranjang_qty' => 1,
+                'keranjang_id_kasir' => $user->id,
+                'keranjang_id_cek' => $id_barang . $user->id . $jml_penjualan,
+                'keranjang_cabang' => $group_id->group_id
+            ];
+            $this->db->insert('tb_penjualan_keranjang', $data);
+        }
     }
 
     public function input_idbarang_dua()

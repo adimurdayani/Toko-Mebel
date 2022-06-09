@@ -28,6 +28,7 @@
                     $querysubmenu = "SELECT *
                         FROM `tb_submenu`
                         WHERE `tb_submenu`.`id_menu` = $menu_id
+                        AND `tb_submenu`.`active`= 1
                         ORDER BY `tb_submenu`.`nomor_urut` ASC
                     ";
                     $submenu = $this->db->query($querysubmenu)->result();

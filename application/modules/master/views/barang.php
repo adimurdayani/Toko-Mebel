@@ -37,15 +37,15 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" id="chack-all"></th>
+                                            <th class="text-center">Aksi</th>
                                             <th class="text-center">No.</th>
                                             <th class="text-center">Kode Barang</th>
                                             <th class="text-center">Nama Barang</th>
-                                            <th class="text-center">Kategori</th>
-                                            <th class="text-center">Harga Modal</th>
+                                            <th class="text-center">Harga Beli</th>
                                             <th class="text-center">Harga Jual</th>
                                             <th class="text-center">Stok</th>
+                                            <th class="text-center">Detail</th>
                                             <th class="text-center">Status</th>
-                                            <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
 
@@ -55,10 +55,14 @@
                                         foreach ($get_barang as $data) : ?>
                                             <tr>
                                                 <td><input type="checkbox" class="check-item" name="id_barang[]" value="<?= $data->id_barang ?>"></td>
+                                                <td class="text-center">
+                                                    <a href="javascript:void(0);" class="btn btn-outline-info" data-target="#detail<?= $data->id_barang ?>" data-toggle="modal" title="Detail <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
+                                                    <a href="<?= base_url('master/barang/edit/') . base64_encode($data->id_barang) ?>" class="btn btn-outline-warning" title="Edit <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                    <a href="<?= base_url('master/barang/hapus/') . base64_encode($data->id_barang) ?>" class="btn btn-outline-danger hapus" title="Hapus <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
+                                                </td>
                                                 <td class="text-center"><?= $no++ ?></td>
                                                 <td><?= $data->barang_kode ?></td>
                                                 <td><?= $data->barang_nama ?></td>
-                                                <td><?= $data->nama_kategori ?></td>
                                                 <td>
                                                     <?php if ($data->barang_harga_beli != null) : ?>
                                                         Rp.<?= rupiah($data->barang_harga_beli) ?>
@@ -75,17 +79,21 @@
                                                 </td>
                                                 <td>
                                                     <?php if ($data->barang_stok > 0) : ?>
-                                                        <?= $data->barang_stok ?>
+                                                        <?= $data->barang_stok ?> <?= $data->nama_satuan ?>
                                                     <?php else : ?>
                                                         <div class="badge badge-outline-danger">Habis</div>
                                                     <?php endif; ?>
                                                 </td>
-                                                <td class="text-center"><input type="checkbox" class="ubahstatusbarang" <?= check_status_barang($data->status_barang) ?> data-statusid="<?= $data->id_barang ?>" data-statusbarang="<?= $data->status_barang ?>"></td>
                                                 <td class="text-center">
-                                                    <a href="javascript:void(0);" class="btn btn-outline-info" data-target="#detail<?= $data->id_barang ?>" data-toggle="modal" title="Detail <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
-                                                    <a href="<?= base_url('master/barang/edit/') . base64_encode($data->id_barang) ?>" class="btn btn-outline-warning" title="Edit <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
-                                                    <a href="<?= base_url('master/barang/hapus/') . base64_encode($data->id_barang) ?>" class="btn btn-outline-danger hapus" title="Hapus <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
+                                                    <?php if ($data->barang_kategori_id == 7) : ?>
+                                                        <?php if ($jml_barang_detail == 0) : ?>
+                                                            <a href="javascript:void(0);" data-target="#tambah-detailbarang<?= $data->barang_kode ?>" data-toggle="modal" class="badge badge-success" title="Tambah panjang x lebar barang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-plus"></i></a>
+                                                        <?php elseif ($jml_barang_detail != 0) : ?>
+                                                            <a href="javascript:void(0);" data-target="#edit<?= $data->barang_kode ?>" data-toggle="modal" class="badge badge-warning" title="Edit panjang x lebar barang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
                                                 </td>
+                                                <td class="text-center"><input type="checkbox" class="ubahstatusbarang" <?= check_status_barang($data->status_barang) ?> data-statusid="<?= $data->id_barang ?>" data-statusbarang="<?= $data->status_barang ?>"></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -174,6 +182,70 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary waves-effect" data-dismiss="modal"><i class="fe-arrow-left"></i> Tutup</button>
                     </div>
+                </div>
+            </div>
+        </div><!-- /.modal -->
+    <?php endforeach; ?>
+
+    <?php foreach ($get_barang as $tambah) : ?>
+        <div id="tambah-detailbarang<?= $tambah->barang_kode ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Tambah Ukuran <?= $tambah->barang_nama ?></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <?= form_open('master/barang/pajanglebar') ?>
+                    <div class="modal-body p-4">
+                        <input type="hidden" name="detail_kode_barang" class="form-control" value="<?= $detail->barang_kode ?>">
+                        <div class="form-group">
+                            <label for="">Pajang (Cm) Per Item</label>
+                            <input type="number" name="detail_panjang" class="form-control" value="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Lebar (Cm) Per Item</label>
+                            <input type="number" name="detail_lebar" class="form-control" value="0">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary waves-effect" data-dismiss="modal"><i class="fe-arrow-left"></i> Tutup</button>
+                        <button type="submit" class="btn btn-outline-warning waves-effect"><i class="fe-save"></i> Simpan</button>
+                    </div>
+                    <?= form_close() ?>
+                </div>
+            </div>
+        </div><!-- /.modal -->
+    <?php endforeach; ?>
+
+    <?php foreach ($get_barang_detail as $edit) : ?>
+        <div id="edit<?= $edit->detail_kode_barang ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Ukuran <?= $edit->detail_kode_barang ?></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <?= form_open('master/barang/edit_pajanglebar') ?>
+                    <div class="modal-body p-4">
+                        <input type="hidden" name="detail_kode_barang" value="<?= base64_encode($edit->detail_kode_barang) ?>">
+                        <div class="form-group">
+                            <label for="">Pajang (Cm) Per Item</label>
+                            <input type="number" name="detail_panjang" class="form-control" value="<?= $edit->detail_panjang ?>">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Lebar (Cm) Per Item</label>
+                            <input type="number" name="detail_lebar" class="form-control" value="<?= $edit->detail_lebar ?>">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary waves-effect" data-dismiss="modal"><i class="fe-arrow-left"></i> Tutup</button>
+                        <button type="submit" class="btn btn-outline-warning waves-effect"><i class="fe-save"></i> Update</button>
+                    </div>
+                    <?= form_close() ?>
                 </div>
             </div>
         </div><!-- /.modal -->

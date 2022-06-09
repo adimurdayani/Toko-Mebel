@@ -88,10 +88,10 @@
 
             <a href="<?= base_url() ?>" class="logo logo-light text-center">
                 <span class="logo-sm">
-                    <img src="<?= base_url('assets') ?>/images/logo_luwu.png" alt="" height="22">
+                    <img src="<?= base_url('assets/images/upload/') . $get_config->logo_small_web ?>" alt="" height="22">
                 </span>
                 <span class="logo-lg">
-                    <img src="<?= base_url('assets/frontend/') ?>/images/logo-tekno.png" alt="" height="35">
+                    <img src="<?= base_url('assets/images/upload/') . $get_config->logo_web ?>" alt="" height="35">
                 </span>
             </a>
         </div>

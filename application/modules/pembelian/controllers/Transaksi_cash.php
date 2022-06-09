@@ -238,7 +238,8 @@ class Transaksi_cash extends CI_Controller
             $data_barang[] = [
                 'id_barang' => $barang_id[$key],
                 'barang_stok' => $value['barang_stok'] + $barang_qty[$key],
-                'barang_harga_beli' => $barang_harga_beli[$key]
+                'barang_harga_beli' => $barang_harga_beli[$key],
+                'barang_terjual' => $barang_qty[$key],
             ];
             $this->db->update_batch('tb_barang', $data_barang, 'id_barang');
         }
@@ -263,7 +264,7 @@ class Transaksi_cash extends CI_Controller
         }
         $this->db->insert_batch('tb_pembelian_detail', $get_data);
 
-        $kode_barang = $this->input->post('kode_barang');
+        $kode_barang = $this->input->post('pembelian_invoice_get');
         $data = [
             'invoice_suplier_id' => $this->input->post('invoice_suplier_id'),
             'invoice_pembelian' => $kode_barang,

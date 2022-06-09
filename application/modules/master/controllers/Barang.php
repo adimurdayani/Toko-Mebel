@@ -21,6 +21,8 @@ class Barang extends CI_Controller
             $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
 
             $data['get_barang'] = $this->m_data->get_all_barang();
+            $data['jml_barang_detail'] = $this->db->get('tb_barang_detail')->num_rows();
+            $data['get_barang_detail'] = $this->db->get('tb_barang_detail')->result();
             $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
 
             $this->load->view('template/header', $data, FALSE);
@@ -71,7 +73,10 @@ class Barang extends CI_Controller
                     'barang_kategori_id' => $this->input->post('barang_kategori_id'),
                     'barang_satuan_id' => $this->input->post('barang_satuan_id'),
                     'barang_deskripsi' => $this->input->post('barang_deskripsi'),
-                    'barang_terjual' => 0
+                    'barang_terjual' => 0,
+                    'status_barang' => 1,
+                    'barang_panjang' => 0,
+                    'barang_lebar' => 0
                 ];
 
                 $this->db->insert('tb_barang', $data);
@@ -236,6 +241,89 @@ class Barang extends CI_Controller
                     })
                 })'
             );
+        }
+    }
+
+    public function pajanglebar()
+    {
+        $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+
+        $data['get_kategori'] = $this->db->get('tb_kategori')->result();
+        $data['get_satuan'] = $this->db->get('tb_satuan')->result();
+        $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+
+        $this->form_validation->set_rules('detail_panjang', 'panjang', 'trim|required');
+        $this->form_validation->set_rules('detail_lebar', 'panjang', 'trim|required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('template/header', $data, FALSE);
+            $this->load->view('template/topbar', $data, FALSE);
+            $this->load->view('template/sidebar', $data, FALSE);
+            $this->load->view('barang', $data, FALSE);
+            $this->load->view('template/footer', $data, FALSE);
+            # code...
+        } else {
+            # code...
+            $data = [
+                'detail_kode_barang' => $this->input->post('detail_kode_barang'),
+                'detail_panjang' => $this->input->post('detail_panjang'),
+                'detail_lebar' => $this->input->post('detail_lebar')
+            ];
+
+            $this->db->insert('tb_barang_detail', $data);
+            $this->session->set_flashdata(
+                'success',
+                '$(document).ready(function(e) {
+                    Swal.fire({
+                        type: "success",
+                        title: "Sukses",
+                        text: "Data berhasil disimpan!"
+                    })
+                })'
+            );
+            redirect('master/barang');
+        }
+    }
+
+    public function edit_pajanglebar()
+    {
+        $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+
+        $data['get_kategori'] = $this->db->get('tb_kategori')->result();
+        $data['get_satuan'] = $this->db->get('tb_satuan')->result();
+        $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+
+        $this->form_validation->set_rules('detail_panjang', 'panjang', 'trim|required');
+        $this->form_validation->set_rules('detail_lebar', 'panjang', 'trim|required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('template/header', $data, FALSE);
+            $this->load->view('template/topbar', $data, FALSE);
+            $this->load->view('template/sidebar', $data, FALSE);
+            $this->load->view('barang', $data, FALSE);
+            $this->load->view('template/footer', $data, FALSE);
+            # code...
+        } else {
+            # code...
+            $id =  base64_decode($this->input->post('detail_kode_barang'));
+            $data = [
+                'detail_panjang' => $this->input->post('detail_panjang'),
+                'detail_lebar' => $this->input->post('detail_lebar')
+            ];
+
+            $this->db->where('detail_kode_barang ', $id);
+            $this->db->update('tb_barang_detail', $data);
+            $this->session->set_flashdata(
+                'success',
+                '$(document).ready(function(e) {
+                    Swal.fire({
+                        type: "success",
+                        title: "Sukses",
+                        text: "Data berhasil disimpan!"
+                    })
+                })'
+            );
+            redirect('master/barang');
         }
     }
 }

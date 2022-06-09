@@ -30,7 +30,7 @@
                             <div class="row p-2">
                                 <div class="col-md-6">
                                     <button type="submit" class="btn btn-danger" id="hapus"><i class="fe-trash"></i> Hapus</button>
-                                    <a href="javascript:void(0);" data-target="#tambah" data-toggle="modal" class="btn btn-outline-blue"><i class="fe-plus"></i> Tambah Sub Menu</a>
+                                    <a href="javascript:void(0);" data-target="#tambah" data-toggle="modal" class="btn btn-outline-blue"><i class="fe-plus"></i> Sub Menu</a>
                                 </div>
                             </div>
                             <div class="card-body table-responsive">
@@ -44,6 +44,8 @@
                                             <th class="text-center">Sub Menu</th>
                                             <th class="text-center">Icon</th>
                                             <th class="text-center">Url</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Collapse</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -59,8 +61,14 @@
                                                     <a href="" class="badge badge-success ml-2" data-target="#edit_urutan<?= $data->id_submenu ?>" data-toggle="modal" title="Edit Urutan Menu <?= $data->submenu ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
                                                 </td>
                                                 <td><?= $data->submenu ?></td>
-                                                <td><?= $data->icon ?></td>
+                                                <td><i class="<?= $data->icon ?>" title="<?= $data->icon ?>" data-plugin="tippy" data-tippy-placement="top"></i></td>
                                                 <td><?= $data->url ?></td>
+                                                <td>
+                                                    <input type="checkbox" class="editstatus" <?= check_status_submenu($data->active) ?> data-statusid="<?= $data->id_submenu ?>" data-statussubmenu="<?= $data->active ?>">
+                                                </td>
+                                                <td>
+                                                    <input type="checkbox" class="editcollapse" <?= check_status_collapse($data->collapse) ?> data-statusid="<?= $data->id_submenu ?>" data-collapse="<?= $data->collapse ?>">
+                                                </td>
                                                 <td class="float-right">
                                                     <?php if ($data->collapse == 1) : ?>
                                                         <a href="javascript:void(0);" data-target="#add-collapse<?= $data->id_submenu ?>" data-toggle="modal" class="btn btn-outline-success" title="Tambah Menu Collapse <?= $data->submenu ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-plus"></i> </a>
@@ -128,14 +136,6 @@
                     <div class="form-group">
                         <label for="url" class="control-label">Url <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="url" placeholder="Nama url">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="collapse">Aktif Collapse <span class="text-danger">*</span></label>
-                        <select name="collapse" class="form-control" id="collapse">
-                            <option value="1">Aktif</option>
-                            <option value="0">Non-Aktif</option>
-                        </select>
                     </div>
 
                 </div>
@@ -241,14 +241,6 @@
                         <div class="form-group">
                             <label for="url" class="control-label">Url <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="url" placeholder="Nama url" value="<?= $edit->url ?>">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="collapse">Aktif Collapse <span class="text-danger">*</span></label>
-                            <select name="collapse" class="form-control" id="collapse">
-                                <option value="1" <?php if ($edit->collapse == 1) : ?> selected <?php endif; ?>>Aktif</option>
-                                <option value="0" <?php if ($edit->collapse == 0) : ?> selected <?php endif; ?>>Non-Aktif</option>
-                            </select>
                         </div>
 
                     </div>

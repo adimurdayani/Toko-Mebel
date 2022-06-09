@@ -245,7 +245,8 @@ class Transaksi_hutang extends CI_Controller
             $data_barang[] = [
                 'id_barang' => $barang_id[$key],
                 'barang_stok' => $value['barang_stok'] + $barang_qty[$key],
-                'barang_harga_beli' => $barang_harga_beli[$key]
+                'barang_harga_beli' => $barang_harga_beli[$key],
+                'barang_terjual' =>$barang_qty[$key],
             ];
             $this->db->update_batch('tb_barang', $data_barang, 'id_barang');
         }
@@ -269,6 +270,8 @@ class Transaksi_hutang extends CI_Controller
             $index++;
         }
         $this->db->insert_batch('tb_pembelian_detail', $get_data);
+
+        $kode_barang = $this->input->post('pembelian_invoice_get');
 
         $kode_barang = $this->input->post('kode_barang');
         $data = [

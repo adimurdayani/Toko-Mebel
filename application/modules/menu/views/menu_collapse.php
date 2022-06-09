@@ -30,7 +30,7 @@
                             <div class="row p-2">
                                 <div class="col-md-6">
                                     <a href="<?= base_url('menu/submenu') ?>" class="btn btn-outline-secondary"><i class="fe-arrow-left"></i> Kembali</a>
-                                    <a href="javascript:void(0);" data-target="#tambah<?= $get_submenu_id->id_submenu ?>" data-toggle="modal" class="btn btn-outline-blue"><i class="fe-plus"></i> Tambah Menu Collapse</a>
+                                    <a href="javascript:void(0);" data-target="#tambah<?= $get_submenu_id->id_submenu ?>" data-toggle="modal" class="btn btn-outline-blue"><i class="fe-plus"></i> Menu Collapse</a>
                                     <button type="submit" class="btn btn-danger" id="hapus"><i class="fe-trash"></i> Hapus</button>
                                 </div>
                             </div>
@@ -57,11 +57,7 @@
                                                 <td><?= $data->judul ?></td>
                                                 <td><?= $data->url ?></td>
                                                 <td>
-                                                    <?php if ($data->is_active == 1) : ?>
-                                                        <div class="badge badge-outline-success">Actif</div>
-                                                    <?php else : ?>
-                                                        <div class="badge badge-outline-danger">Non-Aktif</div>
-                                                    <?php endif; ?>
+                                                    <input type="checkbox" class="editcollapsemenu" <?= check_status_menu_collapse($data->is_active) ?> data-statusid="<?= $data->sub_id ?>" data-menucollapse="<?= $data->is_active ?>" data-submenuid="<?= $data->submenu_id ?>">
                                                 </td>
                                                 <td>
                                                     <a href="javascript:void(0);" data-target="#edit<?= $data->sub_id ?>" class="btn btn-outline-warning" data-toggle="modal" title="Edit Sub Menu" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>

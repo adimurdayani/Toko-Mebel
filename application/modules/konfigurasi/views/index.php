@@ -64,17 +64,46 @@
                                     <?= form_error('nama_web', '<small class="text-danger">', '</small>') ?>
                                 </div>
 
-                                <div class="form-group mb-3">
-                                    <label>Upload Icon Website</label>
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input input1" id="icon_web" name="icon_web">
-                                            <label class="custom-file-label">Choose file</label>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-3">
+                                            <label>Upload Icon Website</label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input input1" id="icon_web" name="icon_web">
+                                                    <label class="custom-file-label">Choose file</label>
+                                                </div>
+                                            </div>
+                                            <img src="<?= base_url('assets/images/upload/') . $get_config->icon_web ?>" alt="" class="img-thumbnail mt-2" width="100px">
                                         </div>
                                     </div>
-                                    <img src="<?= base_url('assets/images/upload/') . $get_config->icon_web ?>" alt="" class="img-thumbnail mt-2" width="100px">
-                                </div>
 
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-3">
+                                            <label>Upload Logo Website</label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input input1" id="logo_web" name="logo_web">
+                                                    <label class="custom-file-label">Choose file</label>
+                                                </div>
+                                            </div>
+                                            <img src="<?= base_url('assets/images/upload/') . $get_config->logo_web ?>" alt="" class="img-thumbnail mt-2" width="100px">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-3">
+                                            <label>Upload Logo small Website</label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input input1" id="logo_small_web" name="logo_small_web">
+                                                    <label class="custom-file-label">Choose file</label>
+                                                </div>
+                                            </div>
+                                            <img src="<?= base_url('assets/images/upload/') . $get_config->logo_small_web ?>" alt="" class="img-thumbnail mt-2" width="100px">
+                                        </div>
+                                    </div>
+                                </div>
                                 <button type="submit" class="btn btn-outline-success float-right"><i class="fe-save"></i> Simpan</button>
 
                                 <?= form_close() ?>
@@ -98,7 +127,7 @@
                                     <label>Upload Logo Nota</label>
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input input1" id="icon_web" name="icon_web">
+                                            <input type="file" class="custom-file-input input1" id="logo_nota" name="logo_nota">
                                             <label class="custom-file-label">Choose file</label>
                                         </div>
                                     </div>
@@ -109,18 +138,18 @@
                                 <?= form_close() ?>
 
                             <?php else : ?>
-                                <?= form_open_multipart('konfigurasi/edit') ?>
+                                <?= form_open_multipart('konfigurasi/edit_logo_nota') ?>
                                 <input type="hidden" id="id" name="id" value="<?= $get_config->id ?>" class="form-control">
 
                                 <div class="form-group mb-3">
                                     <label>Upload Logo Nota</label>
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input input1" id="icon_web" name="icon_web">
+                                            <input type="file" class="custom-file-input input1" id="logo_nota" name="logo_nota">
                                             <label class="custom-file-label">Choose file</label>
                                         </div>
                                     </div>
-                                    <img src="<?= base_url('assets/images/upload/') . $get_config->icon_web ?>" alt="" class="img-thumbnail mt-2" width="100px">
+                                    <img src="<?= base_url('assets/images/upload/') . $get_config->logo_nota ?>" alt="" class="img-thumbnail mt-2" width="100px">
                                 </div>
 
                                 <button type="submit" class="btn btn-outline-success float-right"><i class="fe-save"></i> Simpan</button>

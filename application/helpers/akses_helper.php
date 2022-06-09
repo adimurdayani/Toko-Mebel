@@ -105,3 +105,47 @@ function check_status_barang($status)
     return "checked='checked'";
   }
 }
+
+function check_status_submenu($status)
+{
+  $ci = get_instance();
+  $ci->db->where('active', $status);
+  $result = $ci->db->get('tb_submenu')->row();
+
+  if ($result->active > 0) {
+    return "checked='checked'";
+  }
+}
+
+function check_status_collapse($collepse)
+{
+  $ci = get_instance();
+  $ci->db->where('collapse', $collepse);
+  $result = $ci->db->get('tb_submenu')->row();
+
+  if ($result->collapse > 0) {
+    return "checked='checked'";
+  }
+}
+
+function check_status_menu_collapse($menu_collapse)
+{
+  $ci = get_instance();
+  $ci->db->where('is_active', $menu_collapse);
+  $result = $ci->db->get('tb_submenu_expan')->row();
+
+  if ($result->is_active > 0) {
+    return "checked='checked'";
+  }
+}
+
+function check_active_produksi($is_active)
+{
+  $ci = get_instance();
+  $ci->db->where('is_active', $is_active);
+  $result = $ci->db->get('tb_produksi')->row();
+
+  if ($result->is_active > 0) {
+    return "checked='checked'";
+  }
+}
