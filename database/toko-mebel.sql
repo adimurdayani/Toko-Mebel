@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 04 Jun 2022 pada 12.05
+-- Waktu pembuatan: 09 Jun 2022 pada 16.06
 -- Versi server: 10.4.21-MariaDB
 -- Versi PHP: 7.3.31
 
@@ -106,10 +106,28 @@ CREATE TABLE `tb_barang` (
 --
 
 INSERT INTO `tb_barang` (`id_barang`, `barang_kode`, `barang_kode_slug`, `barang_kode_count`, `barang_nama`, `barang_harga_beli`, `barang_harga`, `barang_stok`, `barang_tanggal`, `barang_kategori_id`, `barang_satuan_id`, `barang_deskripsi`, `barang_terjual`, `status_barang`) VALUES
-(1, '001', '001', 1, 'Paku Payung', '20000', '20000', 24, '01 Juni 2022', 6, 5, 'paku payung', 1, 1),
-(2, '002', '002', 2, 'Paku Besi', '20000', '20000', 23, '01 Juni 2022', 6, 5, 'paku besi', 1, 1),
-(3, '003', '003', 3, 'Paku Beton ya', '20000', '120000', 25, '02 Juni 2022', 7, 6, 'paku beton ya', 1, 0),
-(4, '004', '004', 4, 'Besi', '0', '2000000', 10, '04 Juni 2022', 6, 5, 'besi', 0, 0);
+(5, '0001', '0001', 1, 'Tripleks', '320000', '370000', 35, '07 Juni 2022', 7, 8, 'tripleks', 1, 1),
+(6, '002', '002', 2, 'Staplas', '60000', '62000', 38, '08 Juni 2022', 6, 9, 'staplas lolos', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_barang_detail`
+--
+
+CREATE TABLE `tb_barang_detail` (
+  `id_detail_barang` int(11) NOT NULL,
+  `detail_kode_barang` varchar(100) DEFAULT NULL,
+  `detail_panjang` int(11) DEFAULT NULL,
+  `detail_lebar` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `tb_barang_detail`
+--
+
+INSERT INTO `tb_barang_detail` (`id_detail_barang`, `detail_kode_barang`, `detail_panjang`, `detail_lebar`) VALUES
+(1, '0001', 12000, 13000);
 
 -- --------------------------------------------------------
 
@@ -147,8 +165,7 @@ CREATE TABLE `tb_kategori` (
 
 INSERT INTO `tb_kategori` (`id`, `nama_kategori`, `status_kategori`, `created_at`) VALUES
 (6, 'Paku', 1, '28 Mei 2022'),
-(7, 'Tripleks', 1, '28 Mei 2022'),
-(8, 'Lem', 1, '04 Juni 2022');
+(7, 'Tripleks', 1, '28 Mei 2022');
 
 -- --------------------------------------------------------
 
@@ -161,6 +178,8 @@ CREATE TABLE `tb_konfigurasi` (
   `nama_web` varchar(128) DEFAULT NULL,
   `icon_web` varchar(255) DEFAULT NULL,
   `logo_web` varchar(255) DEFAULT NULL,
+  `logo_small_web` varchar(255) DEFAULT NULL,
+  `logo_nota` varchar(255) DEFAULT NULL,
   `updated_at` varchar(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -168,8 +187,8 @@ CREATE TABLE `tb_konfigurasi` (
 -- Dumping data untuk tabel `tb_konfigurasi`
 --
 
-INSERT INTO `tb_konfigurasi` (`id`, `nama_web`, `icon_web`, `logo_web`, `updated_at`) VALUES
-(1, 'Toko Mebel', '9f2c4e3dee541dffd77fe87790c528a8.png', NULL, '02 Juni 2022');
+INSERT INTO `tb_konfigurasi` (`id`, `nama_web`, `icon_web`, `logo_web`, `logo_small_web`, `logo_nota`, `updated_at`) VALUES
+(1, 'Toko Mebel', '92ee6004b1112fcb190aea6893c9dc1f.png', '1b2aae7c0ea1233426bfc5d103f95090.png', 'd7525095ef234a9ed76d065f6557d2a8.png', 'b355dac263a432562a4bf46eb48f1f28.png', '09 Juni 2022');
 
 -- --------------------------------------------------------
 
@@ -252,17 +271,7 @@ CREATE TABLE `tb_pembelian` (
 --
 
 INSERT INTO `tb_pembelian` (`id`, `invoice_suplier_id`, `invoice_pembelian`, `invoice_parent`, `invoice_total`, `invoice_bayar`, `invoice_kembali`, `invoice_kasir`, `invoice_tgl`, `invoice_created`, `invoice_updated`, `invoice_kasir_edit`, `invoice_total_lama`, `invoice_bayar_lama`, `invoice_kembali_lama`, `invoice_hutang`, `invoice_hutang_dp`, `invoice_hutang_jatuh_tempo`, `invoice_hutang_lunas`, `invoice_pembelian_cabang`) VALUES
-(9, 2, '001', '202206021', 240000, 240000, 0, 1, '03 Juni 2022', '03 Juni 2022', NULL, NULL, '240000', '240000', '0', 0, '0', NULL, 3, 1),
-(10, 1, '002', '202206022', 30000, 30000, 0, 1, '03 Juni 2022', '03 Juni 2022', NULL, NULL, '30000', '30000', '0', 0, '0', NULL, 3, 1),
-(11, 3, '003', '202206023', 90000, 90000, 0, 1, '03 Juni 2022', '03 Juni 2022', NULL, NULL, '90000', '90000', '0', 0, '0', NULL, 3, 1),
-(12, 1, '003', '202206024', 270000, 270000, 0, 1, '03 Juni 2022', '03 Juni 2022', NULL, NULL, '270000', '270000', '0', 0, '0', NULL, 3, 1),
-(13, 2, '004', '202206025', 30000, 30000, 0, 1, '03 Juni 2022', '03 Juni 2022', NULL, NULL, '30000', '30000', '0', 0, '0', NULL, 3, 1),
-(14, 3, '005', '202206026', 190000, 190000, 0, 1, '03 Juni 2022', '03 Juni 2022', NULL, NULL, '190000', '190000', '0', 1, '0', '03 Juni 2022', 3, 1),
-(15, 2, '003', '202206027', 300000, 300000, 0, 1, '03 Juni 2022', '03 Juni 2022', NULL, NULL, '300000', '300000', '0', 1, '0', '03 Juni 2022', 3, 1),
-(16, 2, '004', '202206028', 900000, 900000, 0, 1, '03 Juni 2022', '03 Juni 2022', NULL, NULL, '900000', '900000', '0', 0, '0', NULL, 3, 1),
-(17, 2, '005', '202206029', 2700000, 2700000, 0, 1, '03 Juni 2022', '03 Juni 2022', NULL, NULL, '2700000', '2700000', '0', 1, '0', '03 Juni 2022', 3, 1),
-(18, 2, '005', '2022060210', 30000, 30000, 0, 1, '03 Juni 2022', '03 Juni 2022', NULL, NULL, '30000', '30000', '0', 1, '0', '03 Juni 2022', 3, 1),
-(19, 3, '006', '2022060211', 60000, 60000, 0, 1, '03 Juni 2022', '03 Juni 2022', NULL, NULL, '60000', '60000', '0', 1, '0', '03 Juni 2022', 3, 1);
+(1, 2, '001', '202206081', 60000, 60000, 0, 1, '08 Juni 2022', '08 Juni 2022', NULL, NULL, '60000', '60000', '0', 0, '0', NULL, 8, 1);
 
 -- --------------------------------------------------------
 
@@ -290,39 +299,7 @@ CREATE TABLE `tb_pembelian_detail` (
 --
 
 INSERT INTO `tb_pembelian_detail` (`id`, `pembelian_barang_id`, `barang_id`, `barang_qty`, `keranjang_id_kasir`, `pembelian_invoice`, `pembelian_invoice_parent`, `pembelian_date`, `barang_qty_lama`, `barang_qty_lama_parent`, `barang_harga_beli`, `pembelian_cabang_id`) VALUES
-(25, 3, 3, 3, 1, '001', '202206021', '03 Juni 2022', '3', '3', 20000, NULL),
-(26, 2, 2, 4, 1, '001', '202206021', '03 Juni 2022', '4', '4', 20000, NULL),
-(27, 1, 1, 5, 1, '001', '202206021', '03 Juni 2022', '5', '5', 20000, NULL),
-(28, 3, 3, 1, 1, '002', '202206022', '03 Juni 2022', '1', '1', 10000, NULL),
-(29, 2, 2, 1, 1, '002', '202206022', '03 Juni 2022', '1', '1', 10000, NULL),
-(30, 1, 1, 1, 1, '002', '202206022', '03 Juni 2022', '1', '1', 10000, NULL),
-(31, 3, 3, 2, 1, '003', '202206023', '03 Juni 2022', '2', '2', 10000, NULL),
-(32, 2, 2, 3, 1, '003', '202206023', '03 Juni 2022', '3', '3', 10000, NULL),
-(33, 1, 1, 4, 1, '003', '202206023', '03 Juni 2022', '4', '4', 10000, NULL),
-(34, 1, 1, 1, 1, '003', '202206024', '03 Juni 2022', '1', '1', 90000, NULL),
-(35, 2, 2, 1, 1, '003', '202206024', '03 Juni 2022', '1', '1', 90000, NULL),
-(36, 3, 3, 1, 1, '003', '202206024', '03 Juni 2022', '1', '1', 90000, NULL),
-(37, 1, 1, 1, 1, '004', '202206025', '03 Juni 2022', '1', '1', 10000, NULL),
-(38, 2, 2, 1, 1, '004', '202206025', '03 Juni 2022', '1', '1', 10000, NULL),
-(39, 3, 3, 1, 1, '004', '202206025', '03 Juni 2022', '1', '1', 10000, NULL),
-(40, 3, 3, 3, 1, '005', '202206026', '03 Juni 2022', '3', '3', 20000, NULL),
-(41, 2, 2, 2, 1, '005', '202206026', '03 Juni 2022', '2', '2', 21000, NULL),
-(42, 1, 1, 4, 1, '005', '202206026', '03 Juni 2022', '4', '4', 22000, NULL),
-(43, 1, 1, 1, 1, '003', '202206027', '03 Juni 2022', '1', '1', 100000, NULL),
-(44, 2, 2, 1, 1, '003', '202206027', '03 Juni 2022', '1', '1', 100000, NULL),
-(45, 3, 3, 1, 1, '003', '202206027', '03 Juni 2022', '1', '1', 100000, NULL),
-(46, 1, 1, 1, 1, '004', '202206028', '03 Juni 2022', '1', '1', 300000, NULL),
-(47, 2, 2, 1, 1, '004', '202206028', '03 Juni 2022', '1', '1', 300000, NULL),
-(48, 3, 3, 1, 1, '004', '202206028', '03 Juni 2022', '1', '1', 300000, NULL),
-(49, 1, 1, 1, 1, '005', '202206029', '03 Juni 2022', '1', '1', 900000, NULL),
-(50, 2, 2, 1, 1, '005', '202206029', '03 Juni 2022', '1', '1', 900000, NULL),
-(51, 3, 3, 1, 1, '005', '202206029', '03 Juni 2022', '1', '1', 900000, NULL),
-(52, 1, 1, 1, 1, '005', '2022060210', '03 Juni 2022', '1', '1', 10000, NULL),
-(53, 2, 2, 1, 1, '005', '2022060210', '03 Juni 2022', '1', '1', 10000, NULL),
-(54, 3, 3, 1, 1, '005', '2022060210', '03 Juni 2022', '1', '1', 10000, NULL),
-(55, 1, 1, 1, 1, '006', '2022060211', '03 Juni 2022', '1', '1', 20000, NULL),
-(56, 2, 2, 1, 1, '006', '2022060211', '03 Juni 2022', '1', '1', 20000, NULL),
-(57, 3, 3, 1, 1, '006', '2022060211', '03 Juni 2022', '1', '1', 20000, NULL);
+(2, 6, 6, 1, 1, '001', '202206081', '08 Juni 2022', '1', '1', 60000, NULL);
 
 -- --------------------------------------------------------
 
@@ -398,17 +375,6 @@ CREATE TABLE `tb_penjualan` (
   `invoice_cabang` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data untuk tabel `tb_penjualan`
---
-
-INSERT INTO `tb_penjualan` (`invoice_id`, `penjualan_invoice`, `penjualan_invoice_count`, `invoice_tgl`, `invoice_costumer`, `invoice_kurir`, `invoice_status_kurir`, `invoice_tipe_transaksi`, `invoice_total_beli`, `invoice_total`, `invoice_ongkir`, `invoice_sub_total`, `invoice_bayar`, `invoice_kembali`, `invoice_kasir`, `invoice_date`, `invoice_date_edit`, `invoice_kasir_edit`, `invoice_total_beli_lama`, `invoice_total_lama`, `invoice_ongkir_lama`, `invoice_sub_total_lama`, `invoice_bayar_lama`, `invoice_kembali_lama`, `invoice_marketplace`, `invoice_ekspedisi`, `invoice_no_resi`, `invoice_date_selesai_kurir`, `invoice_piutang`, `invoice_piutang_dp`, `invoice_piutang_jatuh_tempo`, `invoice_piutang_lunas`, `invoice_cabang`) VALUES
-(1, '202206021', 1, '02 Juni 2022 - 09:35:32', 5, 'Adi Murdayani', 1, 0, 40000, 140000, NULL, 140000, 40000, 0, 1, '02 Juni 2022', NULL, NULL, 40000, 140000, NULL, 140000, 40000, 100000, NULL, NULL, NULL, NULL, 0, 40000, '2022-06-05', 1, 1),
-(2, '202206022', 2, '02 Juni 2022 - 12:25:03', 5, NULL, 1, 0, 40000, 140000, NULL, 140000, 10000, 130000, 1, '02 Juni 2022', NULL, NULL, 40000, 140000, NULL, 140000, 10000, 130000, NULL, NULL, NULL, NULL, 1, 10000, '02 Juni 2022', NULL, 1),
-(4, '202206024', 4, '02 Juni 2022 - 12:30:56', 6, NULL, 1, 1, 20000, 120000, NULL, 120000, 20000, 100000, 1, '02 Juni 2022', NULL, NULL, 20000, 120000, NULL, 120000, 20000, 100000, NULL, NULL, NULL, NULL, 1, 20000, '12 Juni 2022', NULL, 1),
-(5, '202206025', 5, '03 Juni 2022 - 20:40:14', 5, NULL, 1, 0, 60000, 160000, NULL, 160000, 160000, 0, 1, '03 Juni 2022', NULL, NULL, 60000, 160000, NULL, 160000, 160000, 0, NULL, NULL, NULL, NULL, 0, 0, '0', NULL, 1),
-(6, '202206026', 6, '03 Juni 2022 - 20:41:43', 5, NULL, 1, 0, 60000, 160000, NULL, 160000, 160000, 0, 1, '03 Juni 2022', NULL, NULL, 60000, 160000, NULL, 160000, 160000, 0, NULL, NULL, NULL, NULL, 1, 160000, '03 Juni 2022', NULL, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -429,24 +395,6 @@ CREATE TABLE `tb_penjualan_detail` (
   `barang_qty_lama_parent` int(11) DEFAULT NULL,
   `penjualan_cabang` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data untuk tabel `tb_penjualan_detail`
---
-
-INSERT INTO `tb_penjualan_detail` (`id_penjualan`, `penjualan_barang_id`, `barang_id`, `barang_qty`, `keranjang_harga_beli`, `keranjang_harga`, `keranjang_id_kasir`, `penjualan_invoice`, `penjualan_date`, `barang_qty_lama`, `barang_qty_lama_parent`, `penjualan_cabang`) VALUES
-(1, 2, 2, 1, 20000, 20000, 1, '202206021', NULL, 1, 1, 1),
-(2, 3, 3, 1, 20000, 120000, 1, '202206021', NULL, 1, 1, 1),
-(3, 2, 2, 1, 20000, 20000, 1, '202206022', NULL, 1, 1, 1),
-(4, 3, 3, 1, 20000, 120000, 1, '202206022', NULL, 1, 1, 1),
-(5, 3, 3, 1, 20000, 120000, 1, '202206023', NULL, 1, 1, 1),
-(6, 3, 3, 1, 20000, 120000, 1, '202206024', NULL, 1, 1, 1),
-(7, 1, 1, 1, 20000, 20000, 1, '202206025', NULL, 1, 1, 1),
-(8, 2, 2, 1, 20000, 20000, 1, '202206025', NULL, 1, 1, 1),
-(9, 3, 3, 1, 20000, 120000, 1, '202206025', NULL, 1, 1, 1),
-(10, 1, 1, 1, 20000, 20000, 1, '202206026', NULL, 1, 1, 1),
-(11, 2, 2, 1, 20000, 20000, 1, '202206026', NULL, 1, 1, 1),
-(12, 3, 3, 1, 20000, 120000, 1, '202206026', NULL, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -495,6 +443,115 @@ INSERT INTO `tb_penjualan_piutang` (`id_piutang`, `piutang_invoice`, `piutang_da
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `tb_pesanan`
+--
+
+CREATE TABLE `tb_pesanan` (
+  `id_pesanan` int(11) NOT NULL,
+  `kostumer_id` int(11) DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `jml` int(11) DEFAULT NULL,
+  `created_at` varchar(128) DEFAULT NULL,
+  `updated_at` varchar(128) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_produksi`
+--
+
+CREATE TABLE `tb_produksi` (
+  `id_produksi` int(11) NOT NULL,
+  `produksi_nama` varchar(128) DEFAULT NULL,
+  `produksi_keterangan` text DEFAULT NULL,
+  `produksi_invoice` varchar(100) DEFAULT NULL,
+  `produksi_harga_modal` int(11) DEFAULT NULL,
+  `produksi_harga_jual` int(11) DEFAULT NULL,
+  `produksi_harga_total` int(11) DEFAULT NULL,
+  `produksi_stok` int(11) DEFAULT NULL,
+  `produksi_status` varchar(128) DEFAULT NULL,
+  `created_at` varchar(128) DEFAULT NULL,
+  `updated_at` varchar(128) DEFAULT NULL,
+  `produksi_kasir` int(11) DEFAULT NULL,
+  `is_active` int(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_produksi_detail`
+--
+
+CREATE TABLE `tb_produksi_detail` (
+  `id_produksi_detail` int(11) NOT NULL,
+  `detail_invoice_produksi` varchar(100) DEFAULT NULL,
+  `detail_material_id` int(11) DEFAULT NULL,
+  `detail_kode_barang` varchar(128) DEFAULT NULL,
+  `detail_kategori_barang` int(11) DEFAULT NULL,
+  `detail_harga_modal` int(11) DEFAULT NULL,
+  `detail_harga_jual` int(11) DEFAULT NULL,
+  `detail_harga_total` int(11) DEFAULT NULL,
+  `detail_tgl` varchar(128) DEFAULT NULL,
+  `created_at` varchar(128) DEFAULT NULL,
+  `updated_at` varchar(128) DEFAULT NULL,
+  `detail_kasir_id` int(11) DEFAULT NULL,
+  `detail_cabang_id` int(11) DEFAULT NULL,
+  `detail_barang_panjang` int(11) DEFAULT NULL,
+  `detail_barang_lebar` int(11) DEFAULT NULL,
+  `detail_barang_qty` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `tb_produksi_detail`
+--
+
+INSERT INTO `tb_produksi_detail` (`id_produksi_detail`, `detail_invoice_produksi`, `detail_material_id`, `detail_kode_barang`, `detail_kategori_barang`, `detail_harga_modal`, `detail_harga_jual`, `detail_harga_total`, `detail_tgl`, `created_at`, `updated_at`, `detail_kasir_id`, `detail_cabang_id`, `detail_barang_panjang`, `detail_barang_lebar`, `detail_barang_qty`) VALUES
+(1, '001', 6, '002', 6, 60000, 62000, 182000, '09 Juni 2022 - 13:55:14', '09 Juni 2022', '09 Juni 2022', 1, 1, 0, 0, 1),
+(2, '001', 5, '0001', 7, 120000, 370000, 182000, '09 Juni 2022 - 13:55:14', '09 Juni 2022', '09 Juni 2022', 1, 1, 1000, 1000, 1),
+(3, '001', 5, '0001', 7, 120000, 370000, 120000, '09 Juni 2022 - 14:43:36', '09 Juni 2022', '09 Juni 2022', 1, 1, 100, 100, 1),
+(4, '002', 5, '0001', 7, 120000, 370000, 120000, '09 Juni 2022 - 14:47:53', '09 Juni 2022', '09 Juni 2022', 1, 1, 1000, 1000, 1),
+(5, '003', 5, '0001', 7, 120000, 370000, 120000, '09 Juni 2022 - 14:49:40', '09 Juni 2022', '09 Juni 2022', 1, 1, 1000, 1000, 1),
+(6, '004', 5, '0001', 7, 120000, 370000, 120000, '09 Juni 2022 - 14:51:13', '09 Juni 2022', '09 Juni 2022', 1, 1, 1000, 1000, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_produksi_keranjang`
+--
+
+CREATE TABLE `tb_produksi_keranjang` (
+  `id_produksi_keranjang` int(11) NOT NULL,
+  `keranjang_invoice_parent` varchar(100) DEFAULT NULL,
+  `keranjang_id_barang` int(11) DEFAULT NULL,
+  `keranjang_kategori_barang` int(11) DEFAULT NULL,
+  `keranjang_kode_barang` varchar(128) DEFAULT NULL,
+  `keranjang_barang_qty` int(11) DEFAULT NULL,
+  `keranjang_harga_modal` int(11) DEFAULT NULL,
+  `keranjang_harga_jual` int(11) DEFAULT NULL,
+  `keranjang_harga_total` int(11) DEFAULT NULL,
+  `keranjang_date` varchar(128) DEFAULT NULL,
+  `keranjang_kasir_id` int(11) DEFAULT NULL,
+  `keranjang_panjang` int(11) DEFAULT NULL,
+  `keranjang_lebar` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_produksi_session`
+--
+
+CREATE TABLE `tb_produksi_session` (
+  `id_session` int(11) NOT NULL,
+  `session_invoice` varchar(100) DEFAULT NULL,
+  `session_date` varchar(128) DEFAULT NULL,
+  `session_kasir_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `tb_satuan`
 --
 
@@ -511,8 +568,10 @@ CREATE TABLE `tb_satuan` (
 
 INSERT INTO `tb_satuan` (`id`, `nama_satuan`, `status_satuan`, `created_at`) VALUES
 (5, 'Kg', 1, '28 Mei 2022'),
-(6, 'Cm', 1, '28 Mei 2022'),
-(7, 'm', 1, '28 Mei 2022');
+(6, 'Cm', 0, '07 Juni 2022'),
+(7, 'Pcs', 1, '07 Juni 2022'),
+(8, 'Lembar', 1, '07 Juni 2022'),
+(9, 'Dos', 1, '08 Juni 2022');
 
 -- --------------------------------------------------------
 
@@ -527,28 +586,29 @@ CREATE TABLE `tb_submenu` (
   `icon` varchar(128) NOT NULL,
   `url` varchar(128) NOT NULL,
   `collapse` int(1) NOT NULL,
-  `nomor_urut` int(100) DEFAULT NULL
+  `nomor_urut` int(100) DEFAULT NULL,
+  `active` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `tb_submenu`
 --
 
-INSERT INTO `tb_submenu` (`id_submenu`, `id_menu`, `submenu`, `icon`, `url`, `collapse`, `nomor_urut`) VALUES
-(1, 4, 'Menu', 'fe-menu', 'menu', 0, 1),
-(2, 4, 'Submenu', 'fe-folder', 'menu/submenu', 0, 2),
-(4, 3, 'User Manajemen', 'fe-users', 'user', 1, 3),
-(5, 1, 'Dashboard', 'fe-grid', 'dashboard', 0, 1),
-(7, 2, 'Penjualan', 'fe-shopping-cart', 'penjualan', 1, 2),
-(8, 2, 'Pembelian', 'fe-shopping-bag', 'pembelian', 1, 3),
-(11, 2, 'Master Data', 'fe-hash', 'master', 1, 4),
-(12, 2, 'Laporan User', 'fe-file-text', 'laporan', 1, 4),
-(13, 2, 'Laporan Barang', 'fe-file', 'laporan_barang', 1, 5),
-(14, 2, 'Laporan Penjualan', 'fe-file', 'laporan_penjualan', 1, 6),
-(15, 2, 'Laporan Pembelian', 'fe-file', 'laporan_pembelian', 1, 7),
-(16, 3, 'Log Users', 'fe-git-pull-request', 'log_user', 0, 2),
-(17, 3, 'Toko', 'fe-flag', 'toko', 0, 1),
-(18, 3, 'Atur Web', 'fe-globe', 'konfigurasi', 0, 4);
+INSERT INTO `tb_submenu` (`id_submenu`, `id_menu`, `submenu`, `icon`, `url`, `collapse`, `nomor_urut`, `active`) VALUES
+(1, 4, 'Menu', 'fe-menu', 'menu', 0, 1, 1),
+(2, 4, 'Submenu', 'fe-folder', 'menu/submenu', 0, 2, 1),
+(4, 3, 'User Manajemen', 'fe-users', 'user', 1, 3, 1),
+(5, 1, 'Dashboard', 'fe-grid', 'dashboard', 0, 1, 1),
+(7, 2, 'Penjualan', 'fe-shopping-cart', 'penjualan', 1, 2, 1),
+(8, 2, 'Pembelian', 'fe-shopping-bag', 'pembelian', 1, 3, 1),
+(11, 2, 'Master Data', 'fe-hash', 'master', 1, 4, 1),
+(12, 2, 'Laporan User', 'fe-file-text', 'laporan', 1, 4, 1),
+(13, 2, 'Laporan Barang', 'fe-file', 'laporan_barang', 1, 5, 0),
+(14, 2, 'Laporan Penjualan', 'fe-file', 'laporan_penjualan', 1, 6, 0),
+(15, 2, 'Laporan Pembelian', 'fe-file', 'laporan_pembelian', 1, 7, 0),
+(16, 3, 'Log Users', 'fe-git-pull-request', 'log_user', 0, 2, 1),
+(17, 3, 'Toko', 'fe-flag', 'toko', 0, 1, 1),
+(18, 3, 'Atur Web', 'fe-globe', 'konfigurasi', 0, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -573,19 +633,19 @@ CREATE TABLE `tb_submenu_expan` (
 INSERT INTO `tb_submenu_expan` (`sub_id`, `menu_id`, `submenu_id`, `judul`, `url`, `is_active`, `nomor_urut`) VALUES
 (1, 3, 4, 'Users', 'user', 1, 1),
 (2, 3, 4, 'Grup Users', 'grup', 1, 2),
-(3, 2, 7, 'Invoice Penjualan', 'penjualan', 1, 5),
-(4, 2, 7, 'Piutang Belum Lunas', 'penjualan/piutang', 1, 6),
-(5, 2, 7, 'Piutang Lunas', 'penjualan/piutang/lunas', 1, 7),
+(3, 2, 7, 'Invoice Penjualan', 'penjualan', 1, 4),
+(4, 2, 7, 'Piutang Belum Lunas', 'penjualan/piutang', 1, 5),
+(5, 2, 7, 'Piutang Lunas', 'penjualan/piutang/lunas', 1, 6),
 (7, 2, 8, 'Invoice Pembelian', 'pembelian', 1, 3),
 (8, 2, 8, 'Hutang Belum Selesai', 'pembelian/belum_lunas', 1, 4),
 (9, 2, 8, 'Hutang Lunas', 'pembelian/lunas', 1, 5),
 (10, 2, 8, 'Suplier', 'pembelian/suplier', 1, 2),
 (11, 2, 8, 'Transaksi Pembelian', 'pembelian/transaksi_cash', 1, 1),
 (12, 2, 11, 'Kategori', 'master/kategori', 1, 1),
-(13, 2, 11, 'Barang', 'master/barang', 1, 3),
+(13, 2, 11, 'Material', 'master/barang', 1, 3),
 (14, 2, 11, 'Satuan', 'master/satuan', 1, 2),
-(16, 2, 7, 'Kostumer', 'kostumer', 1, 4),
-(17, 2, 7, 'Kasir', 'penjualan/transaksi_cash', 1, 3),
+(16, 2, 7, 'Kostumer', 'kostumer', 1, 3),
+(17, 2, 7, 'Transaksi Pesanan', 'penjualan/transaksi_cash', 1, 2),
 (18, 2, 12, 'Kasir', 'laporan', 1, 1),
 (19, 2, 12, 'Kostumer', 'laporan/kostumer', 1, 2),
 (20, 2, 13, 'Terlaris', 'laporan_barang', 1, 1),
@@ -597,8 +657,7 @@ INSERT INTO `tb_submenu_expan` (`sub_id`, `menu_id`, `submenu_id`, `judul`, `url
 (26, 2, 15, 'Per Produk', 'laporan_pembelian/produk', 1, 2),
 (27, 2, 15, 'Retur', 'laporan_pembelian/retur', 1, 3),
 (28, 2, 12, 'Suplier', 'laporan/suplier', 1, 3),
-(29, 2, 7, 'Pesanan', 'penjualan/pesanan', 1, 1),
-(30, 2, 7, 'Produksi', 'penjualan/produksi', 1, 2);
+(30, 2, 7, 'Produksi', 'produksi', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -643,8 +702,16 @@ CREATE TABLE `tb_toko` (
   `toko_email` varchar(128) DEFAULT NULL,
   `toko_status` int(11) DEFAULT NULL,
   `toko_ongkir` int(11) DEFAULT NULL,
-  `toko_cabang` int(11) DEFAULT NULL
+  `toko_cabang` int(11) DEFAULT NULL,
+  `toko_user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `tb_toko`
+--
+
+INSERT INTO `tb_toko` (`id_toko`, `toko_nama`, `toko_kota`, `toko_alamat`, `toko_tlpn`, `toko_wa`, `toko_email`, `toko_status`, `toko_ongkir`, `toko_cabang`, `toko_user_id`) VALUES
+(1, 'Toko Cabang', 'Bungku ', 'Jl. Salobulo', '088123124123', '0812312413', 'adimurdayani@gmail.com', 1, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -675,7 +742,11 @@ INSERT INTO `tb_visitor` (`id`, `ip`, `date`, `hits`, `os`, `browser`, `versi`, 
 (4, '::1', '2022-05-29', 2, 'Windows 10', 'Chrome', '102.0.5005.62', '1653817589', '2022-05-29 11:46:24'),
 (5, '::1', '2022-05-31', 19, 'Windows 10', 'Chrome', '102.0.5005.62', '1654008580', '2022-05-31 16:30:53'),
 (6, '::1', '2022-06-01', 5, 'Windows 10', 'Chrome', '102.0.5005.63', '1654094774', '2022-06-01 07:35:30'),
-(7, '::1', '2022-06-02', 10, 'Windows 10', 'Chrome', '102.0.5005.63', '1654174002', '2022-06-02 08:29:51');
+(7, '::1', '2022-06-02', 10, 'Windows 10', 'Chrome', '102.0.5005.63', '1654174002', '2022-06-02 08:29:51'),
+(8, '::1', '2022-06-04', 8, 'Windows 10', 'Chrome', '102.0.5005.63', '1654360634', '2022-06-04 12:28:23'),
+(9, '::1', '2022-06-07', 2, 'Windows 10', 'Chrome', '102.0.5005.63', '1654596523', '2022-06-07 12:08:38'),
+(10, '::1', '2022-06-08', 9, 'Windows 10', 'Chrome', '102.0.5005.63', '1654703310', '2022-06-08 02:06:33'),
+(11, '::1', '2022-06-09', 4, 'Windows 10', 'Chrome', '102.0.5005.63', '1654774013', '2022-06-09 10:14:16');
 
 -- --------------------------------------------------------
 
@@ -710,8 +781,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2y$10$MQ6bm3qGJZQnT7rntIKI6OgbWv2Y1.qWyxYlCTnloyve0i8NwsjfW', 'admin@admin.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1654174002, 1, 'Admin', 'istrator', 'ADMIN', '0'),
-(2, '', 'tokomebel', '$2y$10$nADyBE4CZmDjUE2jfSiSZ.lNFqnZloo25Jrfnb7tjxOK.B0nVQuim', 'tokomebel@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1654173989, 1, 'Toko', 'Mebel', 'Toko Mebel', '08123124123');
+(1, '127.0.0.1', 'administrator', '$2y$10$MQ6bm3qGJZQnT7rntIKI6OgbWv2Y1.qWyxYlCTnloyve0i8NwsjfW', 'admin@admin.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1654774013, 1, 'Admin', 'istrator', 'ADMIN', '0'),
+(2, '', 'tokomebel', '$2y$10$nADyBE4CZmDjUE2jfSiSZ.lNFqnZloo25Jrfnb7tjxOK.B0nVQuim', 'tokomebel@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1654339599, 1, 'Toko', 'Mebel', 'Toko Mebel', '08123124123');
 
 -- --------------------------------------------------------
 
@@ -761,6 +832,12 @@ ALTER TABLE `tb_akses_menu`
 --
 ALTER TABLE `tb_barang`
   ADD PRIMARY KEY (`id_barang`);
+
+--
+-- Indeks untuk tabel `tb_barang_detail`
+--
+ALTER TABLE `tb_barang_detail`
+  ADD PRIMARY KEY (`id_detail_barang`);
 
 --
 -- Indeks untuk tabel `tb_hutang`
@@ -839,6 +916,36 @@ ALTER TABLE `tb_penjualan_keranjang`
 --
 ALTER TABLE `tb_penjualan_piutang`
   ADD PRIMARY KEY (`id_piutang`);
+
+--
+-- Indeks untuk tabel `tb_pesanan`
+--
+ALTER TABLE `tb_pesanan`
+  ADD PRIMARY KEY (`id_pesanan`);
+
+--
+-- Indeks untuk tabel `tb_produksi`
+--
+ALTER TABLE `tb_produksi`
+  ADD PRIMARY KEY (`id_produksi`);
+
+--
+-- Indeks untuk tabel `tb_produksi_detail`
+--
+ALTER TABLE `tb_produksi_detail`
+  ADD PRIMARY KEY (`id_produksi_detail`);
+
+--
+-- Indeks untuk tabel `tb_produksi_keranjang`
+--
+ALTER TABLE `tb_produksi_keranjang`
+  ADD PRIMARY KEY (`id_produksi_keranjang`);
+
+--
+-- Indeks untuk tabel `tb_produksi_session`
+--
+ALTER TABLE `tb_produksi_session`
+  ADD PRIMARY KEY (`id_session`);
 
 --
 -- Indeks untuk tabel `tb_satuan`
@@ -921,7 +1028,13 @@ ALTER TABLE `tb_akses_menu`
 -- AUTO_INCREMENT untuk tabel `tb_barang`
 --
 ALTER TABLE `tb_barang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_barang_detail`
+--
+ALTER TABLE `tb_barang_detail`
+  MODIFY `id_detail_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_hutang`
@@ -933,7 +1046,7 @@ ALTER TABLE `tb_hutang`
 -- AUTO_INCREMENT untuk tabel `tb_kategori`
 --
 ALTER TABLE `tb_kategori`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_konfigurasi`
@@ -957,43 +1070,43 @@ ALTER TABLE `tb_menu`
 -- AUTO_INCREMENT untuk tabel `tb_pembelian`
 --
 ALTER TABLE `tb_pembelian`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_pembelian_detail`
 --
 ALTER TABLE `tb_pembelian_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_pembelian_keranjang`
 --
 ALTER TABLE `tb_pembelian_keranjang`
-  MODIFY `keranjang_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `keranjang_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_pembelian_session`
 --
 ALTER TABLE `tb_pembelian_session`
-  MODIFY `pembelian_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `pembelian_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_penjualan`
 --
 ALTER TABLE `tb_penjualan`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_penjualan_detail`
 --
 ALTER TABLE `tb_penjualan_detail`
-  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_penjualan_keranjang`
 --
 ALTER TABLE `tb_penjualan_keranjang`
-  MODIFY `keranjang_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `keranjang_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_penjualan_piutang`
@@ -1002,10 +1115,40 @@ ALTER TABLE `tb_penjualan_piutang`
   MODIFY `id_piutang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT untuk tabel `tb_pesanan`
+--
+ALTER TABLE `tb_pesanan`
+  MODIFY `id_pesanan` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_produksi`
+--
+ALTER TABLE `tb_produksi`
+  MODIFY `id_produksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_produksi_detail`
+--
+ALTER TABLE `tb_produksi_detail`
+  MODIFY `id_produksi_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_produksi_keranjang`
+--
+ALTER TABLE `tb_produksi_keranjang`
+  MODIFY `id_produksi_keranjang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_produksi_session`
+--
+ALTER TABLE `tb_produksi_session`
+  MODIFY `id_session` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT untuk tabel `tb_satuan`
 --
 ALTER TABLE `tb_satuan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_submenu`
@@ -1029,13 +1172,13 @@ ALTER TABLE `tb_suplier`
 -- AUTO_INCREMENT untuk tabel `tb_toko`
 --
 ALTER TABLE `tb_toko`
-  MODIFY `id_toko` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_toko` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_visitor`
 --
 ALTER TABLE `tb_visitor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
