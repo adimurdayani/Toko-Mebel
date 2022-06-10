@@ -46,40 +46,43 @@
                                 <tbody>
 
                                     <?php foreach ($get_produksi as $data) : ?>
-                                        <tr>
-                                            <td class="text-center">
-                                                <a href="<?= base_url('produksi/invoice/detail/') . base64_encode($data->produksi_invoice) ?>" class="btn btn-outline-info" title="Lihat Detail Invoice Produksi" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
-                                                <a href="javascript:void(0);" class="btn btn-outline-primary" title="Lihat Material Produksi" data-plugin="tippy" data-tippy-placement="top"><i class="fe-package"></i></a>
-                                                <a href="javascript:void(0);" data-target="#edit<?= $data->id_produksi ?>" class="btn btn-outline-warning" data-toggle="modal" title="Edit Produk" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
-                                                <a href="<?= base_url('produksi/hapus_produksi/') . base64_encode($data->id_produksi) ?>" class="btn btn-outline-danger hapus" title="Hapus Produk" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
-                                            </td>
-                                            <td><?= $data->produksi_invoice ?></td>
-                                            <td><?= $data->produksi_nama ?></td>
-                                            <td>Rp.<?= rupiah($data->produksi_harga_total) ?></td>
-                                            <td>
-                                                <?php if ($data->produksi_stok != 0) : ?>
-                                                    <?= $data->produksi_stok ?> Unit
-                                                <?php else : ?>
-                                                    <div class="badge badge-danger"><i class="fe-x"></i> Habis</div>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td>
-                                                <?php if ($data->produksi_status == "Dalam pesanan") : ?>
-                                                    <div class="badge badge-outline-warning"><?= $data->produksi_status ?></div>
-                                                <?php endif; ?>
+                                        <?php if ($data->produksi_kasir == $session->id) : ?>
+                                            <tr>
+                                                <td class="text-center">
+                                                    <a href="<?= base_url('produksi/invoice/detail/') . base64_encode($data->produksi_invoice) ?>" class="btn btn-sm btn-info" title="Lihat Detail Invoice Produksi" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
+                                                    <a href="<?= base_url('produksi/invoice/detail_material/') . base64_encode($data->produksi_invoice) ?>" class="btn btn-sm btn-primary" title="Lihat Material Produksi" data-plugin="tippy" data-tippy-placement="top"><i class="fe-package"></i></a>
+                                                    <a href="<?= base_url('produksi/invoice/cetak_nota/') . base64_encode($data->produksi_invoice) ?>" target="_blank" class="btn btn-sm btn-success" title="Cetak Nota" data-plugin="tippy" data-tippy-placement="top"><i class="fe-printer"></i></a>
+                                                    <a href="javascript:void(0);" data-target="#edit<?= $data->id_produksi ?>" class="btn btn-sm btn-warning" data-toggle="modal" title="Edit Produk" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                    <a href="<?= base_url('produksi/hapus_produksi/') . base64_encode($data->id_produksi) ?>" class="btn btn-sm btn-danger hapus" title="Hapus Produk" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
+                                                </td>
+                                                <td><?= $data->produksi_invoice ?></td>
+                                                <td><?= $data->produksi_nama ?></td>
+                                                <td>Rp.<?= rupiah($data->produksi_harga_total) ?></td>
+                                                <td>
+                                                    <?php if ($data->produksi_stok > 0) : ?>
+                                                        <?= $data->produksi_stok ?> Unit
+                                                    <?php else : ?>
+                                                        <div class="badge badge-danger"><i class="fe-x"></i> Habis</div>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <?php if ($data->produksi_status == "Dalam pesanan") : ?>
+                                                        <div class="badge badge-warning"><?= $data->produksi_status ?></div>
+                                                    <?php endif; ?>
 
-                                                <?php if ($data->produksi_status == "Proses") : ?>
-                                                    <div class="badge badge-outline-blue"><?= $data->produksi_status ?></div>
-                                                <?php endif; ?>
+                                                    <?php if ($data->produksi_status == "Proses") : ?>
+                                                        <div class="badge badge-blue"><?= $data->produksi_status ?></div>
+                                                    <?php endif; ?>
 
-                                                <?php if ($data->produksi_status == "Selesai") : ?>
-                                                    <div class="badge badge-outline-success"><?= $data->produksi_status ?></div>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" class="editstatusproduksi" <?= check_active_produksi($data->is_active) ?> data-idproduksi="<?= $data->id_produksi ?>" data-active="<?= $data->is_active ?>">
-                                            </td>
-                                        </tr>
+                                                    <?php if ($data->produksi_status == "Selesai") : ?>
+                                                        <div class="badge badge-success"><?= $data->produksi_status ?></div>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <input type="checkbox" class="editstatusproduksi" <?= check_active_produksi($data->is_active) ?> data-idproduksi="<?= $data->id_produksi ?>" data-active="<?= $data->is_active ?>">
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>

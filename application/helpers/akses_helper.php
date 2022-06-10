@@ -149,3 +149,14 @@ function check_active_produksi($is_active)
     return "checked='checked'";
   }
 }
+
+function check_status_kostumer($status)
+{
+  $ci = get_instance();
+  $ci->db->where('status_kostumer', $status);
+  $result = $ci->db->get('tb_kostumer')->row();
+
+  if ($result->status_kostumer > 0) {
+    return "checked='checked'";
+  }
+}

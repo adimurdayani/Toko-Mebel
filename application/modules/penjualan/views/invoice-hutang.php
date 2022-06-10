@@ -105,7 +105,7 @@
                                         </thead>
                                         <tbody>
                                             <?php $no = 1;
-                                            foreach ($get_invoice_penjualan as $data) :
+                                            foreach ($get_invoice_penjualan as $data ) :
                                                 $subtotal = $data->keranjang_harga * $data->barang_qty;
                                             ?>
                                                 <tr>
@@ -146,7 +146,7 @@
 
                         <div class="mt-4 mb-1">
                             <div class="text-right d-print-none">
-                                <a href="<?= base_url('penjualan/transaksi_hutang') ?>" class="btn btn-secondary waves-effect waves-light"><i class="fe-arrow-left"></i> Kembali</a>
+                                <a href="javascript:history.go(-1)" class="btn btn-secondary waves-effect waves-light"><i class="fe-arrow-left"></i> Kembali</a>
                                 <a href="javascript:window.print()" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-printer mr-1"></i> Print</a>
                             </div>
                         </div>

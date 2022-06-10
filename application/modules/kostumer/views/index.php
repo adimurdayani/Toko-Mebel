@@ -60,12 +60,8 @@
                                                 <td><?= $data->phone ?></td>
                                                 <td><?= $data->email ?> </td>
                                                 <td><?= $data->alamat ?></td>
-                                                <td>
-                                                    <?php if ($data->status_kostumer == 1) :  ?>
-                                                        <div class="badge badge-outline-success">Aktif</div>
-                                                    <?php else : ?>
-                                                        <div class="badge badge-outline-danger">Tidak Aktif</div>
-                                                    <?php endif ?>
+                                                <td class="text-center">
+                                                    <input type="checkbox" class="ubahkostumer" <?= check_status_kostumer($data->status_kostumer) ?> data-statusid="<?= $data->id_kostumer ?>" data-statuskostumer="<?= $data->status_kostumer ?>">
                                                 </td>
                                                 <td><?= $data->updated_at ?></td>
                                             </tr>

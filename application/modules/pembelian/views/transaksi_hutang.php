@@ -25,11 +25,11 @@
             <!-- end page title -->
 
             <?php
-            $kode_barang = isset($get_pembelian_session['pembelian_input']);
-            if ($kode_barang == null) {
-                $kode = 0;
+            $jml = $this->db->get('tb_pembelian_session')->num_rows();
+            if ($jml > 0) {
+                $kode_barang = $get_pembelian_session['pembelian_input'];
             } else {
-                $kode = $kode_barang;
+                $kode_barang = 0;
             }
 
             ?>
@@ -60,7 +60,7 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <h5>No.Invoice:</h5>
-                                                    <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $get_pembelian_session['pembelian_input'] ?>" id="invoice" readonly>
+                                                    <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $kode_barang; ?>" id="invoice" readonly>
                                                     <?php if ($kode_barang == null) : ?>
                                                         <div class="input-group-append">
                                                             <button class="btn btn-info waves-effect waves-light" title="Tambah no. invoice" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#tambah" type="button"><i class="fe-plus"></i></button>
@@ -181,7 +181,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                             </div>
-                                                            <input type="number" autocomplete="off" id="angka2" name="bayar" class="form-control" required>
+                                                            <input type="number" autocomplete="off" id="angka2" name="bayar" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -190,14 +190,14 @@
                                         </div>
                                     </div>
                                     <?php foreach ($get_keranjang as $gk) : ?>
-                                        <input type="hidden" name="kode_barang" value="<?= $get_pembelian_session['pembelian_input']; ?>">
+                                        <input type="hidden" name="kode_barang" value="<?= $kode_barang ?>">
                                         <input type="hidden" name="barang_id[]" value="<?= $gk->barang_id; ?>">
                                         <input type="hidden" name="keranjang_qty[]" value="<?= $gk->keranjang_qty; ?>">
                                         <input type="hidden" name="keranjang_id_kasir[]" value="<?= $gk->keranjang_id_kasir; ?>">
-                                        <input type="hidden" name="pembelian_invoice[]" value="<?= $get_pembelian_session['pembelian_input']; ?>">
+                                        <input type="hidden" name="pembelian_invoice[]" value="<?= $kode_barang ?>">
                                         <input type="hidden" name="barang_harga_beli[]" value="<?= $gk->keranjang_harga; ?>">
                                     <?php endforeach; ?>
-                                    <input type="hidden" name="pembelian_invoice_get" value="<?= $get_pembelian_session['pembelian_input']; ?>">
+                                    <input type="hidden" name="pembelian_invoice_get" value="<?= $kode_barang ?>">
 
                                     <?php if ($kode_barang != null) : ?>
 

@@ -147,7 +147,7 @@
 
                         <div class="mt-4 mb-1">
                             <div class="text-right d-print-none">
-                                <a href="<?= base_url('penjualan/transaksi_cash') ?>" class="btn btn-secondary waves-effect waves-light"><i class="fe-arrow-left"></i> Kembali</a>
+                                <a href="javascript:history.go(-1)" class="btn btn-secondary waves-effect waves-light"><i class="fe-arrow-left"></i> Kembali</a>
                                 <a href="javascript:window.print()" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-printer mr-1"></i> Print</a>
                             </div>
                         </div>

@@ -25,13 +25,12 @@
             <!-- end page title -->
 
             <?php
-            $kode_barang = isset($get_pembelian_session['pembelian_input']);
-            if ($kode_barang == null) {
-                $kode_barang = 0;
+            $jml = $this->db->get('tb_pembelian_session')->num_rows();
+            if ($jml > 0) {
+                $kode_barang = $get_pembelian_session['pembelian_input'];
             } else {
-                $kode_barang = $kode_barang;
+                $kode_barang = 0;
             }
-
             ?>
 
             <div class="row">
@@ -60,7 +59,7 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <h5>No.Invoice:</h5>
-                                                    <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $get_pembelian_session['pembelian_input']; ?>" id="invoice" readonly>
+                                                    <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $kode_barang; ?>" id="invoice" readonly>
                                                     <?php if ($kode_barang == null) : ?>
                                                         <div class="input-group-append">
                                                             <button class="btn btn-info waves-effect waves-light" title="Tambah no. invoice" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#tambah" type="button"><i class="fe-plus"></i></button>
@@ -125,7 +124,7 @@
                                                         <td><?= $k->keranjang_nama ?></td>
                                                         <td>
                                                             Rp.<?= rupiah($k->keranjang_harga) ?>
-                                                            <a href="javascript:void(0);" class="btn btn-outline-info waves-effect waves-light float-right" title="Edit harga beli" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#hargabeli<?= $k->keranjang_id ?>"><i class="fe-edit"></i></a>
+                                                            <a href="javascript:void(0);" class="btn btn-sm btn-info waves-effect waves-light float-right" title="Edit harga beli" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#hargabeli<?= $k->keranjang_id ?>"><i class="fe-edit"></i></a>
                                                         </td>
                                                         <td class="text-center" style="width: 150px;">
                                                             <?php echo form_open("pembelian/transaksi_cash/edit_qty") ?>
@@ -133,13 +132,13 @@
                                                             <input type="hidden" name="id_barang" class="form-control" value="<?= base64_encode($k->barang_id) ?>">
                                                             <div class="input-group">
                                                                 <input type="number" name="keranjang_qty" class="form-control" value="<?= $k->keranjang_qty ?>">
-                                                                <button type="submit" class="btn btn-sm btn-outline-info waves-effect waves-light" title="Refresh" data-plugin="tippy" data-tippy-placement="top"><i class="fe-refresh-ccw"></i></button>
+                                                                <button type="submit" class="btn btn-sm btn-sm btn-info waves-effect waves-light" title="Refresh" data-plugin="tippy" data-tippy-placement="top"><i class="fe-refresh-ccw"></i></button>
                                                             </div>
                                                             <?php echo form_close() ?>
                                                         </td>
                                                         <td>Rp.<?= rupiah($sub_total) ?></td>
                                                         <td class="text-center">
-                                                            <a href="<?= base_url('pembelian/transaksi_cash/hapus_keranjang_barang/') . base64_encode($k->keranjang_id) ?>" class="btn btn-outline-danger hapus" title="Hapus Barang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
+                                                            <a href="<?= base_url('pembelian/transaksi_cash/hapus_keranjang_barang/') . base64_encode($k->keranjang_id) ?>" class="btn btn-sm btn-danger hapus" title="Hapus Barang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
                                                         </td>
                                                     </tr>
                                                 <?php endif; ?>
@@ -170,7 +169,7 @@
 
                                                 <div class="row mt-3">
                                                     <div class="col-md-2">
-                                                        <h4 class="text-danger">DP.</h4>
+                                                        <h4 class="text-success">Bayar.</h4>
                                                     </div>
                                                     <div class="col">
                                                         <div class="input-group">
@@ -187,15 +186,15 @@
                                         </div>
                                     </div>
                                     <?php foreach ($get_keranjang as $gk) : ?>
-                                        <input type="hidden" name="kode_barang" value="<?= $get_pembelian_session['pembelian_input']; ?>">
+                                        <input type="hidden" name="kode_barang" value="<?= $kode_barang; ?>">
                                         <input type="hidden" name="kode[]" value="<?= $gk->barang_id; ?>">
                                         <input type="hidden" name="barang_id[]" value="<?= $gk->barang_id; ?>">
                                         <input type="hidden" name="keranjang_qty[]" value="<?= $gk->keranjang_qty; ?>">
                                         <input type="hidden" name="keranjang_id_kasir[]" value="<?= $gk->keranjang_id_kasir; ?>">
-                                        <input type="hidden" name="pembelian_invoice[]" value="<?= $get_pembelian_session['pembelian_input']; ?>">
+                                        <input type="hidden" name="pembelian_invoice[]" value="<?= $kode_barang; ?>">
                                         <input type="hidden" name="barang_harga_beli[]" value="<?= $gk->keranjang_harga; ?>">
                                     <?php endforeach; ?>
-                                    <input type="hidden" name="pembelian_invoice_get" value="<?= $get_pembelian_session['pembelian_input']; ?>">
+                                    <input type="hidden" name="pembelian_invoice_get" value="<?= $kode_barang; ?>">
 
                                     <?php if ($kode_barang != null) : ?>
 

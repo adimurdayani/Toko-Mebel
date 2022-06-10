@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title; ?></title>
+    <?php if (!empty($get_config)) : ?>
+        <link rel="shortcut icon" href="<?= base_url('assets/images/upload/') . $get_config->icon_web ?>">
+    <?php endif; ?>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 
@@ -31,7 +34,7 @@
                 <div class="row">
                     <div class="col-md-6"></div>
                     <div class="col-md-6">
-                        <img src="<?= base_url('assets/images/logo_lombu.png') ?>" alt="" width="40%">
+                        <img src="<?= base_url('assets/images/upload/') . $get_config->logo_nota ?>" alt="" width="40%">
                     </div>
                 </div>
 
@@ -43,7 +46,13 @@
                 Alamat <br>
                 <strong>No. Invoice</strong>
             </div>
-
+            <?php
+            $jml = $this->db->get('tb_toko', ['toko_user_id' => $session->id])->num_rows();
+            if ($jml != 0) {
+                $toko = $this->db->get_where('tb_toko', ['toko_user_id' => $session->id])->row_array();
+            } else {
+                $toko = 0;
+            } ?>
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-6">
@@ -54,10 +63,9 @@
                     </div>
                     <div class="verikal_center"></div>
                     <div class="col-md-5">
-                        <strong>Nama Perusahaan</strong><br>
-                        <span>Alamat</span> <br>
-                        <strong>Phone</strong><br>
-                        <span>phone</span>
+                    <strong><?= $toko['toko_nama'] ?></strong><br>
+                        <span><?= $toko['toko_alamat'] ?></span> <br>
+                        <span><?= $toko['toko_wa'] ?></span>
                     </div>
                 </div>
             </div>

@@ -16,9 +16,6 @@ class Konfigurasi extends CI_Controller
         if (!$this->ion_auth->logged_in()) {
             // redirect them to the login page
             redirect('auth', 'refresh');
-        } else if (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
-        {
-            redirect('auth/block');
         } else {
             $data['title'] = 'Konfigurasi Website';
             $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();

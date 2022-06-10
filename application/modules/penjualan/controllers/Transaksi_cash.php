@@ -108,7 +108,6 @@ class Transaksi_cash extends CI_Controller
     {
         $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
         $group = $this->db->get_where('users_groups', ['user_id' => $user->id])->row();
-        $this->db->delete('tb_penjualan_keranjang', ['keranjang_id_kasir' => $user->id]);
 
         $barang_id = $_POST['barang_id'];
         $barang_qty = $_POST['keranjang_qty'];
@@ -122,10 +121,10 @@ class Transaksi_cash extends CI_Controller
         $getid = $this->db->get('tb_produksi')->result_array();
         foreach ($getid as $key => $value) {
             $data_barang[] = [
-                'id_produksi' => $barang_id[$key],
-                'produksi_stok' => $value['produksi_stok'] - $barang_qty[$key],
+                'id_produksi' => $barang_id[0],
+                'produksi_stok' => $value['produksi_stok'] - $barang_qty[0],
                 'produksi_status' => "Proses",
-                'produksi_terjual' => $barang_qty[$key]
+                'produksi_terjual' => $barang_qty[0]
             ];
             $this->db->update_batch('tb_produksi', $data_barang, 'id_produksi');
         }
@@ -151,6 +150,7 @@ class Transaksi_cash extends CI_Controller
         }
         $this->db->insert_batch('tb_penjualan_detail', $get_data);
 
+        $this->db->delete('tb_penjualan_keranjang', ['keranjang_id_kasir' => $user->id]);
         $data = [
             'penjualan_invoice' => $penjualan_invoice_get,
             'penjualan_invoice_count' => $penjualan_invoice_count,

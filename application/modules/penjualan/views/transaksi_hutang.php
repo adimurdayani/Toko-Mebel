@@ -286,7 +286,7 @@
                                 <tbody>
                                     <?php $no = 1;
                                     foreach ($get_barang as $data) : ?>
-                                        <?php if ($data->is_active > 0) : ?>
+                                        <?php if ($data->is_active > 0 && $data->produksi_kasir == $session->id) : ?>
                                             <tr>
                                                 <td class="text-center"><?= $no++ ?></td>
                                                 <td><?= $data->produksi_invoice ?></td>

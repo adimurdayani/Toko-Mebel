@@ -340,6 +340,40 @@
             }
         })
     })
+
+    $('.editstatusproduksi').on('click', function() {
+        const idproduksi = $(this).data('idproduksi');
+        const active = $(this).data('active');
+
+        $.ajax({
+            url: "<?= base_url('produksi/editstatusproduksi') ?>",
+            type: 'post',
+            data: {
+                idproduksi: idproduksi,
+                active: active
+            },
+            success: function() {
+                document.location.href = "<?= base_url('produksi') ?>";
+            }
+        })
+    })
+
+    $('.ubahkostumer').on('click', function() {
+        const statusid = $(this).data('statusid');
+        const statuskostumer = $(this).data('statuskostumer');
+
+        $.ajax({
+            url: "<?= base_url('kostumer/ubahkostumer') ?>",
+            type: 'post',
+            data: {
+                statusid: statusid,
+                statuskostumer: statuskostumer
+            },
+            success: function() {
+                document.location.href = "<?= base_url('kostumer') ?>";
+            }
+        })
+    })
 </script>
 
 </body>

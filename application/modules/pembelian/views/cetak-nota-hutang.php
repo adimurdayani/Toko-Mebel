@@ -6,35 +6,117 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title; ?></title>
+    <?php if (!empty($get_config)) : ?>
+        <link rel="shortcut icon" href="<?= base_url('assets/images/upload/') . $get_config->icon_web ?>">
+    <?php endif; ?>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 
 </head>
+<style>
+    .verikal_center {
+        /*mengatur border bagian kiri tag div */
+        border-left: 2px solid black;
+        /* mengatur tinggi tag div*/
+        height: 100px;
+        /*mengatur lebar tag div*/
+        width: 2px;
+    }
+</style>
 
 <body>
     <div class="container p-3">
-        <h4 class="text-center">LAPORAN LOG USERS</h4>
+        <div class="row">
+            <div class="col-md-6">
+
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        <img src="<?= base_url('assets/images/upload/') . $get_config->logo_nota ?>" alt="" width="40%">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row mt-2 mb-4">
+            <div class="col-md-6">
+                <strong>Nama Kostumer</strong><br>
+                Alamat <br>
+                <strong>No. Invoice</strong>
+            </div>
+            <?php
+            $jml = $this->db->get('tb_toko', ['toko_user_id' => $session->id])->num_rows();
+            if ($jml != 0) {
+                $toko = $this->db->get_where('tb_toko', ['toko_user_id' => $session->id])->row_array();
+            } else {
+                $toko = 0;
+            } ?>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong class="float-right">Tanggal diterbitkan</strong><br>
+                        <span class="float-right">Alamat</span> <br>
+                        <strong class="float-right">Tipe Pembayaran</strong><br>
+                        <span class="float-right">Cash</span>
+                    </div>
+                    <div class="verikal_center"></div>
+                    <div class="col-md-5">
+                        <strong><?= $toko['toko_nama'] ?></strong><br>
+                        <span><?= $toko['toko_alamat'] ?></span> <br>
+                        <span><?= $toko['toko_wa'] ?></span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>IP Address</th>
-                    <th>Sistem Operasi</th>
-                    <th>Browser</th>
-                    <th>Tanggal/Waktu</th>
+                    <th class="text-center">No</th>
+                    <th class="text-center">Keterangan</th>
+                    <th class="text-center">Kuantitas</th>
+                    <th class="text-center">Harga Satuan</th>
+                    <th class="text-center">Jumlah</th>
                 </tr>
             </thead>
 
             <tbody>
-
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td class="text-center">1</td>
+                    <td>Lemari</td>
+                    <td class="text-center">1</td>
+                    <td class="text-right">Rp.100.000</td>
+                    <td class="text-right">Rp.100.000</td>
+                </tr>
+                <tr>
+                    <td class="text-center">1</td>
+                    <td>Lemari</td>
+                    <td class="text-center">1</td>
+                    <td class="text-right">Rp.100.000</td>
+                    <td class="text-right">Rp.100.000</td>
+                </tr>
+                <tr>
+                    <td class="text-center">1</td>
+                    <td>Lemari</td>
+                    <td class="text-center">1</td>
+                    <td class="text-right">Rp.100.000</td>
+                    <td class="text-right">Rp.100.000</td>
+                </tr>
+                <tr>
+                    <td class="text-center">1</td>
+                    <td>Lemari</td>
+                    <td class="text-center">1</td>
+                    <td class="text-right">Rp.100.000</td>
+                    <td class="text-right">Rp.100.000</td>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <th class="text-right" colspan="4">Total</th>
+                    <th class="text-right">Ro.200.000</th>
+                </tr>
+            </tfoot>
         </table>
     </div>
 

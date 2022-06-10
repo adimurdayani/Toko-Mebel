@@ -56,8 +56,8 @@
                                                 <td class="text-center"><input type="checkbox" class="ubahKategori" <?= check_kategori($data['status_kategori']) ?> data-kategoriid="<?= $data['id'] ?>" data-statuskategori="<?= $data['status_kategori'] ?>"></td>
                                                 <td class="text-center"><?= $data['created_at'] ?></td>
                                                 <td class="text-center">
-                                                    <a href="javascript:void(0);" data-target="#edit<?= $data['id'] ?>" class="btn btn-outline-warning" data-toggle="modal" title="Edit <?= $data['nama_kategori'] ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
-                                                    <a href="<?= base_url('master/kategori/hapus/') . base64_encode($data['id']) ?>" class="btn btn-outline-danger hapus" title="Hapus <?= $data['nama_kategori'] ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
+                                                    <a href="javascript:void(0);" data-target="#edit<?= $data['id'] ?>" class="btn btn-sm btn-warning" data-toggle="modal" title="Edit <?= $data['nama_kategori'] ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                    <a href="<?= base_url('master/kategori/hapus/') . base64_encode($data['id']) ?>" class="btn btn-sm btn-danger hapus" title="Hapus <?= $data['nama_kategori'] ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

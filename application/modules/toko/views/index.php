@@ -40,25 +40,27 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($get_toko as $data) : ?>
-                                        <tr>
-                                            <td><?= $data->toko_nama ?></td>
-                                            <td><?= $data->toko_kota ?></td>
-                                            <td class="text-center">
-                                                <?php if ($data->toko_status == 1) : ?>
-                                                    <div class="badge badge-success">Aktif</div>
-                                                <?php else : ?>
-                                                    <div class="badge badge-danger">Non-Aktif</div>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <a href="javascript:void(0);" data-target="#edit<?= $data->id_toko ?>" class="btn btn-outline-warning" data-toggle="modal" title="Edit Toko" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
-                                                <?php if ($data->toko_user_id != 1) : ?>
-                                                    <a href="<?= base_url('toko/hapus/') . $data->id_toko ?>" class="btn btn-outline-danger hapus" title="Hapus Toko" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i></a>
-                                                <?php else : ?>
-                                                    <a href="javascript:void(0);" class="btn btn-outline-secondary disable-btn" title="Hapus Toko" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i></a>
-                                                <?php endif; ?>
-                                            </td>
-                                        </tr>
+                                        <?php if ($data->toko_user_id == $session->id) : ?>
+                                            <tr>
+                                                <td><?= $data->toko_nama ?></td>
+                                                <td><?= $data->toko_kota ?></td>
+                                                <td class="text-center">
+                                                    <?php if ($data->toko_status == 1) : ?>
+                                                        <div class="badge badge-success">Aktif</div>
+                                                    <?php else : ?>
+                                                        <div class="badge badge-danger">Non-Aktif</div>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="javascript:void(0);" data-target="#edit<?= $data->id_toko ?>" class="btn btn-outline-warning" data-toggle="modal" title="Edit Toko" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                    <?php if ($data->toko_user_id != $session->id) : ?>
+                                                        <a href="<?= base_url('toko/hapus/') . base64_encode($data->id_toko) ?>" class="btn btn-outline-danger hapus" title="Hapus Toko" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i></a>
+                                                    <?php else : ?>
+                                                        <a href="javascript:void(0);" class="btn btn-outline-secondary disable-btn" title="Hapus Toko" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i></a>
+                                                    <?php endif; ?>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>

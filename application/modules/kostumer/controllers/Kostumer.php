@@ -212,6 +212,51 @@ class Kostumer extends CI_Controller
         );
         redirect('kostumer');
     }
+    public function ubahkostumer()
+    {
+
+        $statusid = $this->input->post('statusid');
+        $statuskostumer = $this->input->post('statuskostumer');
+
+        if ($statuskostumer > 0) {
+
+            $data = [
+                'status_kostumer' => 0
+            ];
+
+            $this->db->where('id_kostumer', $statusid);
+            $this->db->update('tb_kostumer', $data);
+
+            $this->session->set_flashdata(
+                'success',
+                '$(document).ready(function(e) {
+                    Swal.fire({
+                        type: "success",
+                        title: "Sukses",
+                        text: "Kostumer masih dalam pesanan atau inden!"
+                    })
+                })'
+            );
+        } else {
+            $data = [
+                'status_kostumer' => 1
+            ];
+
+            $this->db->where('id_kostumer', $statusid);
+            $this->db->update('tb_kostumer', $data);
+
+            $this->session->set_flashdata(
+                'success',
+                '$(document).ready(function(e) {
+                    Swal.fire({
+                        type: "success",
+                        title: "Sukses",
+                        text: "Kostumer berhasil diterima!"
+                    })
+                })'
+            );
+        }
+    }
 }
 
 /* End of file Log_user.php */

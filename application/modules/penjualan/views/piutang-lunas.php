@@ -46,12 +46,12 @@
 
                                     <?php $no = 1;
                                     foreach ($get_penjualan_hutang as $data) : ?>
-                                        <?php if ($data->invoice_piutang_jatuh_tempo && $data->invoice_piutang == 0) : ?>
+                                        <?php if ($data->invoice_piutang_jatuh_tempo && $data->invoice_piutang == 0 && $data->invoice_kasir == $session->id) : ?>
                                             <tr>
                                                 <td class="text-center">
-                                                    <a href="<?= base_url('penjualan/invoice/detail_invoice_piutang_lunas/') . base64_encode($data->penjualan_invoice) ?>" class="btn btn-outline-info" title="Detail Invoice Penjualan" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
-                                                    <a href="<?= base_url('penjualan/piutang/cicilan_piutang_lunas/') . base64_encode($data->penjualan_invoice) ?>" class="btn btn-outline-warning" title="Riwayat Cicilan Hutang" data-plugin="tippy" data-tippy-placement="top"><i class="mdi mdi-history"></i> </a>
-                                                    <a href="<?= base_url('penjualan/cetak_nota_lunas/') . base64_encode($data->penjualan_invoice) ?>" target="_blank" class="btn btn-outline-success" title="Cetak Nota" data-plugin="tippy" data-tippy-placement="top"><i class="fe-printer"></i> </a>
+                                                    <a href="<?= base_url('penjualan/invoice/detail_invoice_piutang_lunas/') . base64_encode($data->penjualan_invoice) ?>" class="btn btn-sm btn-info" title="Detail Invoice Penjualan" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
+                                                    <a href="<?= base_url('penjualan/piutang/cicilan_piutang_lunas/') . base64_encode($data->penjualan_invoice) ?>" class="btn btn-sm btn-warning" title="Riwayat Cicilan Hutang" data-plugin="tippy" data-tippy-placement="top"><i class="mdi mdi-history"></i> </a>
+                                                    <a href="<?= base_url('penjualan/cetak_nota_lunas/') . base64_encode($data->penjualan_invoice) ?>" target="_blank" class="btn btn-sm btn-success" title="Cetak Nota" data-plugin="tippy" data-tippy-placement="top"><i class="fe-printer"></i> </a>
                                                 </td>
                                                 <td><?= $no++ ?></td>
                                                 <td><?= $data->penjualan_invoice ?></td>

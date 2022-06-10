@@ -24,6 +24,15 @@
             </div>
             <!-- end page title -->
 
+            <?php
+            $jml = $this->db->get('tb_produksi_session')->num_rows();
+            if ($jml > 0) {
+                $kode_barang = $get_session_invoice['session_invoice'];
+            } else {
+                $kode_barang = 0;
+            }
+            ?>
+
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -34,7 +43,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <h5>No.Invoice Produksi: &nbsp;</h5>
-                                            <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $get_session_invoice['session_invoice']; ?>" id="invoice" readonly>
+                                            <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $kode_barang; ?>" id="invoice" readonly>
                                             <?php if ($session_jml == 0) : ?>
                                                 <div class="input-group-append">
                                                     <button class="btn btn-info waves-effect waves-light" title="Tambah no. invoice" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#tambah" type="button"><i class="fe-plus"></i></button>
@@ -109,7 +118,7 @@
                                                             </ul>
                                                             <li>Lebar:</li>
                                                             <ul>
-                                                                <li><?= $data->keranjang_panjang ?> Cm</li>
+                                                                <li><?= $data->keranjang_lebar ?> Cm</li>
                                                             </ul>
                                                         </ul>
                                                     <?php endif; ?>
@@ -117,7 +126,7 @@
                                                 <td style="vertical-align: middle;">Rp.<?= rupiah($data->keranjang_harga_modal) ?></td>
                                                 </ul>
                                                 <td class="text-center" style="vertical-align: middle;">
-                                                    <a href="<?= base_url('produksi/hapus_detail_produksi/') . base64_encode($data->id_produksi_keranjang) ?>" class="btn btn-outline-danger hapus" title="Hapus Barang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
+                                                    <a href="<?= base_url('produksi/hapus_detail_produksi/') . base64_encode($data->keranjang_id_barang) ?>" class="btn btn-outline-danger hapus" title="Hapus Barang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
                                                 </td>
                                             </tr>
                                         <?php endif; ?>
@@ -177,9 +186,9 @@
                                 </div>
                             </div>
 
-                            <input type="hidden" name="produksi_invoice" value="<?= $get_session_invoice['session_invoice']; ?>">
+                            <input type="hidden" name="produksi_invoice" value="<?= $kode_barang; ?>">
                             <?php foreach ($get_produksi_keranjang as $gps) : ?>
-                                <input type="hidden" name="detail_invoice_produksi[]" value="<?= $get_session_invoice['session_invoice']; ?>">
+                                <input type="hidden" name="detail_invoice_produksi[]" value="<?= $kode_barang; ?>">
                                 <input type="hidden" name="detail_material_id[]" value="<?= $gps->keranjang_id_barang ?>">
                                 <input type="hidden" name="detail_kode_barang[]" value="<?= $gps->keranjang_kode_barang ?>">
                                 <input type="hidden" name="detail_harga_modal[]" value="<?= $gps->keranjang_harga_modal ?>">
@@ -201,7 +210,7 @@
                                 <?php endif; ?>
                             <?php endif; ?>
 
-                            <a href="<?= base_url('produksi') ?>" class="btn btn-secondary mt-4 float-right mr-2"><i class="fe-arrow-left"></i> Kembali</a>
+                            <a href="javascript:history.go(-1)" class="btn btn-secondary mt-4 float-right mr-2"><i class="fe-arrow-left"></i> Kembali</a>
                             <?= form_close() ?>
 
                         </div> <!-- end card body-->
@@ -306,7 +315,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="">Lebar (Cm) Per Item</label>
-                                    <input type="number" name="session_lebar" value="<?= $tambah->keranjang_panjang  ?>" id="session_lebar" class="form-control" placeholder="Input lebar (cm) per item">
+                                    <input type="number" name="keranjang_lebar" value="<?= $tambah->keranjang_lebar  ?>" id="session_lebar" class="form-control" placeholder="Input lebar (cm) per item">
                                 </div>
                             </div>
                         </div>

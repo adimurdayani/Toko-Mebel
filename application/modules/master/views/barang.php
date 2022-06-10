@@ -56,9 +56,9 @@
                                             <tr>
                                                 <td><input type="checkbox" class="check-item" name="id_barang[]" value="<?= $data->id_barang ?>"></td>
                                                 <td class="text-center">
-                                                    <a href="javascript:void(0);" class="btn btn-outline-info" data-target="#detail<?= $data->id_barang ?>" data-toggle="modal" title="Detail <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
-                                                    <a href="<?= base_url('master/barang/edit/') . base64_encode($data->id_barang) ?>" class="btn btn-outline-warning" title="Edit <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
-                                                    <a href="<?= base_url('master/barang/hapus/') . base64_encode($data->id_barang) ?>" class="btn btn-outline-danger hapus" title="Hapus <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
+                                                    <a href="javascript:void(0);" class="btn btn-sm btn-info" data-target="#detail<?= $data->id_barang ?>" data-toggle="modal" title="Detail <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
+                                                    <a href="<?= base_url('master/barang/edit/') . base64_encode($data->id_barang) ?>" class="btn btn-sm btn-warning" title="Edit <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                    <a href="<?= base_url('master/barang/hapus/') . base64_encode($data->id_barang) ?>" class="btn btn-sm btn-danger hapus" title="Hapus <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
                                                 </td>
                                                 <td class="text-center"><?= $no++ ?></td>
                                                 <td><?= $data->barang_kode ?></td>
@@ -81,7 +81,7 @@
                                                     <?php if ($data->barang_stok > 0) : ?>
                                                         <?= $data->barang_stok ?> <?= $data->nama_satuan ?>
                                                     <?php else : ?>
-                                                        <div class="badge badge-outline-danger">Habis</div>
+                                                        <div class="badge badge-danger">Habis</div>
                                                     <?php endif; ?>
                                                 </td>
                                                 <td class="text-center">

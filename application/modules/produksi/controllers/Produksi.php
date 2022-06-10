@@ -83,25 +83,91 @@ class Produksi extends CI_Controller
         $this->db->insert('tb_produksi_keranjang', $data);
     }
 
+    public function input_barang_select()
+    {
+        $id_barang = $this->input->post('id_barang');
+        $data_barang = $this->db->get_where('tb_barang', ['id_barang' => $id_barang])->row();
+        $jml_dta = $this->db->get('tb_produksi_keranjang')->num_rows();
+        $jml = $jml_dta + 1;
+        $today = date_indo('Ymd');
+        $parent = $today . $jml;
+        $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+
+        $data = [
+            'keranjang_invoice_parent' => $parent,
+            'keranjang_id_barang' => $id_barang,
+            'keranjang_kategori_barang' => $data_barang->barang_kategori_id,
+            'keranjang_kode_barang' => $data_barang->barang_kode,
+            'keranjang_barang_qty' => 1,
+            'keranjang_harga_modal' => $data_barang->barang_harga_beli,
+            'keranjang_harga_jual' => $data_barang->barang_harga,
+            'keranjang_harga_total' => $data_barang->barang_harga,
+            'keranjang_date' => date_indo("Y-m-d"),
+            'keranjang_kasir_id' => $user->id,
+            'keranjang_panjang' => 0,
+            'keranjang_lebar' => 0
+        ];
+        $this->db->insert('tb_produksi_keranjang', $data);
+    }
+
     public function edit_keranjang()
     {
         $id_barang = $this->input->post('id_barang');
+        $barang = $this->db->get_where('tb_barang', ['id_barang' => $id_barang])->row();
+        $getiddetail = $this->db->get_where('tb_barang_detail', ['detail_kode_barang' => $barang->barang_kode])->row();
 
-        $data = [
-            'keranjang_harga_modal' => $this->input->post('keranjang_harga_modal'),
-            'keranjang_harga_total' =>  $this->input->post('keranjang_harga_modal'),
-            'keranjang_panjang' => $this->input->post('keranjang_panjang'),
-            'keranjang_lebar' => $this->input->post('session_lebar')
-        ];
-        $this->db->where('keranjang_id_barang', $id_barang);
-        $this->db->update('tb_produksi_keranjang', $data);
+        if ($getiddetail->detail_panjang > 1 && $getiddetail->detail_lebar > 1) {
+            $data = [
+                'keranjang_harga_modal' => $this->input->post('keranjang_harga_modal'),
+                'keranjang_harga_total' =>  $this->input->post('keranjang_harga_modal'),
+                'keranjang_panjang' => $this->input->post('keranjang_panjang'),
+                'keranjang_lebar' => $this->input->post('keranjang_lebar')
+            ];
+            $this->db->where('keranjang_id_barang', $id_barang);
+            $this->db->update('tb_produksi_keranjang', $data);
+
+            $data_barang_detail = [
+                'detail_panjang' => $getiddetail->detail_panjang - $this->input->post('keranjang_panjang'),
+                'detail_lebar' => $getiddetail->detail_lebar - $this->input->post('keranjang_lebar')
+            ];
+            $this->db->where('id_detail_barang', $getiddetail->id_detail_barang);
+            $this->db->update('tb_barang_detail', $data_barang_detail);
+        } else {
+            $this->_update_barang($barang->id_barang);
+            $this->session->set_flashdata(
+                'error',
+                '$(document).ready(function(e) {
+                    Swal.fire({
+                        icon: "error",
+                        type: "error",
+                        title: "Oops...",
+                        text: "Ukuran panjang dan lebar material sedikit, silahkan update ukuran material!"
+                    })
+                })'
+            );
+
+            redirect('produksi/tambah', 'refresh');
+        }
+
         redirect('produksi/tambah', 'refresh');
+    }
+
+    private function _update_barang($id)
+    {
+        $barang = $this->db->get('tb_barang', ['id_barang' => $id])->row();
+        $data = [
+            'barang_stok' => $barang->barang_stok - 1,
+            'barang_terjual' => $barang->barang_stok + 1
+        ];
+        $this->db->where('id_barang', $barang->id_barang);
+        $this->db->update('tb_barang', $data);
     }
 
     public function hapus_detail_produksi($id)
     {
         $getId =  base64_decode($id);
-        $this->db->delete('tb_produksi_keranjang', ['id_produksi_keranjang' => $getId]);
+        $this->db->delete('tb_produksi_keranjang', ['keranjang_id_barang' => $getId]);
+        $this->_update_barang_dua($getId);
         $this->session->set_flashdata(
             'success',
             '$(document).ready(function(e) {
@@ -113,6 +179,17 @@ class Produksi extends CI_Controller
             })'
         );
         redirect('produksi/tambah');
+    }
+
+    private function _update_barang_dua($id)
+    {
+        $barang = $this->db->get('tb_barang', ['id_barang' => $id])->row();
+        $data = [
+            'barang_stok' => $barang->barang_stok + 1,
+            'barang_terjual' => $barang->barang_stok - 1
+        ];
+        $this->db->where('id_barang', $barang->id_barang);
+        $this->db->update('tb_barang', $data);
     }
 
     public function hapus_produksi($id)
@@ -150,26 +227,6 @@ class Produksi extends CI_Controller
         $detail_barang_lebar = $_POST['detail_barang_lebar'];
         $detail_barang_qty = $_POST['detail_barang_qty'];
         $detail_invoice_produksi = $_POST['detail_invoice_produksi'];
-
-        $getiddetail = $this->db->get('tb_barang_detail')->result_array();
-        foreach ($getiddetail as $k => $v) {
-            $data_barang_detail[] = [
-                'detail_kode_barang' => $detail_kode_barang[$k],
-                'detail_panjang' => $v['detail_panjang'] - $detail_barang_panjang[$k],
-                'detail_lebar' => $v['detail_lebar'] - $detail_barang_lebar[$k]
-            ];
-            $this->db->update_batch('tb_barang_detail', $data_barang_detail, 'detail_kode_barang');
-        }
-
-        $getid = $this->db->get('tb_barang')->result_array();
-        foreach ($getid as $key => $value) {
-            $data_barang[] = [
-                'id_barang' => $detail_material_id[$key],
-                'barang_stok' => $value['barang_stok'] - $detail_barang_qty[$key],
-                'barang_terjual' => $detail_barang_qty[$key]
-            ];
-            $this->db->update_batch('tb_barang', $data_barang, 'id_barang');
-        }
 
         $get_data = array();
         $index = 0;
@@ -306,6 +363,52 @@ class Produksi extends CI_Controller
                 })'
             );
             redirect('produksi/tambah', 'refresh');
+        }
+    }
+
+    public function editstatusproduksi()
+    {
+
+        $idproduksi = $this->input->post('idproduksi');
+        $active = $this->input->post('active');
+
+        if ($active > 0) {
+
+            $data = [
+                'is_active' => 0
+            ];
+
+            $this->db->where('id_produksi ', $idproduksi);
+            $this->db->update('tb_produksi', $data);
+
+            $this->session->set_flashdata(
+                'success',
+                '$(document).ready(function(e) {
+                    Swal.fire({
+                        type: "success",
+                        title: "Sukses",
+                        text: "Barang produksi masih dalam pesanan atau inden!"
+                    })
+                })'
+            );
+        } else {
+            $data = [
+                'is_active' => 1
+            ];
+
+            $this->db->where('id_produksi ', $idproduksi);
+            $this->db->update('tb_produksi', $data);
+
+            $this->session->set_flashdata(
+                'success',
+                '$(document).ready(function(e) {
+                    Swal.fire({
+                        type: "success",
+                        title: "Sukses",
+                        text: "Barang produksi berhasil diterima!"
+                    })
+                })'
+            );
         }
     }
 }

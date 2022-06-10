@@ -219,8 +219,6 @@ class Transaksi_cash extends CI_Controller
     {
         $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
         $group = $this->db->get_where('users_groups', ['user_id' => $user->id])->row();
-        $this->db->delete('tb_pembelian_session', ['pembelian_user' => $user->id]);
-        $this->db->delete('tb_pembelian_keranjang', ['keranjang_id_kasir' => $user->id]);
 
         $get_pembelian = $this->db->get('tb_pembelian')->num_rows();
         $jml_pembelian = $get_pembelian + 1;
@@ -296,6 +294,8 @@ class Transaksi_cash extends CI_Controller
                 })
             })'
         );
+        $this->hapus_session_id($user->id);
+        $this->hapus_keranjang_id($user->id);
         redirect('pembelian/invoice/detail/' . base64_encode($detail->pembelian_invoice_parent));
     }
 
@@ -303,17 +303,16 @@ class Transaksi_cash extends CI_Controller
     {
         $getId =  base64_decode($id);
         $this->db->delete('tb_pembelian_keranjang', ['keranjang_id' => $getId]);
-        $this->session->set_flashdata(
-            'success',
-            '$(document).ready(function(e) {
-                Swal.fire({
-                    type: "success",
-                    title: "Sukses",
-                    text: "Data berhasil dihapus!"
-                })
-            })'
-        );
         redirect('pembelian/transaksi_cash');
+    }
+
+    public function hapus_session_id($id)
+    {
+        $this->db->delete('tb_pembelian_session', ['pembelian_user' => $id]);
+    }
+    public function hapus_keranjang_id($id)
+    {
+        $this->db->delete('tb_pembelian_keranjang', ['keranjang_id_kasir' => $id]);
     }
 }
 

@@ -46,7 +46,7 @@
 
                                     <?php $no = 1;
                                     foreach ($get_pembelian as $data) : ?>
-                                        <?php if ($data->invoice_hutang == 1) : ?>
+                                        <?php if ($data->invoice_hutang == 1 && $data->invoice_kasir == $session->id) : ?>
                                             <tr>
                                                 <td class="text-center">
                                                     <a href="<?= base_url('pembelian/invoice/detail_invoice_hutang/') . base64_encode($data->invoice_parent) ?>" class="btn btn-outline-info" title="Detail Hutang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>

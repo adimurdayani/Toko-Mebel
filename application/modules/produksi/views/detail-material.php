@@ -29,55 +29,16 @@
                 <div class="col-12">
                     <div class="card-box">
                         <!-- Logo & title -->
-                        <div class="clearfix">
-                            <div class="float-right">
-                                <div class="auth-logo">
-                                    <div class="logo logo-dark">
-                                        <span class="logo-lg">
-                                            <img src="<?= base_url('assets/images/upload/') . $get_config->logo_nota ?>" alt="" height="100">
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="float-left">
-                                <h4 class="m-0 d-print-none"><?= $title; ?></h4>
+                        <div class="mt-2 mb-1">
+                            <div class="d-print-none">
+                                <a href="javascript:history.go(-1)" class="btn btn-secondary waves-effect waves-light"><i class="fe-arrow-left"></i> Kembali</a>
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mt-3">
-                                    <?php
-                                    $jml = $this->db->get('tb_toko', ['toko_user_id' => $session->id])->num_rows();
-                                    if ($jml != 0) {
-                                        $toko = $this->db->get_where('tb_toko', ['toko_user_id' => $get_produksi->produksi_kasir])->row_array();
-                                    } else {
-                                        $toko = 0;
-                                    } ?>
-                                    <h6>Dari</h6>
-                                    <address>
-                                        <?= $toko['toko_nama'] ?><br>
-                                        <?= $toko['toko_kota'] ?><br>
-                                        <?= $toko['toko_alamat'] ?><br>
-                                        <abbr title="Phone">P:</abbr> <?= $toko['toko_wa'] ?>
-                                    </address>
-                                </div>
-
-                            </div><!-- end col -->
-                            <div class="col-md-4 offset-md-2">
-                                <div class="mt-3 float-right">
-                                    <p class="m-b-10"><strong>Tanggal Order &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;</strong> <span class="float-right"> <?= $get_produksi->created_at ?></span></p>
-                                    <p class="m-b-10"><strong>Order Status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;</strong> <span class="float-right"><span class="badge badge-outline-primary"><?= $get_produksi->produksi_status ?></span></span></p>
-                                    <p class="m-b-10"><strong>No. Invoice Produksi &nbsp;&nbsp;&nbsp;: </strong> <span class="float-right"><?= $get_produksi->produksi_invoice ?> </span></p>
-                                </div>
-                            </div><!-- end col -->
-                        </div>
-                        <!-- end row -->
 
                         <div class="row">
                             <div class="col-12">
                                 <div class="table-responsive">
-                                    <table class="table mt-4 table-centered table-bordered">
+                                    <table class="table mt-2 table-centered table-hover">
                                         <thead>
                                             <tr>
                                                 <th class="text-center">#</th>
@@ -124,33 +85,6 @@
                             </div> <!-- end col -->
                         </div>
                         <!-- end row -->
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="clearfix pt-5">
-                                    <h6 class="text-muted">Notes:</h6>
-
-                                    <small class="text-muted">
-                                        Halaman ini telah ditingkatkan untuk dicetak. Klik tombol cetak di bagian bawah faktur.
-                                    </small>
-                                </div>
-                            </div> <!-- end col -->
-                            <div class="col-sm-6">
-                                <div class="float-right">
-                                    <p><b>Total Harga Jual &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;</b> <span class="float-right">Rp.<?= rupiah($get_produksi->produksi_harga_total) ?></span></p>
-                                    <h3 class="text-success">Rp.<?= rupiah($get_produksi->produksi_harga_total) ?></h3>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div> <!-- end col -->
-                        </div>
-                        <!-- end row -->
-
-                        <div class="mt-4 mb-1">
-                            <div class="text-right d-print-none">
-                                <a href="javascript:history.go(-1)" class="btn btn-secondary waves-effect waves-light"><i class="fe-arrow-left"></i> Kembali</a>
-                                <a href="javascript:window.print()" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-printer mr-1"></i> Print</a>
-                            </div>
-                        </div>
                     </div> <!-- end card-box -->
                 </div> <!-- end col -->
             </div>

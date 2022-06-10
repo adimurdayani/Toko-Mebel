@@ -226,8 +226,6 @@ class Transaksi_hutang extends CI_Controller
     {
         $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
         $group = $this->db->get_where('users_groups', ['user_id' => $user->id])->row();
-        $this->db->delete('tb_pembelian_session', ['pembelian_user' => $user->id]);
-        $this->db->delete('tb_pembelian_keranjang', ['keranjang_id_kasir' => $user->id]);
 
         $get_pembelian = $this->db->get('tb_pembelian')->num_rows();
         $jml_pembelian = $get_pembelian + 1;
@@ -246,7 +244,7 @@ class Transaksi_hutang extends CI_Controller
                 'id_barang' => $barang_id[$key],
                 'barang_stok' => $value['barang_stok'] + $barang_qty[$key],
                 'barang_harga_beli' => $barang_harga_beli[$key],
-                'barang_terjual' =>$barang_qty[$key],
+                'barang_terjual' => $barang_qty[$key],
             ];
             $this->db->update_batch('tb_barang', $data_barang, 'id_barang');
         }
@@ -306,7 +304,18 @@ class Transaksi_hutang extends CI_Controller
                 })
             })'
         );
+        $this->hapus_session_id($user->id);
+        $this->hapus_keranjang_id($user->id);
         redirect('pembelian/invoice/detail_hutang/' . base64_encode($detail->pembelian_invoice_parent));
+    }
+
+    public function hapus_session_id($id)
+    {
+        $this->db->delete('tb_pembelian_session', ['pembelian_user' => $id]);
+    }
+    public function hapus_keranjang_id($id)
+    {
+        $this->db->delete('tb_pembelian_keranjang', ['keranjang_id_kasir' => $id]);
     }
 }
 

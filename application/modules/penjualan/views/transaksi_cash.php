@@ -130,7 +130,7 @@
                                                         <td class="text-center"> <?= $gpk->keranjang_qty ?> </td>
                                                         <td class="text-right">Rp.<?= rupiah($sub_total) ?></td>
                                                         <td class="text-center">
-                                                            <a href="javascript:void(0);" class="btn btn-outline-warning" data-target="#edit<?= $gpk->keranjang_id ?>" data-toggle="modal" title="Edit Data" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i> </a>
+                                                            <!-- <a href="javascript:void(0);" class="btn btn-outline-warning" data-target="#edit<?= $gpk->keranjang_id ?>" data-toggle="modal" title="Edit Data" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i> </a> -->
                                                             <a href="<?= base_url('penjualan/transaksi_cash/hapus_keranjang/') . base64_encode($gpk->keranjang_id) ?>" class="btn btn-outline-danger hapus" title="Hapus Barang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
                                                         </td>
                                                     </tr>
@@ -145,7 +145,7 @@
                                             <div class="form-group">
                                                 <label for="">Kostumer</label>
                                                 <select name="invoice_kostumer" id="invoice_kostumer" class="form-control" data-toggle="select2" required>
-                                                    <option value="">-- Pilih Suplier --</option>
+                                                    <option value="">-- Pilih Kostumer --</option>
                                                     <option value="0">Umum</option>
                                                     <?php foreach ($get_kostumer as $kostumer) : ?>
                                                         <?php if ($kostumer->status_kostumer == 1) : ?>
@@ -281,7 +281,7 @@
                                 <tbody>
                                     <?php $no = 1;
                                     foreach ($get_barang as $data) : ?>
-                                        <?php if ($data->is_active > 0) : ?>
+                                        <?php if ($data->is_active > 0 && $data->produksi_kasir == $session->id) : ?>
                                             <tr>
                                                 <td class="text-center"><?= $no++ ?></td>
                                                 <td><?= $data->produksi_invoice ?></td>

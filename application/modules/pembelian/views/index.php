@@ -52,14 +52,14 @@
 
                                         <?php $no = 1;
                                         foreach ($get_pembelian as $data) : ?>
-                                            <?php if ($data->invoice_hutang == 0) : ?>
+                                            <?php if ($data->invoice_hutang == 0 && $data->invoice_kasir == $session->id) : ?>
                                                 <tr>
                                                     <td><input type="checkbox" class="check-item" name="invoice_parent[]" value="<?= $data->invoice_parent ?>"></td>
                                                     <td class="text-center">
-                                                        <a href="<?= base_url('pembelian/hapus/') . base64_encode($data->invoice_parent) ?>" class="btn btn-outline-danger hapus" title="Hapus Pembelian" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
-                                                        <a href="<?= base_url('pembelian/invoice/detail_invoice/') . base64_encode($data->invoice_parent) ?>" class="btn btn-outline-info" title="Detail Invoice Pembelian" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
-                                                        <a href="<?= base_url('pembelian/invoice/detail/') . base64_encode($data->invoice_parent) ?>" class="btn btn-outline-warning" title="Retur Pembelian" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
-                                                        <a href="<?= base_url('pembelian/cetak_nota/') . base64_encode($data->invoice_parent) ?>" target="_blank" class="btn btn-outline-success" title="Cetak Nota" data-plugin="tippy" data-tippy-placement="top"><i class="fe-printer"></i> </a>
+                                                        <a href="<?= base_url('pembelian/hapus/') . base64_encode($data->invoice_parent) ?>" class="btn btn-sm btn-danger hapus" title="Hapus Pembelian" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
+                                                        <a href="<?= base_url('pembelian/invoice/detail_invoice/') . base64_encode($data->invoice_parent) ?>" class="btn btn-sm btn-info" title="Detail Invoice Pembelian" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
+                                                        <a href="<?= base_url('pembelian/invoice/detail/') . base64_encode($data->invoice_parent) ?>" class="btn btn-sm btn-warning" title="Retur Pembelian" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                        <a href="<?= base_url('pembelian/cetak_nota/') . base64_encode($data->invoice_parent) ?>" target="_blank" class="btn btn-sm btn-success" title="Cetak Nota" data-plugin="tippy" data-tippy-placement="top"><i class="fe-printer"></i> </a>
                                                     </td>
                                                     <td><?= $no++ ?></td>
                                                     <td><?= $data->invoice_pembelian ?></td>

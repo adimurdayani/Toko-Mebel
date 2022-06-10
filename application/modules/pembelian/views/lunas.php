@@ -46,12 +46,12 @@
 
                                     <?php $no = 1;
                                     foreach ($get_pembelian as $data) : ?>
-                                        <?php if ($data->invoice_hutang_jatuh_tempo && $data->invoice_hutang == 0) : ?>
+                                        <?php if ($data->invoice_hutang_jatuh_tempo && $data->invoice_hutang == 0 && $data->invoice_kasir == $session->id) : ?>
                                             <tr>
                                                 <td class="text-center">
-                                                    <a href="<?= base_url('pembelian/invoice/detail_invoice_hutang_lunas/') . base64_encode($data->invoice_parent) ?>" class="btn btn-outline-info" title="Detail Hutang Lunas" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
-                                                    <a href="<?= base_url('pembelian/belum_lunas/cicilan_lunas/') . base64_encode($data->invoice_pembelian) ?>" class="btn btn-outline-warning" title="Cicilan Hutang" data-plugin="tippy" data-tippy-placement="top"><i class="mdi mdi-cash-plus"></i> </a>
-                                                    <a href="<?= base_url('pembelian/cetak_nota_lunas/') . base64_encode($data->invoice_parent) ?>" target="_blank" class="btn btn-outline-success" title="Cetak Nota Hutang Lunas" data-plugin="tippy" data-tippy-placement="top"><i class="fe-printer"></i> </a>
+                                                    <a href="<?= base_url('pembelian/invoice/detail_invoice_hutang_lunas/') . base64_encode($data->invoice_parent) ?>" class="btn btn-sm btn-info" title="Detail Hutang Lunas" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
+                                                    <a href="<?= base_url('pembelian/belum_lunas/cicilan_lunas/') . base64_encode($data->invoice_pembelian) ?>" class="btn btn-sm btn-warning" title="Cicilan Hutang" data-plugin="tippy" data-tippy-placement="top"><i class="mdi mdi-cash-plus"></i> </a>
+                                                    <a href="<?= base_url('pembelian/cetak_nota_lunas/') . base64_encode($data->invoice_parent) ?>" target="_blank" class="btn btn-sm btn-success" title="Cetak Nota Hutang Lunas" data-plugin="tippy" data-tippy-placement="top"><i class="fe-printer"></i> </a>
                                                 </td>
                                                 <td><?= $no++ ?></td>
                                                 <td><?= $data->invoice_pembelian ?></td>
