@@ -68,7 +68,7 @@
                                             <?php if (isset($get_total_cicilan->hutang_nominal)) : ?>
                                                 <input type="text" name="" id="" class="form-control" readonly value="<?= rupiah($get_total_cicilan->hutang_nominal) ?>">
                                             <?php else : ?>
-                                                <input type="text" name="" id="" class="form-control" readonly value="0">
+                                                <input type="text" name="invoice_cicilan" id="" class="form-control" readonly value="0">
                                             <?php endif; ?>
                                         </div>
                                     </div>

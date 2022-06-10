@@ -55,15 +55,16 @@ class Belum_lunas extends CI_Controller
                 $this->load->view('template/footer', $data, FALSE);
             } else {
                 # code...
-
                 $pembelian = $this->db->get_where('tb_pembelian', ['invoice_parent' => $get_id])->row();
-                $update_pembelian = [
-                    'invoice_kembali' => $pembelian->invoice_kembali - $this->input->post('hutang_nominal'),
-                    'invoice_hutang' => $this->input->post('invoice_kembali')
-                ];
-
-                $this->db->where('invoice_parent', $get_id);
-                $this->db->update('tb_pembelian', $update_pembelian);
+                $invoice = $this->input->post('invoice_cicilan');
+                if ($invoice == 0) {
+                    $update_lunas = [
+                        'invoice_hutang' => 0,
+                        'invoice_hutang_lunas' => 1
+                    ];
+                    $this->db->where('invoice_parent', $pembelian->invoice_parent);
+                    $this->db->update('tb_pembelian', $update_lunas);
+                }
 
                 $data = [
                     'hutang_invoice' => $this->input->post('hutang_invoice'),
@@ -85,8 +86,21 @@ class Belum_lunas extends CI_Controller
                         })
                     })'
                 );
+                $this->bayar_kembali($pembelian->id);
                 redirect('pembelian/belum_lunas/cicilan_hutang/' . base64_encode($get_id));
             }
+        }
+    }
+
+    public function bayar_kembali($id)
+    {
+        $pembelian = $this->db->get_where('tb_pembelian', ['id' => $id])->row();
+        if ($pembelian->invoice_kembali >= 1) {
+            $update_pembelian = [
+                'invoice_kembali' => $pembelian->invoice_kembali - $this->input->post('hutang_nominal')
+            ];
+            $this->db->where('invoice_parent', $pembelian->invoice_parent);
+            $this->db->update('tb_pembelian', $update_pembelian);
         }
     }
 

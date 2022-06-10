@@ -44,6 +44,17 @@ class M_dashboard extends CI_Model
                         FROM tb_penjualan";
         return $this->db->query($sql)->row();
     }
+
+    public function get_all_penjualan()
+    {
+        $queryPenjualan = "SELECT `tb_penjualan`.*, `users`.`first_name`,`tb_kostumer`.`nama`
+                        FROM `tb_penjualan`
+                        JOIN  `users` ON `tb_penjualan`.`invoice_kasir` = `users`.`id`
+                        JOIN  `tb_kostumer` ON `tb_penjualan`.`invoice_costumer` = `tb_kostumer`.`id_kostumer`
+                        ORDER BY `tb_penjualan`.`invoice_id` DESC
+                        ";
+        return $this->db->query($queryPenjualan)->result();
+    }
 }
 
 /* End of file M_dashboard.php */

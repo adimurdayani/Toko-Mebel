@@ -45,9 +45,9 @@ class M_penjualan extends CI_Model
 
     public function get_all_invoice($invoice_penjualan)
     {
-        $querybarang = "SELECT `tb_penjualan_detail`.*, `tb_barang`.`barang_nama`
+        $querybarang = "SELECT `tb_penjualan_detail`.*, `tb_produksi`.`produksi_nama`
                         FROM `tb_penjualan_detail`
-                        JOIN  `tb_barang` ON `tb_penjualan_detail`.`barang_id` = `tb_barang`.`id_barang`
+                        JOIN  `tb_produksi` ON `tb_penjualan_detail`.`barang_id` = `tb_produksi`.`id_produksi`
                         WHERE `tb_penjualan_detail`.`penjualan_invoice` = $invoice_penjualan
                         ORDER BY `tb_penjualan_detail`.`id_penjualan` DESC
                         ";

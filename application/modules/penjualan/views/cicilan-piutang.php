@@ -65,7 +65,7 @@
                                             <?php if (isset($get_total_cicilan->piutang_nominal)) : ?>
                                                 <input type="text" class="form-control" readonly value="<?= rupiah($get_total_cicilan->piutang_nominal) ?>">
                                             <?php else : ?>
-                                                <input type="text" class="form-control" readonly value="0">
+                                                <input type="text" name="invoice_cicilan" class="form-control" readonly value="0">
                                             <?php endif; ?>
                                         </div>
                                     </div>
@@ -169,7 +169,10 @@
                                                     </h4>
                                                 <?php endif; ?>
                                             </td>
-                                            <td></td>
+                                            <td>
+                                                <?php $kasir = $this->db->get_where('tb_toko', ['toko_user_id' => $data->piutang_kasir])->row(); ?>
+                                                <?= $kasir->toko_nama ?>
+                                            </td>
                                             <td>
                                                 <a href="<?= base_url('penjualan/piutang/hapus/') . base64_encode($data->id_piutang) ?>" class="btn btn-outline-danger hapus" title="Hapus Riwayat Piutang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
                                             </td>

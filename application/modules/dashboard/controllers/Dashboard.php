@@ -44,15 +44,18 @@ class Dashboard extends CI_Controller
             $data['total_pengguna'] = $this->db->get('users')->num_rows();
             $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
             $data['total_pendapatan'] =  $this->m_dashboard->get_total_pendapatan();
+            $data['total_all_pendapatan'] = $this->db->get_where('tb_penjualan')->result();
 
             $tglsekarang = date_indo('Y-m-d');
             $this->db->where('invoice_tipe_transaksi !=', 1);
             $this->db->where('invoice_date', $tglsekarang);
             $data['total_invoice_penjualan_cash'] =  $this->db->get('tb_penjualan')->num_rows();
 
-            $data['total_barang'] =  $this->db->get_where('tb_barang')->result();
-            $data['jml_barang'] =  $this->db->get_where('tb_barang')->num_rows();
+            $data['total_barang'] =  $this->db->get_where('tb_produksi')->result();
+            $data['jml_barang'] =  $this->db->get_where('tb_produksi')->num_rows();
             $data['jml_invoice_penjualan'] =  $this->db->get('tb_penjualan')->num_rows();
+
+            $data['get_penjualan_hutang'] = $this->m_dashboard->get_all_penjualan();
 
             $this->load->view('template/header', $data, FALSE);
             $this->load->view('template/topbar', $data, FALSE);

@@ -47,8 +47,8 @@
 
                                     <?php foreach ($get_produksi as $data) : ?>
                                         <tr>
-                                            <td>
-                                                <a href="javascript:void(0);" data-target="#detail<?= $data->id_produksi ?>" class="btn btn-outline-info" data-toggle="modal" title="Lihat Detail Produk" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
+                                            <td class="text-center">
+                                                <a href="<?= base_url('produksi/invoice/detail/') . base64_encode($data->produksi_invoice) ?>" class="btn btn-outline-info" title="Lihat Detail Invoice Produksi" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
                                                 <a href="javascript:void(0);" class="btn btn-outline-primary" title="Lihat Material Produksi" data-plugin="tippy" data-tippy-placement="top"><i class="fe-package"></i></a>
                                                 <a href="javascript:void(0);" data-target="#edit<?= $data->id_produksi ?>" class="btn btn-outline-warning" data-toggle="modal" title="Edit Produk" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
                                                 <a href="<?= base_url('produksi/hapus_produksi/') . base64_encode($data->id_produksi) ?>" class="btn btn-outline-danger hapus" title="Hapus Produk" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
@@ -56,8 +56,18 @@
                                             <td><?= $data->produksi_invoice ?></td>
                                             <td><?= $data->produksi_nama ?></td>
                                             <td>Rp.<?= rupiah($data->produksi_harga_total) ?></td>
-                                            <td><?= $data->produksi_stok ?> Unit</td>
                                             <td>
+                                                <?php if ($data->produksi_stok != 0) : ?>
+                                                    <?= $data->produksi_stok ?> Unit
+                                                <?php else : ?>
+                                                    <div class="badge badge-danger"><i class="fe-x"></i> Habis</div>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td>
+                                                <?php if ($data->produksi_status == "Dalam pesanan") : ?>
+                                                    <div class="badge badge-outline-warning"><?= $data->produksi_status ?></div>
+                                                <?php endif; ?>
+
                                                 <?php if ($data->produksi_status == "Proses") : ?>
                                                     <div class="badge badge-outline-blue"><?= $data->produksi_status ?></div>
                                                 <?php endif; ?>

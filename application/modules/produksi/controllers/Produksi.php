@@ -12,7 +12,6 @@ class Produksi extends CI_Controller
         $this->load->model('m_produk');
     }
 
-
     public function index()
     {
         if (!$this->ion_auth->logged_in()) {
@@ -205,7 +204,7 @@ class Produksi extends CI_Controller
             'produksi_harga_jual' => $this->input->post('produksi_harga_jual'),
             'produksi_harga_total' => $this->input->post('produksi_harga_jual'),
             'produksi_stok' => $this->input->post('produksi_stok'),
-            'produksi_status' => "Proses",
+            'produksi_status' => "Dalam pesanan",
             'created_at' => date_indo('Y-m-d') . ' - ' . date('H:i:s'),
             'updated_at' => date_indo('Y-m-d'),
             'produksi_kasir' => $user->id,

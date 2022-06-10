@@ -27,9 +27,9 @@
             <?php
             $kode_barang = isset($get_pembelian_session['pembelian_input']);
             if ($kode_barang == null) {
-                $kode_barang = 0;
+                $kode = 0;
             } else {
-                $kode_barang = $kode_barang;
+                $kode = $kode_barang;
             }
 
             ?>
@@ -60,7 +60,7 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <h5>No.Invoice:</h5>
-                                                    <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $kode_barang; ?>" id="invoice" readonly>
+                                                    <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $get_pembelian_session['pembelian_input'] ?>" id="invoice" readonly>
                                                     <?php if ($kode_barang == null) : ?>
                                                         <div class="input-group-append">
                                                             <button class="btn btn-info waves-effect waves-light" title="Tambah no. invoice" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#tambah" type="button"><i class="fe-plus"></i></button>

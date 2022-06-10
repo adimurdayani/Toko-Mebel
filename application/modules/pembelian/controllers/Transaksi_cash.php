@@ -280,7 +280,7 @@ class Transaksi_cash extends CI_Controller
             'invoice_kembali_lama' => $this->input->post('total') - $this->input->post('bayar'),
             'invoice_hutang' => 0,
             'invoice_hutang_dp' => 0,
-            'invoice_hutang_lunas' => date_indo('Y-m-d'),
+            'invoice_hutang_lunas' => 0,
             'invoice_pembelian_cabang' => $group->group_id,
         ];
 

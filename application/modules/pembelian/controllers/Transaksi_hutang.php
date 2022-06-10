@@ -290,7 +290,7 @@ class Transaksi_hutang extends CI_Controller
             'invoice_hutang' => 1,
             'invoice_hutang_dp' => $this->input->post('total') - $this->input->post('bayar'),
             'invoice_hutang_jatuh_tempo' => date_indo($this->input->post('invoice_hutang_jatuh_tempo')),
-            'invoice_hutang_lunas' => date_indo('Y-m-d'),
+            'invoice_hutang_lunas' => 0,
             'invoice_pembelian_cabang' => $group->group_id,
         ];
 

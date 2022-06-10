@@ -74,8 +74,8 @@
                                                         <select name="invoice_barang_id" id="invoice_barang_id" class="form-control" data-toggle="select2">
                                                             <option value="">Kode Barang</option>
                                                             <?php foreach ($get_barang as $kode) : ?>
-                                                                <?php if ($kode->status_barang > 0) : ?>
-                                                                    <option value="<?= $kode->id_barang ?>"><?= $kode->barang_kode ?> - <?= $kode->barang_nama ?> - Rp.<?= rupiah($kode->barang_harga_beli) ?></option>
+                                                                <?php if ($kode->is_active > 0) : ?>
+                                                                    <option value="<?= $kode->id_produksi  ?>"><?= $kode->produksi_invoice ?> - <?= $kode->produksi_nama ?> - Rp.<?= rupiah($kode->produksi_harga_total) ?></option>
                                                                 <?php endif; ?>
                                                             <?php endforeach; ?>
                                                         </select>
@@ -109,8 +109,8 @@
                                             $total_beli = 0;
                                             foreach ($get_penjualan_keranjang as $gpk) :
                                                 $id_barang      = $gpk->barang_id;
-                                                $stok_parent    = $this->db->get_where('tb_barang', ['id_barang' => $id_barang])->row();
-                                                $stok           = $stok_parent->barang_stok;
+                                                $stok_parent    = $this->db->get_where('tb_produksi', ['id_produksi ' => $id_barang])->row();
+                                                $stok           = $stok_parent->produksi_stok;
 
                                                 $sub_total_beli = +$gpk->keranjang_harga_beli * $gpk->keranjang_qty;
                                                 $sub_total      = +$gpk->keranjang_harga * $gpk->keranjang_qty;
@@ -286,26 +286,26 @@
                                 <tbody>
                                     <?php $no = 1;
                                     foreach ($get_barang as $data) : ?>
-                                        <?php if ($data->status_barang > 0) : ?>
+                                        <?php if ($data->is_active > 0) : ?>
                                             <tr>
                                                 <td class="text-center"><?= $no++ ?></td>
-                                                <td><?= $data->barang_kode ?></td>
-                                                <td><?= $data->barang_nama ?></td>
-                                                <td>Rp.<?= rupiah($data->barang_harga) ?></td>
+                                                <td><?= $data->produksi_invoice ?></td>
+                                                <td><?= $data->produksi_nama ?></td>
+                                                <td>Rp.<?= rupiah($data->produksi_harga_total) ?></td>
                                                 <td>
-                                                    <?php if ($data->barang_stok > 0) : ?>
-                                                        <?= $data->barang_stok ?>
+                                                    <?php if ($data->produksi_stok > 0) : ?>
+                                                        <?= $data->produksi_stok ?>
                                                     <?php else : ?>
                                                         <div class="badge badge-outline-danger">Habis</div>
                                                     <?php endif; ?>
                                                 </td>
                                                 <td class="text-center">
-                                                    <?php if ($data->barang_stok < 1) : ?>
+                                                    <?php if ($data->produksi_stok < 1) : ?>
                                                         <button type="button" class="btn btn-outline-danger btn-sm btn-disabled"><i class="fe-x"></i> Habis</button>
-                                                    <?php elseif ($data->barang_stok < 3) : ?>
-                                                        <button type="button" class="btn btn-outline-warning btn-sm btn-disabled"> Stok Sedikit</button>
+                                                    <?php elseif ($data->produksi_stok < 3) : ?>
+                                                        <button type="button" class="btn btn-outline-warning btn-sm idproduksi" id="idproduksi" data-idproduksi="<?= $data->id_produksi; ?>"> Stok Sedikit</button>
                                                     <?php else : ?>
-                                                        <button type="button" id="idbarang" data-idbarang="<?= $data->id_barang; ?>" class="btn btn-outline-success btn-sm idbarang"><i class="fe-shopping-cart"></i> Pilih</button>
+                                                        <button type="button" id="idproduksi" data-idproduksi="<?= $data->id_produksi; ?>" class="btn btn-outline-success btn-sm idproduksi"><i class="fe-shopping-cart"></i> Pilih</button>
                                                     <?php endif; ?>
                                                 </td>
                                             </tr>
@@ -341,15 +341,15 @@
 
             });
 
-            $('.idbarang').on('click', function() {
-                const idbarang = $(this).data('idbarang');
-                console.log(idbarang);
+            $('.idproduksi').on('click', function() {
+                const idproduksi = $(this).data('idproduksi');
+                console.log(idproduksi);
 
                 $.ajax({
                     url: "<?= base_url('penjualan/transaksi_hutang/input_idbarang_dua') ?>",
                     type: 'post',
                     data: {
-                        idbarang: idbarang
+                        idproduksi: idproduksi
                     },
                     success: function() {
                         Swal.fire({
@@ -363,14 +363,14 @@
             });
 
             $('#invoice_barang_id').on('change', function() {
-                const id_barang = $('#invoice_barang_id').val();
-                console.log(id_barang);
+                const id_produksi = $('#invoice_barang_id').val();
+                console.log(id_produksi);
 
                 $.ajax({
                     url: "<?= base_url('penjualan/transaksi_hutang/input_idbarang') ?>",
                     type: 'post',
                     data: {
-                        id_barang: id_barang
+                        id_produksi: id_produksi
                     },
                     success: function() {
                         Swal.fire({

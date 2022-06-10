@@ -34,13 +34,7 @@
                                 <div class="auth-logo">
                                     <div class="logo logo-dark">
                                         <span class="logo-lg">
-                                            <img src="<?= base_url() ?>assets/images/logo-dark.png" alt="" height="22">
-                                        </span>
-                                    </div>
-
-                                    <div class="logo logo-light">
-                                        <span class="logo-lg">
-                                            <img src="<?= base_url() ?>assets/images/logo-light.png" alt="" height="22">
+                                            <img src="<?= base_url('assets/images/upload/') . $get_config->logo_nota ?>" alt="" height="100">
                                         </span>
                                     </div>
                                 </div>
@@ -72,12 +66,13 @@
 
                         <div class="row mt-3">
                             <div class="col-sm-6">
+                                <?php $toko = $this->db->get_where('tb_toko', ['toko_user_id' => $get_kostumer->invoice_kasir])->row(); ?>
                                 <h6>Dari</h6>
                                 <address>
-                                    Stanley Jones<br>
-                                    795 Folsom Ave, Suite 600<br>
-                                    San Francisco, CA 94107<br>
-                                    <abbr title="Phone">P:</abbr> (123) 456-7890
+                                    <?= $toko->toko_nama ?><br>
+                                    <?= $toko->toko_kota ?><br>
+                                    <?= $toko->toko_alamat ?><br>
+                                    <abbr title="Phone">P:</abbr> <?= $toko->toko_wa ?>
                                 </address>
                             </div> <!-- end col -->
 
@@ -103,7 +98,7 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>Nama Barang</th>
-                                                <th style="width: 10%">Harga Beli</th>
+                                                <th style="width: 10%">Harga</th>
                                                 <th style="width: 10%">Qty</th>
                                                 <th style="width: 10%" class="text-right">Sub Total</th>
                                             </tr>
@@ -115,7 +110,7 @@
                                             ?>
                                                 <tr>
                                                     <td><?= $no++ ?></td>
-                                                    <td><?= $data->barang_nama ?></td>
+                                                    <td><?= $data->produksi_nama ?></td>
                                                     <td>Rp.<?= rupiah($data->keranjang_harga) ?></td>
                                                     <td><?= $data->barang_qty ?></td>
                                                     <td>Rp.<?= rupiah($subtotal) ?></td>
@@ -141,8 +136,8 @@
                             <div class="col-sm-6">
                                 <div class="float-right">
                                     <p><b>Total:</b> <span class="float-right">Rp.<?= rupiah($get_kostumer->invoice_total) ?></span></p>
-                                    <p><b class="text-success">Bayar:</b> <span class="float-right"> &nbsp;&nbsp;&nbsp; Rp.<?= rupiah($get_kostumer->invoice_bayar) ?></span></p>
-                                    <p><b class="text-danger">Kembali:</b> <span class="float-right"> &nbsp;&nbsp;&nbsp; Rp.<?= rupiah($get_kostumer->invoice_kembali) ?></span></p>
+                                    <p><b class="text-success">DP:</b> <span class="float-right"> &nbsp;&nbsp;&nbsp; Rp.<?= rupiah($get_kostumer->invoice_bayar) ?></span></p>
+                                    <p><b class="text-danger">Sisa hutang:</b> <span class="float-right"> &nbsp;&nbsp;&nbsp; Rp.<?= rupiah($get_kostumer->invoice_kembali) ?></span></p>
                                     <h3 class="text-success">Rp.<?= rupiah($get_kostumer->invoice_total) ?></h3>
                                 </div>
                                 <div class="clearfix"></div>

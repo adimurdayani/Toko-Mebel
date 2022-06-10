@@ -57,6 +57,16 @@ class Piutang extends CI_Controller
                 $penjualan = $this->db->get_where('tb_penjualan', ['penjualan_invoice' => $get_id])->row();
                 $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
                 $grup = $this->db->get_where('users_groups', ['user_id' => $user->id])->row();
+                $invoice = $this->input->post('invoice_cicilan');
+
+                if ($invoice == 0) {
+                    $update_lunas = [
+                        'invoice_piutang' => 0,
+                        'invoice_piutang_lunas' => 1
+                    ];
+                    $this->db->where('penjualan_invoice', $penjualan->penjualan_invoice);
+                    $this->db->update('tb_penjualan', $update_lunas);
+                }
 
                 $data = [
                     'piutang_invoice' => $this->input->post('piutang_invoice'),
@@ -69,22 +79,6 @@ class Piutang extends CI_Controller
                 ];
                 $this->db->insert('tb_penjualan_piutang', $data);
 
-                if ($penjualan->invoice_kembali == 0) {
-                    $update_penjualan = [
-                        'invoice_piutang' => 0,
-                        'invoice_piutang_lunas' => 1
-                    ];
-                    $this->db->where('penjualan_invoice', $get_id);
-                    $this->db->update('tb_penjualan', $update_penjualan);
-                } else {
-                    $update_penjualan = [
-                        'invoice_kembali' => $penjualan->invoice_kembali - $this->input->post('piutang_nominal'),
-                        'invoice_piutang_lunas' => 0
-                    ];
-                    $this->db->where('penjualan_invoice', $get_id);
-                    $this->db->update('tb_penjualan', $update_penjualan);
-                }
-
                 $this->session->set_flashdata(
                     'success',
                     '$(document).ready(function(e) {
@@ -95,8 +89,21 @@ class Piutang extends CI_Controller
                         })
                     })'
                 );
+                $this->invoice_piutang_update($penjualan->invoice_id);
                 redirect('penjualan/piutang/cicilan_piutang/' . base64_encode($get_id));
             }
+        }
+    }
+
+    private function invoice_piutang_update($id)
+    {
+        $penjualan = $this->db->get_where('tb_penjualan', ['invoice_id' => $id])->row();
+        if ($penjualan->invoice_kembali != 0) {
+            $update_penjualan = [
+                'invoice_kembali' => $penjualan->invoice_kembali - $this->input->post('piutang_nominal')
+            ];
+            $this->db->where('penjualan_invoice', $penjualan->penjualan_invoice);
+            $this->db->update('tb_penjualan', $update_penjualan);
         }
     }
 

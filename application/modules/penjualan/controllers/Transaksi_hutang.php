@@ -24,7 +24,7 @@ class Transaksi_hutang extends CI_Controller
             $data['get_penjualan_keranjang'] = $this->db->get('tb_penjualan_keranjang')->result();
 
             $data['get_kostumer'] = $this->db->get('tb_kostumer')->result();
-            $data['get_barang'] = $this->m_penjualan->get_all_barang();
+            $data['get_barang'] = $this->db->get('tb_produksi')->result();
             $data['get_jml_penjualan'] = $this->db->get_where('tb_penjualan', ['invoice_cabang' => $user->id])->num_rows();
 
             $this->db->where('keranjang_harga <', 1);
@@ -40,16 +40,16 @@ class Transaksi_hutang extends CI_Controller
 
     public function input_idbarang()
     {
-        $id_barang = $this->input->post('id_barang');
-        $data_barang = $this->db->get_where('tb_barang', ['id_barang' => $id_barang])->row();
-        $keranjang = $this->db->get_where('tb_penjualan_keranjang', ['barang_id' => $id_barang])->row();
+        $id_produksi = $this->input->post('id_produksi');
+        $data_barang = $this->db->get_where('tb_produksi', ['id_produksi' => $id_produksi])->row();
+        $keranjang = $this->db->get_where('tb_penjualan_keranjang', ['barang_id' => $id_produksi])->row();
 
         $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
         $group_id = $this->db->get_where('users_groups', ['user_id' => $user->id])->row();
         $get_penjualan = $this->db->get('tb_penjualan')->num_rows();
         $jml_penjualan = $get_penjualan + 1;
 
-        if ($keranjang->barang_id == $id_barang) {
+        if ($keranjang->barang_id == $id_produksi) {
             $update_keranjang = [
                 'keranjang_qty' => $keranjang->keranjang_qty + 1,
             ];
@@ -57,14 +57,14 @@ class Transaksi_hutang extends CI_Controller
             $this->db->update('tb_penjualan_keranjang', $update_keranjang);
         } else {
             $data = [
-                'keranjang_nama' => $data_barang->barang_nama,
-                'keranjang_harga_beli' => $data_barang->barang_harga_beli,
-                'keranjang_harga' => $data_barang->barang_harga,
-                'barang_id' => $id_barang,
-                'barang_kode_slug' => $id_barang,
+                'keranjang_nama' => $data_barang->produksi_nama,
+                'keranjang_harga_beli' => $data_barang->produksi_harga_modal,
+                'keranjang_harga' => $data_barang->produksi_harga_jual,
+                'barang_id' => $id_produksi,
+                'barang_kode_slug' => $id_produksi,
                 'keranjang_qty' => 1,
                 'keranjang_id_kasir' => $user->id,
-                'keranjang_id_cek' => $id_barang . $user->id . $jml_penjualan,
+                'keranjang_id_cek' => $id_produksi . $user->id . $jml_penjualan,
                 'keranjang_cabang' => $group_id->group_id
             ];
             $this->db->insert('tb_penjualan_keranjang', $data);
@@ -73,16 +73,16 @@ class Transaksi_hutang extends CI_Controller
 
     public function input_idbarang_dua()
     {
-        $id_barang = $this->input->post('idbarang');
-        $data_barang = $this->db->get_where('tb_barang', ['id_barang' => $id_barang])->row();
-        $keranjang = $this->db->get_where('tb_penjualan_keranjang', ['barang_id' => $id_barang])->row();
+        $id_produksi = $this->input->post('idproduksi');
+        $data_barang = $this->db->get_where('tb_produksi', ['id_produksi' => $id_produksi])->row();
+        $keranjang = $this->db->get_where('tb_penjualan_keranjang', ['barang_id' => $id_produksi])->row();
 
         $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
         $group_id = $this->db->get_where('users_groups', ['user_id' => $user->id])->row();
         $get_penjualan = $this->db->get('tb_penjualan')->num_rows();
         $jml_penjualan = $get_penjualan + 1;
 
-        if ($keranjang->barang_id == $id_barang) {
+        if ($keranjang->barang_id == $id_produksi) {
             $update_keranjang = [
                 'keranjang_qty' => $keranjang->keranjang_qty + 1,
             ];
@@ -90,14 +90,14 @@ class Transaksi_hutang extends CI_Controller
             $this->db->update('tb_penjualan_keranjang', $update_keranjang);
         } else {
             $data = [
-                'keranjang_nama' => $data_barang->barang_nama,
-                'keranjang_harga_beli' => $data_barang->barang_harga_beli,
-                'keranjang_harga' => $data_barang->barang_harga,
-                'barang_id' => $id_barang,
-                'barang_kode_slug' => $id_barang,
+                'keranjang_nama' => $data_barang->produksi_nama,
+                'keranjang_harga_beli' => $data_barang->produksi_harga_modal,
+                'keranjang_harga' => $data_barang->produksi_harga_jual,
+                'barang_id' => $id_produksi,
+                'barang_kode_slug' => $id_produksi,
                 'keranjang_qty' => 1,
                 'keranjang_id_kasir' => $user->id,
-                'keranjang_id_cek' => $id_barang . $user->id . $jml_penjualan,
+                'keranjang_id_cek' => $id_produksi . $user->id . $jml_penjualan,
                 'keranjang_cabang' => $group_id->group_id
             ];
             $this->db->insert('tb_penjualan_keranjang', $data);
@@ -119,14 +119,14 @@ class Transaksi_hutang extends CI_Controller
         $invoice_total_beli = $this->input->post('invoice_total_beli');
         $penjualan_invoice_get = $this->input->post('penjualan_invoice_get');
 
-        $getid = $this->db->get('tb_barang')->result_array();
+        $getid = $this->db->get('tb_produksi')->result_array();
         foreach ($getid as $key => $value) {
             $data_barang[] = [
-                'id_barang' => $barang_id[$key],
-                'barang_stok' => $value['barang_stok'] - $barang_qty[$key],
-                'barang_terjual' => $barang_qty[$key]
+                'id_produksi' => $barang_id[$key],
+                'produksi_stok' => $value['produksi_stok'] - $barang_qty[$key],
+                'produksi_terjual' => $barang_qty[$key]
             ];
-            $this->db->update_batch('tb_barang', $data_barang, 'id_barang');
+            $this->db->update_batch('tb_produksi', $data_barang, 'id_produksi');
         }
 
         $get_data = array();

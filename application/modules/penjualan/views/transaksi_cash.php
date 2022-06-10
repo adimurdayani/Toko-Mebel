@@ -72,10 +72,10 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <select name="invoice_barang_id" id="invoice_barang_id" class="form-control" data-toggle="select2">
-                                                            <option value="">Kode Barang</option>
+                                                            <option value="">-- Kode Barang --</option>
                                                             <?php foreach ($get_barang as $kode) : ?>
-                                                                <?php if ($kode->status_barang > 0) : ?>
-                                                                    <option value="<?= $kode->id_barang ?>"><?= $kode->barang_kode ?> - <?= $kode->barang_nama ?> - Rp.<?= rupiah($kode->barang_harga_beli) ?></option>
+                                                                <?php if ($kode->is_active > 0) : ?>
+                                                                    <option value="<?= $kode->id_produksi  ?>"><?= $kode->produksi_invoice ?> - <?= $kode->produksi_nama ?> - Rp.<?= rupiah($kode->produksi_harga_total) ?></option>
                                                                 <?php endif; ?>
                                                             <?php endforeach; ?>
                                                         </select>
@@ -109,8 +109,8 @@
                                             $total_beli = 0;
                                             foreach ($get_penjualan_keranjang as $gpk) :
                                                 $id_barang      = $gpk->barang_id;
-                                                $stok_parent    = $this->db->get_where('tb_barang', ['id_barang' => $id_barang])->row();
-                                                $stok           = $stok_parent->barang_stok;
+                                                $stok_parent    = $this->db->get_where('tb_produksi', ['id_produksi ' => $id_barang])->row();
+                                                $stok           = $stok_parent->produksi_stok;
 
                                                 $sub_total_beli = +$gpk->keranjang_harga_beli * $gpk->keranjang_qty;
                                                 $sub_total      = +$gpk->keranjang_harga * $gpk->keranjang_qty;
@@ -124,11 +124,11 @@
                                                     <tr>
                                                         <td class="text-center"><?= $no++ ?></td>
                                                         <td><?= $gpk->keranjang_nama ?></td>
-                                                        <td>
+                                                        <td class="text-right">
                                                             Rp.<?= rupiah($gpk->keranjang_harga) ?>
                                                         </td>
                                                         <td class="text-center"> <?= $gpk->keranjang_qty ?> </td>
-                                                        <td>Rp.<?= rupiah($sub_total) ?></td>
+                                                        <td class="text-right">Rp.<?= rupiah($sub_total) ?></td>
                                                         <td class="text-center">
                                                             <a href="javascript:void(0);" class="btn btn-outline-warning" data-target="#edit<?= $gpk->keranjang_id ?>" data-toggle="modal" title="Edit Data" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i> </a>
                                                             <a href="<?= base_url('penjualan/transaksi_cash/hapus_keranjang/') . base64_encode($gpk->keranjang_id) ?>" class="btn btn-outline-danger hapus" title="Hapus Barang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
@@ -171,7 +171,7 @@
 
                                                 <div class="row mt-3">
                                                     <div class="col-md-2">
-                                                        <h4 class="text-danger">DP.</h4>
+                                                        <h4 class="text-success">Bayar.</h4>
                                                     </div>
                                                     <div class="col">
                                                         <div class="input-group">
@@ -183,7 +183,7 @@
                                                     </div>
                                                 </div>
 
-                                                <p class="text-success mt-3">Sisa Piutang &nbsp;&nbsp;&nbsp;&nbsp; Rp.<input type="text" style="border: 0px;" autocomplete="off" id="angka3" value="<?= $total - $total - $total ?>" name="kembali" disabled></p>
+                                                <p class="text-danger mt-3">Kembalian &nbsp;&nbsp;&nbsp;&nbsp; Rp.<input type="text" style="border: 0px;" autocomplete="off" id="angka3" value="<?= $total - $total - $total ?>" name="kembali" disabled></p>
 
                                             </div>
                                         </div>
@@ -298,9 +298,9 @@
                                                     <?php if ($data->produksi_stok < 1) : ?>
                                                         <button type="button" class="btn btn-outline-danger btn-sm btn-disabled"><i class="fe-x"></i> Habis</button>
                                                     <?php elseif ($data->produksi_stok < 3) : ?>
-                                                        <button type="button" class="btn btn-outline-warning btn-sm btn-disabled"> Stok Sedikit</button>
+                                                        <button type="button" class="btn btn-outline-warning btn-sm idproduksi" id="idproduksi" data-idproduksi="<?= $data->id_produksi; ?>"> Stok Sedikit</button>
                                                     <?php else : ?>
-                                                        <button type="button" id="idbarang" data-idbarang="<?= $data->id_produksi; ?>" class="btn btn-outline-success btn-sm idbarang"><i class="fe-shopping-cart"></i> Pilih</button>
+                                                        <button type="button" id="idproduksi" data-idproduksi="<?= $data->id_produksi; ?>" class="btn btn-outline-success btn-sm idproduksi"><i class="fe-shopping-cart"></i> Pilih</button>
                                                     <?php endif; ?>
                                                 </td>
                                             </tr>
@@ -336,15 +336,15 @@
 
             });
 
-            $('.idbarang').on('click', function() {
-                const idbarang = $(this).data('idbarang');
-                console.log(idbarang);
+            $('.idproduksi').on('click', function() {
+                const idproduksi = $(this).data('idproduksi');
+                console.log(idproduksi);
 
                 $.ajax({
                     url: "<?= base_url('penjualan/transaksi_cash/input_idbarang_dua') ?>",
                     type: 'post',
                     data: {
-                        idbarang: idbarang
+                        idproduksi: idproduksi
                     },
                     success: function() {
                         Swal.fire({
@@ -358,14 +358,14 @@
             });
 
             $('#invoice_barang_id').on('change', function() {
-                const id_barang = $('#invoice_barang_id').val();
-                console.log(id_barang);
+                const id_produksi = $('#invoice_barang_id').val();
+                console.log(id_produksi);
 
                 $.ajax({
                     url: "<?= base_url('penjualan/transaksi_cash/input_idbarang') ?>",
                     type: 'post',
                     data: {
-                        id_barang: id_barang
+                        id_produksi: id_produksi
                     },
                     success: function() {
                         Swal.fire({

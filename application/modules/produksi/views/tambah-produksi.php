@@ -66,7 +66,7 @@
                                 </div>
                             </div>
 
-                            <h4 class="mt-4">Material yang digunakan</h4>
+                            <h4 class="mt-4">Detil material yang digunakan</h4>
                             <table class="table table-bordered mb-4">
                                 <thead>
                                     <tr>
@@ -155,7 +155,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                     </div>
-                                                    <input type="number" name="produksi_harga_modal" id="produksi_harga_modal" class="form-control" value="<?= $harga_modal ?>">
+                                                    <input type="number" name="produksi_harga_modal" id="produksi_harga_modal" class="form-control" value="<?= $harga_modal ?>" readonly>
                                                 </div>
                                             </div>
 

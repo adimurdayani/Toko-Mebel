@@ -19,9 +19,9 @@ class Invoice extends CI_Controller
         } else {
             $data['title'] = "Invoice Produksi Barang";
             $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
-            $data['get_suplier'] = $this->m_pembelian->get_suplier();
             $getKode = base64_decode($invoice_produksi);
-            // $data['get_invoice_produksi'] = $this->m_produk->get_all_invoice($getKode);
+            $data['get_invoice_produksi'] = $this->m_produk->get_all_produk_detail($getKode);
+            $data['get_produksi'] = $this->db->get_where('tb_produksi', ['produksi_invoice' => $getKode])->row();
             $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
 
             $this->load->view('template/header', $data, FALSE);
