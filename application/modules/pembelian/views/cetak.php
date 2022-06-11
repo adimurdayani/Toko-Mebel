@@ -42,9 +42,9 @@
         </div>
         <div class="row mt-2 mb-4">
             <div class="col-md-6">
-                <strong>Nama Kostumer</strong><br>
-                Alamat <br>
-                <strong>No. Invoice</strong>
+                <?php $suplier = $this->db->get_where('tb_suplier', ['id_suplier'=>$get_pembelian['invoice_suplier_id']])->row_array();?>
+                <strong><?= $suplier['nama']?></strong><br>
+                <?= $suplier['alamat']?> <br>
             </div>
             <?php
             $jml = $this->db->get('tb_toko', ['toko_user_id' => $session->id])->num_rows();
@@ -56,10 +56,10 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-6">
-                        <strong class="float-right">Tanggal diterbitkan</strong><br>
-                        <span class="float-right">Alamat</span> <br>
-                        <strong class="float-right">Tipe Pembayaran</strong><br>
-                        <span class="float-right">Cash</span>
+                        <strong class="float-right">No. Invoice</strong><br>
+                        <span class="float-right">#<?= $get_pembelian['invoice_pembelian']?></span><br>
+                        <strong class="float-right">Tanggal Pembelian</strong><br>
+                        <span class="float-right"><?= $get_pembelian['invoice_tgl']?></span>
                     </div>
                     <div class="verikal_center"></div>
                     <div class="col-md-5">
@@ -82,39 +82,27 @@
             </thead>
 
             <tbody>
+                <?php 
+                $no = 1; 
+                $jml =0;
+                $total = 0;
+                foreach($get_invoice_pembelian as $data):
+                    $jml = $data->barang_harga_beli*$data->barang_qty;
+                    ?>
+                    <?php $total += $data->barang_harga_beli*$data->barang_qty;?>
                 <tr>
-                    <td class="text-center">1</td>
-                    <td>Lemari</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">Rp.100.000</td>
-                    <td class="text-right">Rp.100.000</td>
+                    <td class="text-center"><?= $no++;?></td>
+                    <td><?= $data->barang_nama?></td>
+                    <td class="text-center"><?= $data->barang_qty?></td>
+                    <td class="text-right">Rp.<?= rupiah($data->barang_harga_beli)?></td>
+                    <td class="text-right">Rp.<?= rupiah($jml)?></td>
                 </tr>
-                <tr>
-                    <td class="text-center">1</td>
-                    <td>Lemari</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">Rp.100.000</td>
-                    <td class="text-right">Rp.100.000</td>
-                </tr>
-                <tr>
-                    <td class="text-center">1</td>
-                    <td>Lemari</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">Rp.100.000</td>
-                    <td class="text-right">Rp.100.000</td>
-                </tr>
-                <tr>
-                    <td class="text-center">1</td>
-                    <td>Lemari</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">Rp.100.000</td>
-                    <td class="text-right">Rp.100.000</td>
-                </tr>
+                <?php endforeach;?>
             </tbody>
             <tfoot>
                 <tr>
                     <th class="text-right" colspan="4">Total</th>
-                    <th class="text-right">Ro.200.000</th>
+                    <th class="text-right">Rp.<?= rupiah($total)?></th>
                 </tr>
             </tfoot>
         </table>
