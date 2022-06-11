@@ -30,22 +30,16 @@
                     <div class="card-box">
                         <!-- Logo & title -->
                         <div class="clearfix">
-                            <div class="float-left">
+                            <div class="float-right">
                                 <div class="auth-logo">
                                     <div class="logo logo-dark">
                                         <span class="logo-lg">
-                                            <img src="<?= base_url() ?>assets/images/logo-dark.png" alt="" height="22">
-                                        </span>
-                                    </div>
-
-                                    <div class="logo logo-light">
-                                        <span class="logo-lg">
-                                            <img src="<?= base_url() ?>assets/images/logo-light.png" alt="" height="22">
+                                            <img src="<?= base_url('assets/images/upload/') . $get_config->logo_nota ?>" alt="" height="100">
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="float-right">
+                            <div class="float-left">
                                 <h4 class="m-0 d-print-none"><?= $title; ?></h4>
                             </div>
                         </div>
@@ -72,12 +66,13 @@
 
                         <div class="row mt-3">
                             <div class="col-sm-6">
+                                <?php $toko = $this->db->get_where('tb_toko', ['toko_user_id' => $session->id])->row(); ?>
                                 <h6>Dari</h6>
                                 <address>
-                                    Stanley Jones<br>
-                                    795 Folsom Ave, Suite 600<br>
-                                    San Francisco, CA 94107<br>
-                                    <abbr title="Phone">P:</abbr> (123) 456-7890
+                                    <?= $toko->toko_nama ?><br>
+                                    <?= $toko->toko_kota ?><br>
+                                    <?= $toko->toko_alamat ?><br>
+                                    <abbr title="Phone">P:</abbr> <?= $toko->toko_wa ?>
                                 </address>
                             </div> <!-- end col -->
 

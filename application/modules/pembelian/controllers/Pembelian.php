@@ -88,6 +88,8 @@ class Pembelian extends CI_Controller
 
             $data['get_suplier'] = $this->m_pembelian->get_suplier();
             $getKode = base64_decode($kode_barang);
+
+            $data['get_pembelian'] = $this->db->get_where('tb_pembelian', ['invoice_parent' => $getKode])->row_array();
             $data['get_invoice_pembelian'] = $this->m_pembelian->get_all_invoice($getKode);
             $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
 
@@ -167,7 +169,6 @@ class Pembelian extends CI_Controller
         );
         redirect('pembelian');
     }
-
 }
 
 /* End of file Log_user.php */

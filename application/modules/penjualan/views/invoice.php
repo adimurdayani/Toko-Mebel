@@ -52,7 +52,6 @@
                                         promises to provide high quality products for you as well as outstanding
                                         customer service for every transaction. </p>
                                 </div>
-
                             </div><!-- end col -->
                             <div class="col-md-4 offset-md-2">
                                 <div class="mt-3 float-right">
@@ -66,7 +65,7 @@
 
                         <div class="row mt-3">
                             <div class="col-sm-6">
-                                <?php $toko = $this->db->get_where('tb_toko', ['toko_user_id' => $get_kostumer->invoice_kasir])->row(); ?>
+                                <?php $toko = $this->db->get_where('tb_toko', ['toko_user_id' => $session->id])->row(); ?>
                                 <h6>Dari</h6>
                                 <address>
                                     <?= $toko->toko_nama ?><br>

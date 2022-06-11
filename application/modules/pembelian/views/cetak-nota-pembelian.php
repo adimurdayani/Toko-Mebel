@@ -56,14 +56,14 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-6">
-                        <strong class="float-right">Tanggal diterbitkan</strong><br>
+                        <strong class="float-right"><?= $get_pembelian->invoice_tgl ?></strong><br>
                         <span class="float-right">Alamat</span> <br>
                         <strong class="float-right">Tipe Pembayaran</strong><br>
                         <span class="float-right">Cash</span>
                     </div>
                     <div class="verikal_center"></div>
                     <div class="col-md-5">
-                    <strong><?= $toko['toko_nama'] ?></strong><br>
+                        <strong><?= $toko['toko_nama'] ?></strong><br>
                         <span><?= $toko['toko_alamat'] ?></span> <br>
                         <span><?= $toko['toko_wa'] ?></span>
                     </div>
@@ -124,7 +124,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
     <script>
-        window.print();
+        // window.print();
     </script>
 </body>
 
