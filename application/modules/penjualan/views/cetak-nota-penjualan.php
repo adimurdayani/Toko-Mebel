@@ -42,9 +42,8 @@
         </div>
         <div class="row mt-2 mb-4">
             <div class="col-md-6">
-                <strong>Nama Kostumer</strong><br>
-                Alamat <br>
-                <strong>No. Invoice</strong>
+                <strong><?= $get_kostumer->nama?></strong><br>
+                <?= $get_kostumer->alamat?> <br>
             </div>
             <?php
             $jml = $this->db->get('tb_toko', ['toko_user_id' => $session->id])->num_rows();
@@ -56,10 +55,9 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-6">
-                        <strong class="float-right">Tanggal diterbitkan</strong><br>
-                        <span class="float-right">Alamat</span> <br>
-                        <strong class="float-right">Tipe Pembayaran</strong><br>
-                        <span class="float-right">Cash</span>
+                        <strong class="float-right">No. Invoice</strong><br>
+                        <span class="float-right"><?= $get_kostumer->penjualan_invoice?></span><br>
+                        <strong class="float-right"><?= $get_kostumer->invoice_tgl?></strong>
                     </div>
                     <div class="verikal_center"></div>
                     <div class="col-md-5">
@@ -76,45 +74,29 @@
                     <th class="text-center">No</th>
                     <th class="text-center">Keterangan</th>
                     <th class="text-center">Kuantitas</th>
-                    <th class="text-center">Harga Satuan</th>
                     <th class="text-center">Jumlah</th>
                 </tr>
             </thead>
 
             <tbody>
+                <?php
+                $no = 1;
+                $total = 0;
+                 foreach($get_invoice_penjualan as $data):
+                 $total += $data->barang_qty*$data->keranjang_harga;
+                 ?>
                 <tr>
-                    <td class="text-center">1</td>
-                    <td>Lemari</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">Rp.100.000</td>
-                    <td class="text-right">Rp.100.000</td>
+                    <td class="text-center"><?= $no++?></td>
+                    <td><?= $data->produksi_nama;?></td>
+                    <td class="text-center"><?= $data->barang_qty; ?></td>
+                    <td class="text-right">Rp.<?= rupiah($data->keranjang_harga); ?></td>
                 </tr>
-                <tr>
-                    <td class="text-center">1</td>
-                    <td>Lemari</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">Rp.100.000</td>
-                    <td class="text-right">Rp.100.000</td>
-                </tr>
-                <tr>
-                    <td class="text-center">1</td>
-                    <td>Lemari</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">Rp.100.000</td>
-                    <td class="text-right">Rp.100.000</td>
-                </tr>
-                <tr>
-                    <td class="text-center">1</td>
-                    <td>Lemari</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">Rp.100.000</td>
-                    <td class="text-right">Rp.100.000</td>
-                </tr>
+                <?php endforeach;?>
             </tbody>
             <tfoot>
                 <tr>
-                    <th class="text-right" colspan="4">Total</th>
-                    <th class="text-right">Ro.200.000</th>
+                    <th class="text-right" colspan="3">Total</th>
+                    <th class="text-right">Rp.<?= rupiah($total); ?></th>
                 </tr>
             </tfoot>
         </table>
