@@ -67,10 +67,10 @@ class Dashboard extends CI_Controller
     {
         $total_barang = $this->db->get_where('tb_produksi')->result();
         $barang_terjual = 0;
-        foreach ($total_barang as $barang){
+        foreach ($total_barang as $barang) {
             $barang_terjual += $barang->produksi_terjual;
         }
-        
+
         $total_pendapatan =  $this->m_dashboard->get_total_pendapatan();
         $total_all_pendapatan = $this->m_dashboard->get_total_all_pendapatan();
         $invoice_cash = $this->db->get('tb_penjualan')->num_rows();
@@ -82,6 +82,19 @@ class Dashboard extends CI_Controller
         $result['jml_barang'] = $jml_barang;
         $result['barang_terjual'] = $barang_terjual;
         echo json_encode($result);
+    }
+
+    public function contac_us()
+    {
+        $data['title'] = "Contact Us";
+        $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+        $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+
+        $this->load->view('template/header', $data, FALSE);
+        $this->load->view('template/topbar', $data, FALSE);
+        $this->load->view('template/sidebar', $data, FALSE);
+        $this->load->view('contact_us', $data, FALSE);
+        $this->load->view('template/footer', $data, FALSE);
     }
 }
 
