@@ -56,14 +56,11 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-6">
-                        <strong class="float-right"><?= $get_pembelian->invoice_tgl ?></strong><br>
-                        <span class="float-right">Alamat</span> <br>
-                        <strong class="float-right">Tipe Pembayaran</strong><br>
-                        <span class="float-right">Cash</span>
                         <strong class="float-right">No. Invoice</strong><br>
                         <span class="float-right">#<?= $get_pembelian['invoice_pembelian'] ?></span><br>
                         <strong class="float-right">Tanggal Pembelian</strong><br>
                         <span class="float-right"><?= $get_pembelian['invoice_tgl'] ?></span>
+
 
                     </div>
                     <div class="verikal_center"></div>
