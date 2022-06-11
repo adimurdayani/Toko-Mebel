@@ -29,7 +29,7 @@
                             </div>
                             <div class="col-6">
                                 <div class="text-right">
-                                    <h3 class="text-dark mt-1">Rp.<span data-plugin="counterup"><?= rupiah($total_pendapatan->invoice_sub_total) ?> </span></h3>
+                                    <h3 class="text-dark mt-1"><span id="pendapatan">0 </span></h3>
                                     <p class="text-muted mb-0 text-truncate">Total Pendapatan hari ini</p>
                                     <small class="text-muted mb-1">tanggal: <?= date('d/m/Y') ?></small>
                                 </div>
@@ -48,7 +48,7 @@
                             </div>
                             <div class="col-6">
                                 <div class="text-right">
-                                    <h3 class="text-dark mt-1"><span data-plugin="counterup"><?= $total_invoice_penjualan_cash ?></span></h3>
+                                    <h3 class="text-dark mt-1"><span id="invoice_cash"></span></h3>
                                     <p class="text-muted mb-0 text-truncate">Invoice Penjualan Cash</p>
                                     <small class="text-muted mb-1">tanggal: <?= date('d/m/Y') ?></small>
                                 </div>
@@ -58,15 +58,8 @@
                 </div> <!-- end col-->
             </div>
             <div class="row">
-                <?php $barang_terjual = 0;
-                foreach ($total_barang as $barang) : ?>
-                    <?php $barang_terjual += $barang->produksi_terjual; ?>
-                <?php endforeach; ?>
 
-                <?php $jml_pend = 0;
-                foreach ($total_all_pendapatan as $p) : ?>
-                    <?php $jml_pend += $p->invoice_total; ?>
-                <?php endforeach; ?>
+                <!--  -->
                 <div class="col-md-4">
                     <div class="widget-rounded-circle card-box">
                         <div class="row">
@@ -77,7 +70,7 @@
                             </div>
                             <div class="col-6">
                                 <div class="text-right">
-                                    <h3 class="text-dark mt-1">Rp.<span data-plugin="counterup"><?= rupiah($jml_pend) ?></span></h3>
+                                    <h4 class="text-dark mt-1"><span id="total_all_pendapatan">0</span></h4>
                                     <p class="text-muted mb-1 text-truncate">Pendapatan</p>
                                 </div>
                             </div>
@@ -95,7 +88,7 @@
                             </div>
                             <div class="col-6">
                                 <div class="text-right">
-                                    <h3 class="text-dark mt-1"><span data-plugin="counterup"><?= $barang_terjual ?></span></h3>
+                                    <h4 class="text-dark mt-1"><span data-plugin="counterup" id="barang_terjual"></span></h4>
                                     <p class="text-muted mb-1 text-truncate">Total Produksi</p>
                                 </div>
                             </div>
@@ -113,7 +106,7 @@
                             </div>
                             <div class="col-6">
                                 <div class="text-right">
-                                    <h3 class="text-dark mt-1"><span data-plugin="counterup"><?= $jml_barang ?></span></h3>
+                                    <h4 class="text-dark mt-1"><span data-plugin="counterup" id="jml_barang"></span></h4>
                                     <p class="text-muted mb-1 text-truncate">Jumlah Barang</p>
                                 </div>
                             </div>
@@ -262,3 +255,84 @@
         </div> <!-- container -->
 
     </div> <!-- content -->
+    <?php echo $this->load->view('template/footer');?>
+    <script>
+        $(document).ready(function() {
+                load_data();
+                function load_data() {
+                    $.ajax({
+                        url: "<?= base_url('dashboard/load_data'); ?>",
+                        type:"post",
+                        dataType: "JSON",
+                        success: function(data) {
+                            var pendapatan = 0;
+                            var total = formatRupiah1(data.total, 'Rp.');
+                            if (data.pendapatan === null) {
+                                pendapatan = formatRupiah3('0','Rp.');
+                                }else{
+                                    pendapatan = formatRupiah2(data.pendapatan, 'Rp.');
+                                }
+                            $('#pendapatan').html(pendapatan);
+                            $('#total_all_pendapatan').html(total);
+                            $('#invoice_cash').html(data.invoice_cash);
+                            $('#jml_barang').html(data.jml_barang);
+                            $('#barang_terjual').html(data.barang_terjual);
+                            // console.log(total);
+                        }
+                    })
+                }
+                setInterval(function(){ load_data(); },10000);
+            });
+
+        function formatRupiah1(angka, prefix) {
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                // tambahkan titik jika yang di input sudah menjadi angka ribuan
+                if (ribuan) {
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+            }
+
+            function formatRupiah2(angka, prefix) {
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                // tambahkan titik jika yang di input sudah menjadi angka ribuan
+                if (ribuan) {
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+            }
+
+            function formatRupiah3(angka, prefix) {
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                // tambahkan titik jika yang di input sudah menjadi angka ribuan
+                if (ribuan) {
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+            }
+            
+    </script>

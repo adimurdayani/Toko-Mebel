@@ -43,8 +43,6 @@ class Dashboard extends CI_Controller
 
             $data['total_pengguna'] = $this->db->get('users')->num_rows();
             $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
-            $data['total_pendapatan'] =  $this->m_dashboard->get_total_pendapatan();
-            $data['total_all_pendapatan'] = $this->db->get_where('tb_penjualan')->result();
 
             $tglsekarang = date_indo('Y-m-d');
             $this->db->where('invoice_tipe_transaksi !=', 1);
@@ -61,8 +59,29 @@ class Dashboard extends CI_Controller
             $this->load->view('template/topbar', $data, FALSE);
             $this->load->view('template/sidebar', $data, FALSE);
             $this->load->view('dashboard', $data, FALSE);
-            $this->load->view('template/footer', $data, FALSE);
+            // $this->load->view('template/footer', $data, FALSE);
         }
+    }
+
+    public function load_data()
+    {
+        $total_barang = $this->db->get_where('tb_produksi')->result();
+        $barang_terjual = 0;
+        foreach ($total_barang as $barang){
+            $barang_terjual += $barang->produksi_terjual;
+        }
+        
+        $total_pendapatan =  $this->m_dashboard->get_total_pendapatan();
+        $total_all_pendapatan = $this->m_dashboard->get_total_all_pendapatan();
+        $invoice_cash = $this->db->get('tb_penjualan')->num_rows();
+        $jml_barang = $this->db->get_where('tb_produksi')->num_rows();
+
+        $result['total'] = $total_all_pendapatan['invoice_sub_total'];
+        $result['pendapatan'] = $total_pendapatan['invoice_sub_total'];
+        $result['invoice_cash'] = $invoice_cash;
+        $result['jml_barang'] = $jml_barang;
+        $result['barang_terjual'] = $barang_terjual;
+        echo json_encode($result);
     }
 }
 
