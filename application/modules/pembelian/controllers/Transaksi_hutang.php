@@ -151,6 +151,13 @@ class Transaksi_hutang extends CI_Controller
         $jml_pembelian = $get_pembelian + 1;
 
         if ($keranjang->barang_id == $id_barang) {
+            $update_barang = [
+                'barang_stok' => $data_barang->barang_stok + 1
+            ];
+
+            $this->db->where('id_barang', $id_barang);
+            $this->db->update('tb_barang', $update_barang);
+
             $update_keranjang = [
                 'keranjang_qty' => $keranjang->keranjang_qty + 1,
             ];
@@ -167,6 +174,13 @@ class Transaksi_hutang extends CI_Controller
                 'keranjang_cabang' => $group_id->group_id
             ];
             $this->db->insert('tb_pembelian_keranjang', $data);
+
+            $update_barang = [
+                'barang_stok' => $data_barang->barang_stok + 1
+            ];
+
+            $this->db->where('id_barang', $id_barang);
+            $this->db->update('tb_barang', $update_barang);
         }
     }
 
@@ -183,6 +197,13 @@ class Transaksi_hutang extends CI_Controller
         $jml_pembelian = $get_pembelian + 1;
 
         if ($keranjang->barang_id == $id_barang) {
+            $update_barang = [
+                'barang_stok' => $data_barang->barang_stok + 1
+            ];
+
+            $this->db->where('id_barang', $id_barang);
+            $this->db->update('tb_barang', $update_barang);
+
             $update_keranjang = [
                 'keranjang_qty' => $keranjang->keranjang_qty + 1,
             ];
@@ -199,6 +220,13 @@ class Transaksi_hutang extends CI_Controller
                 'keranjang_cabang' => $group_id->group_id
             ];
             $this->db->insert('tb_pembelian_keranjang', $data);
+
+            $update_barang = [
+                'barang_stok' => $data_barang->barang_stok + 1
+            ];
+
+            $this->db->where('id_barang', $id_barang);
+            $this->db->update('tb_barang', $update_barang);
         }
     }
 
@@ -218,6 +246,16 @@ class Transaksi_hutang extends CI_Controller
     public function hapus_keranjang_barang_hutang($id)
     {
         $getId =  base64_decode($id);
+        $keranjang = $this->db->get_where('tb_pembelian_keranjang', ['keranjang_id' => $getId])->row();
+        $barang = $this->db->get_where('tb_barang', ['id_barang' => $keranjang->barang_id])->row();
+
+        $data = [
+            'barang_stok' =>  $barang->barang_stok - $keranjang->keranjang_qty,
+        ];
+
+        $this->db->where('id_barang', $barang->id_barang);
+        $this->db->update('tb_barang', $data);
+
         $this->db->delete('tb_pembelian_keranjang', ['keranjang_id' => $getId]);
         redirect('pembelian/transaksi_hutang', 'refresh');
     }
@@ -237,17 +275,6 @@ class Transaksi_hutang extends CI_Controller
         $keranjang_id_kasir = $_POST['keranjang_id_kasir'];
         $pembelian_invoice = $_POST['pembelian_invoice'];
         $barang_harga_beli = $_POST['barang_harga_beli'];
-
-        $getid = $this->db->get('tb_barang')->result_array();
-        foreach ($getid as $key => $value) {
-            $data_barang[] = [
-                'id_barang' => $barang_id[$key],
-                'barang_stok' => $value['barang_stok'] + $barang_qty[$key],
-                'barang_harga_beli' => $barang_harga_beli[$key],
-                'barang_terjual' => $barang_qty[$key],
-            ];
-            $this->db->update_batch('tb_barang', $data_barang, 'id_barang');
-        }
 
         $get_data = array();
         $index = 0;

@@ -9,7 +9,7 @@ class User extends CI_Controller
     {
         parent::__construct();
         $this->load->model('m_user');
-        // is_logged_in();
+        is_logged_in();
     }
 
     public function index()

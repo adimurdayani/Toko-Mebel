@@ -131,7 +131,7 @@
                                                             <input type="hidden" name="keranjang_id" value="<?= base64_encode($k->keranjang_id) ?>">
                                                             <input type="hidden" name="id_barang" class="form-control" value="<?= base64_encode($k->barang_id) ?>">
                                                             <div class="input-group">
-                                                                <input type="number" name="keranjang_qty" class="form-control" value="<?= $k->keranjang_qty ?>">
+                                                                <input type="number" name="keranjang_qty" class="form-control" data-stok="<?= $k->keranjang_qty ?>" value="<?= $k->keranjang_qty ?>">
                                                                 <button type="submit" class="btn btn-sm btn-sm btn-info waves-effect waves-light" title="Refresh" data-plugin="tippy" data-tippy-placement="top"><i class="fe-refresh-ccw"></i></button>
                                                             </div>
                                                             <?php echo form_close() ?>
@@ -389,12 +389,10 @@
                         $('#angka3').val();
                     }
                 })
-
             });
 
             $('.idbarang').on('click', function() {
                 const idbarang = $(this).data('idbarang');
-                console.log(idbarang);
 
                 $.ajax({
                     url: "<?= base_url('pembelian/transaksi_cash/input_idbarang_dua') ?>",
@@ -403,11 +401,6 @@
                         idbarang: idbarang
                     },
                     success: function() {
-                        Swal.fire({
-                            type: "success",
-                            title: "Sukses",
-                            text: "Barang berhasil ditambahkan ke keranjang!"
-                        })
                         document.location.href = "<?= base_url('pembelian/transaksi_cash') ?>";
                     }
                 })
@@ -415,7 +408,6 @@
 
             $('#invoice_barang_id').on('change', function() {
                 const id_barang = $('#invoice_barang_id').val();
-                console.log(id_barang);
 
                 $.ajax({
                     url: "<?= base_url('pembelian/transaksi_cash/input_idbarang') ?>",
@@ -424,11 +416,6 @@
                         id_barang: id_barang
                     },
                     success: function() {
-                        Swal.fire({
-                            type: "success",
-                            title: "Sukses",
-                            text: "Barang berhasil ditambahkan ke keranjang!"
-                        })
                         document.location.href = "<?= base_url('pembelian/transaksi_cash') ?>";
                     }
                 })

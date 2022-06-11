@@ -164,6 +164,13 @@ class Transaksi_cash extends CI_Controller
         $jml_pembelian = $get_pembelian + 1;
 
         if ($keranjang->barang_id == $id_barang) {
+            $update_barang = [
+                'barang_stok' => $data_barang->barang_stok + 1
+            ];
+
+            $this->db->where('id_barang', $id_barang);
+            $this->db->update('tb_barang', $update_barang);
+
             $update_keranjang = [
                 'keranjang_qty' => $keranjang->keranjang_qty + 1,
             ];
@@ -180,6 +187,13 @@ class Transaksi_cash extends CI_Controller
                 'keranjang_cabang' => $group_id->group_id
             ];
             $this->db->insert('tb_pembelian_keranjang', $data);
+
+            $update_barang = [
+                'barang_stok' => $data_barang->barang_stok + 1
+            ];
+
+            $this->db->where('id_barang', $id_barang);
+            $this->db->update('tb_barang', $update_barang);
         }
     }
 
@@ -196,6 +210,13 @@ class Transaksi_cash extends CI_Controller
         $jml_pembelian = $get_pembelian + 1;
 
         if ($keranjang->barang_id == $id_barang) {
+            $update_barang = [
+                'barang_stok' => $data_barang->barang_stok + 1
+            ];
+
+            $this->db->where('id_barang', $id_barang);
+            $this->db->update('tb_barang', $update_barang);
+
             $update_keranjang = [
                 'keranjang_qty' => $keranjang->keranjang_qty + 1,
             ];
@@ -212,6 +233,13 @@ class Transaksi_cash extends CI_Controller
                 'keranjang_cabang' => $group_id->group_id
             ];
             $this->db->insert('tb_pembelian_keranjang', $data);
+
+            $update_barang = [
+                'barang_stok' => $data_barang->barang_stok + 1
+            ];
+
+            $this->db->where('id_barang', $id_barang);
+            $this->db->update('tb_barang', $update_barang);
         }
     }
 
@@ -230,17 +258,6 @@ class Transaksi_cash extends CI_Controller
         $keranjang_id_kasir = $_POST['keranjang_id_kasir'];
         $pembelian_invoice = $_POST['pembelian_invoice'];
         $barang_harga_beli = $_POST['barang_harga_beli'];
-
-        $getid = $this->db->get('tb_barang')->result_array();
-        foreach ($getid as $key => $value) {
-            $data_barang[] = [
-                'id_barang' => $barang_id[$key],
-                'barang_stok' => $value['barang_stok'] + $barang_qty[$key],
-                'barang_harga_beli' => $barang_harga_beli[$key],
-                'barang_terjual' => $barang_qty[$key],
-            ];
-            $this->db->update_batch('tb_barang', $data_barang, 'id_barang');
-        }
 
         $get_data = array();
         $index = 0;
@@ -283,6 +300,9 @@ class Transaksi_cash extends CI_Controller
         ];
 
         $this->db->insert('tb_pembelian', $data);
+
+        $this->hapus_session_id($user->id);
+        $this->hapus_keranjang_id($user->id);
         $detail = $this->db->get_where('tb_pembelian_detail', ['pembelian_invoice' => $kode_barang])->row();
         $this->session->set_flashdata(
             'success',
@@ -294,25 +314,39 @@ class Transaksi_cash extends CI_Controller
                 })
             })'
         );
-        $this->hapus_session_id($user->id);
-        $this->hapus_keranjang_id($user->id);
         redirect('pembelian/invoice/detail/' . base64_encode($detail->pembelian_invoice_parent));
     }
 
     public function hapus_keranjang_barang($id)
     {
         $getId =  base64_decode($id);
+        $keranjang = $this->db->get_where('tb_pembelian_keranjang', ['keranjang_id' => $getId])->row();
+        $barang = $this->db->get_where('tb_barang', ['id_barang' => $keranjang->barang_id])->row();
+
+        $data = [
+            'barang_stok' =>  $barang->barang_stok - $keranjang->keranjang_qty,
+        ];
+
+        $this->db->where('id_barang', $barang->id_barang);
+        $this->db->update('tb_barang', $data);
+
         $this->db->delete('tb_pembelian_keranjang', ['keranjang_id' => $getId]);
         redirect('pembelian/transaksi_cash');
     }
 
-    public function hapus_session_id($id)
+    private function hapus_session_id($id)
     {
         $this->db->delete('tb_pembelian_session', ['pembelian_user' => $id]);
     }
-    public function hapus_keranjang_id($id)
+    private function hapus_keranjang_id($id)
     {
         $this->db->delete('tb_pembelian_keranjang', ['keranjang_id_kasir' => $id]);
+    }
+
+    public function update_stok()
+    {
+        $id_barang = $this->input->post('id_barang');
+        $barang = $this->db->get_where('tb_barang', ['id_barang' => $id_barang])->row();
     }
 }
 
