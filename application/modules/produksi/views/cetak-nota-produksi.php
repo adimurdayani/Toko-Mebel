@@ -42,9 +42,7 @@
         </div>
         <div class="row mt-2 mb-4">
             <div class="col-md-6">
-                <strong>Nama Kostumer</strong><br>
-                Alamat <br>
-                <strong>No. Invoice</strong>
+
             </div>
             <?php
             $jml = $this->db->get('tb_toko', ['toko_user_id' => $session->id])->num_rows();
@@ -56,65 +54,53 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-6">
-                        <strong class="float-right">Tanggal diterbitkan</strong><br>
-                        <span class="float-right">Alamat</span> <br>
-                        <strong class="float-right">Tipe Pembayaran</strong><br>
-                        <span class="float-right">Cash</span>
+                        <strong class="float-right">No. Invoice</strong><br>
+                        <span class="float-right"><?= $get_produksi->produksi_invoice ?></span><br>
+                        <strong class="float-right"><?= $get_produksi->created_at ?></strong>
                     </div>
                     <div class="verikal_center"></div>
                     <div class="col-md-5">
-                    <strong><?= $toko['toko_nama'] ?></strong><br>
+                        <strong><?= $toko['toko_nama'] ?></strong><br>
                         <span><?= $toko['toko_alamat'] ?></span> <br>
                         <span><?= $toko['toko_wa'] ?></span>
                     </div>
                 </div>
             </div>
         </div>
-        <table class="table table-bordered">
+        <table class="table table-bordered w-100">
             <thead>
                 <tr>
                     <th class="text-center">No</th>
                     <th class="text-center">Keterangan</th>
                     <th class="text-center">Kuantitas</th>
-                    <th class="text-center">Harga Satuan</th>
+                    <th class="text-center">Harga</th>
                     <th class="text-center">Jumlah</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr>
-                    <td class="text-center">1</td>
-                    <td>Lemari</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">Rp.100.000</td>
-                    <td class="text-right">Rp.100.000</td>
-                </tr>
-                <tr>
-                    <td class="text-center">1</td>
-                    <td>Lemari</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">Rp.100.000</td>
-                    <td class="text-right">Rp.100.000</td>
-                </tr>
-                <tr>
-                    <td class="text-center">1</td>
-                    <td>Lemari</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">Rp.100.000</td>
-                    <td class="text-right">Rp.100.000</td>
-                </tr>
-                <tr>
-                    <td class="text-center">1</td>
-                    <td>Lemari</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">Rp.100.000</td>
-                    <td class="text-right">Rp.100.000</td>
-                </tr>
+
+                <?php
+                $no = 1;
+                $jml = 0;
+                $total = 0;
+                foreach ($get_invoice_produksi as $data) :
+                    $jml = $data->detail_harga_total * $data->detail_barang_qty;
+                ?>
+                    <?php $total += $data->detail_harga_total * $data->detail_barang_qty; ?>
+                    <tr>
+                        <td class="text-center"><?= $no++; ?></td>
+                        <td><?= $data->barang_nama ?></td>
+                        <td class="text-center"><?= $data->detail_barang_qty ?></td>
+                        <td class="text-right">Rp.<?= rupiah($data->detail_harga_total) ?></td>
+                        <td class="text-right">Rp.<?= rupiah($jml) ?></td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
             <tfoot>
                 <tr>
                     <th class="text-right" colspan="4">Total</th>
-                    <th class="text-right">Ro.200.000</th>
+                    <th class="text-right">Rp.<?= rupiah($total) ?></th>
                 </tr>
             </tfoot>
         </table>
