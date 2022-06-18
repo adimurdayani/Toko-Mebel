@@ -54,6 +54,10 @@ class Dashboard extends CI_Controller
             $data['jml_invoice_penjualan'] =  $this->db->get('tb_penjualan')->num_rows();
 
             $data['get_penjualan_hutang'] = $this->m_dashboard->get_all_penjualan();
+            $data['pendapatan'] = $this->m_dashboard->get_total_all_pendapatan();
+
+            $this->db->order_by('id_biaya', 'desc');
+            $data['get_kas'] = $this->db->get('tb_biaya_kas')->row_array();
 
             $this->load->view('template/header', $data, FALSE);
             $this->load->view('template/topbar', $data, FALSE);

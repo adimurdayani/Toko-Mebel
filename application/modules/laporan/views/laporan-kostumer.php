@@ -75,6 +75,11 @@
             $tgl_akhir = $this->input->post('tgl_akhir');
             $invoice_costumer = $this->input->post('invoice_costumer');
 
+            $sql = "SELECT count(if(invoice_costumer='$invoice_costumer', invoice_costumer, NULL)) as invoice_costumer,
+                        sum(if(invoice_costumer='$invoice_costumer', invoice_total, NULL)) as invoice_total
+                        FROM tb_penjualan";
+            $total_penjualan = $this->db->query($sql)->row();
+
             if (!empty($tgl_awal) || !empty($tgl_akhir) || !empty($invoice_costumer)) :
                 $this->db->where('invoice_date >=', date_indo($tgl_awal));
                 $this->db->where('invoice_date <=', date_indo($tgl_akhir));
@@ -116,14 +121,15 @@
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
-                            </div> <!-- end card body-->
-                        </div> <!-- end card -->
-                    </div><!-- end col-->
+                                <div class="float-right mt-4"><strong>Total</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h4 class="text-success">Rp.<?= rupiah($total_penjualan->invoice_total) ?></h4>
+                                </div> <!-- end card body-->
+                            </div> <!-- end card -->
+                        </div><!-- end col-->
 
-                </div>
-                <!-- end row-->
-            <?php endif; ?>
+                    </div>
+                    <!-- end row-->
+                <?php endif; ?>
 
-        </div> <!-- container -->
+                </div> <!-- container -->
 
-    </div> <!-- content -->
+        </div> <!-- content -->

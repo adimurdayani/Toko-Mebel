@@ -38,7 +38,7 @@ class M_penjualan extends CI_Model
         $querybarang = "SELECT *
                         FROM `tb_penjualan`
                         JOIN  `tb_kostumer` ON `tb_penjualan`.`invoice_costumer` = `tb_kostumer`.`id_kostumer`
-                        WHERE `tb_penjualan`.`penjualan_invoice`=$no_invoice
+                        WHERE `tb_penjualan`.`penjualan_invoice`= $no_invoice
                         ORDER BY `tb_penjualan`.`invoice_id` DESC
                         ";
         return $this->db->query($querybarang)->row();

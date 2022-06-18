@@ -138,17 +138,28 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="float-right">
-                                <h4 class="header-title mb-3">Rp.200.000.000</h4>
+                                <?php $jml_pemeliharaan =  $get_kas['pemeliharaan'] + $get_kas['perbaikan'] ?>
+                                <?php $total_keseluruhan = $pendapatan['invoice_sub_total'] - $get_kas['gaji'] - $get_kas['bank'] - $get_kas['motor'] - $get_kas['listrik'] - $get_kas['telp_internet'] - $get_kas['biaya_tak_terduga'] - $jml_pemeliharaan - $get_kas['sewa'] - $get_kas['pengeluaran_lain'] ?>
+                                <h4 class="header-title mb-3">Rp.<?= rupiah($total_keseluruhan) ?></h4>
                             </div>
                             <h4 class="header-title mb-3">Dikurangi Biaya: </h4>
 
                             <div class="todoapp">
                                 <div class="row">
                                     <div class="col">
+                                        <strong id="todo-message">Gaji Karyawan</strong>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Rp.<?= rupiah($get_kas['gaji']) ?></a>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
                                         <strong id="todo-message">Biaya administrasi bank</strong>
                                     </div>
                                     <div class="col-auto">
-                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Archive</a>
+                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Rp.<?= rupiah($get_kas['bank']) ?></a>
                                     </div>
                                 </div>
 
@@ -157,7 +168,7 @@
                                         <strong id="todo-message">Biaya kendaraan bermotor</strong>
                                     </div>
                                     <div class="col-auto">
-                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Archive</a>
+                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Rp.<?= rupiah($get_kas['motor']) ?></a>
                                     </div>
                                 </div>
 
@@ -166,7 +177,25 @@
                                         <strong id="todo-message">Biaya listrik</strong>
                                     </div>
                                     <div class="col-auto">
-                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Archive</a>
+                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Rp.<?= rupiah($get_kas['listrik']) ?></a>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <strong id="todo-message">Biaya Telp/Internet</strong>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Rp.<?= rupiah($get_kas['telp_internet']) ?></a>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <strong id="todo-message">Biaya Tak Terduga</strong>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Rp.<?= rupiah($get_kas['biaya_tak_terduga']) ?></a>
                                     </div>
                                 </div>
 
@@ -175,7 +204,7 @@
                                         <strong id="todo-message">Biaya perbaikan & pemeliharaan</strong>
                                     </div>
                                     <div class="col-auto">
-                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Rp.12.000.000</a>
+                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Rp.<?= rupiah($jml_pemeliharaan) ?></a>
                                     </div>
                                 </div>
 
@@ -184,7 +213,16 @@
                                         <strong id="todo-message">Biaya sewa</strong>
                                     </div>
                                     <div class="col-auto">
-                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Archive</a>
+                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Rp.<?= rupiah($get_kas['sewa']) ?></a>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <strong id="todo-message">Pengeluaran Lainnya</strong>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a href="javascript:void(0);" class="float-right btn btn-light btn-sm" id="btn-archive">Rp.<?= rupiah($get_kas['pengeluaran_lain']) ?></a>
                                     </div>
                                 </div>
 
@@ -255,84 +293,86 @@
         </div> <!-- container -->
 
     </div> <!-- content -->
-    <?php echo $this->load->view('template/footer');?>
+    <?php echo $this->load->view('template/footer'); ?>
     <script>
         $(document).ready(function() {
-                load_data();
-                function load_data() {
-                    $.ajax({
-                        url: "<?= base_url('dashboard/load_data'); ?>",
-                        type:"post",
-                        dataType: "JSON",
-                        success: function(data) {
-                            var pendapatan = 0;
-                            var total = formatRupiah1(data.total, 'Rp.');
-                            if (data.pendapatan === null) {
-                                pendapatan = formatRupiah3('0','Rp.');
-                                }else{
-                                    pendapatan = formatRupiah2(data.pendapatan, 'Rp.');
-                                }
-                            $('#pendapatan').html(pendapatan);
-                            $('#total_all_pendapatan').html(total);
-                            $('#invoice_cash').html(data.invoice_cash);
-                            $('#jml_barang').html(data.jml_barang);
-                            $('#barang_terjual').html(data.barang_terjual);
-                            // console.log(total);
+            load_data();
+
+            function load_data() {
+                $.ajax({
+                    url: "<?= base_url('dashboard/load_data'); ?>",
+                    type: "post",
+                    dataType: "JSON",
+                    success: function(data) {
+                        var pendapatan = 0;
+                        var total = formatRupiah1(data.total, 'Rp.');
+                        if (data.pendapatan === null) {
+                            pendapatan = formatRupiah3('0', 'Rp.');
+                        } else {
+                            pendapatan = formatRupiah2(data.pendapatan, 'Rp.');
                         }
-                    })
-                }
-                setInterval(function(){ load_data(); },10000);
-            });
+                        $('#pendapatan').html(pendapatan);
+                        $('#total_all_pendapatan').html(total);
+                        $('#invoice_cash').html(data.invoice_cash);
+                        $('#jml_barang').html(data.jml_barang);
+                        $('#barang_terjual').html(data.barang_terjual);
+                        // console.log(total);
+                    }
+                })
+            }
+            setInterval(function() {
+                load_data();
+            }, 10000);
+        });
 
         function formatRupiah1(angka, prefix) {
-                var number_string = angka.replace(/[^,\d]/g, '').toString(),
-                    split = number_string.split(','),
-                    sisa = split[0].length % 3,
-                    rupiah = split[0].substr(0, sisa),
-                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-                // tambahkan titik jika yang di input sudah menjadi angka ribuan
-                if (ribuan) {
-                    separator = sisa ? '.' : '';
-                    rupiah += separator + ribuan.join('.');
-                }
-
-                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-                return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
             }
 
-            function formatRupiah2(angka, prefix) {
-                var number_string = angka.replace(/[^,\d]/g, '').toString(),
-                    split = number_string.split(','),
-                    sisa = split[0].length % 3,
-                    rupiah = split[0].substr(0, sisa),
-                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
 
-                // tambahkan titik jika yang di input sudah menjadi angka ribuan
-                if (ribuan) {
-                    separator = sisa ? '.' : '';
-                    rupiah += separator + ribuan.join('.');
-                }
+        function formatRupiah2(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-                return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
             }
 
-            function formatRupiah3(angka, prefix) {
-                var number_string = angka.replace(/[^,\d]/g, '').toString(),
-                    split = number_string.split(','),
-                    sisa = split[0].length % 3,
-                    rupiah = split[0].substr(0, sisa),
-                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
 
-                // tambahkan titik jika yang di input sudah menjadi angka ribuan
-                if (ribuan) {
-                    separator = sisa ? '.' : '';
-                    rupiah += separator + ribuan.join('.');
-                }
+        function formatRupiah3(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-                return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
             }
-            
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
     </script>

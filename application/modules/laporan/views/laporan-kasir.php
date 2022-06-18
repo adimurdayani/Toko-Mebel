@@ -72,6 +72,11 @@
             $tgl_akhir = $this->input->post('tgl_akhir');
             $invoice_kasir = $this->input->post('invoice_kasir');
 
+            $sql = "SELECT count(if(invoice_kasir='$invoice_kasir', invoice_kasir, NULL)) as invoice_kasir,
+                        sum(if(invoice_kasir='$invoice_kasir', invoice_total, NULL)) as invoice_total
+                        FROM tb_penjualan";
+            $total_penjualan = $this->db->query($sql)->row();
+
             if (!empty($tgl_awal) || !empty($tgl_akhir) || !empty($invoice_kasir)) :
                 $this->db->where('invoice_date >=', date_indo($tgl_awal));
                 $this->db->where('invoice_date <=', date_indo($tgl_akhir));
@@ -113,6 +118,8 @@
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
+                                <div class="float-right mt-4"><strong>Total</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h4 class="text-success">Rp.<?= rupiah($total_penjualan->invoice_total) ?></h4>
+                                </div>
                             </div> <!-- end card body-->
                         </div> <!-- end card -->
                     </div><!-- end col-->
