@@ -27,7 +27,7 @@
                 <div class="col-lg">
                     <div class="card">
                         <div class="card-body table-responsive">
-                            <h4 class="header-title mb-2">Filter data laporan kasir berdasarkan tanggal </h4>
+                            <h4 class="header-title mb-2">Filter data laporan berdasarkan tanggal </h4>
 
                             <form action="" method="POST">
                                 <div class="row">
@@ -48,10 +48,11 @@
 
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="">Nama Kasir</label>
-                                            <select name="invoice_kasir" id="invoice_kasir" class="form-control" data-toggle="select2" required>
-                                                <option value="">-- Pilih Kasir --</option>
-                                                <option value="<?= $get_grup->group_id ?>">Semua Kasir</option>
+                                            <label for="">Pembayaran</label>
+                                            <select name="invoice_tipe_transaksi" id="invoice_tipe_transaksi" class="form-control" data-toggle="select2" required>
+                                                <option value="">-- Pilih pembayaran --</option>
+                                                <option value="0">Cash</option>
+                                                <option value="1">Transfer</option>
                                             </select>
                                         </div>
                                     </div>
@@ -70,17 +71,17 @@
 
             $tgl_awal = $this->input->post('tgl_awal');
             $tgl_akhir = $this->input->post('tgl_akhir');
-            $invoice_kasir = $this->input->post('invoice_kasir');
+            $invoice_tipe_transaksi = $this->input->post('invoice_tipe_transaksi');
 
-            $sql = "SELECT count(if(invoice_kasir='$invoice_kasir', invoice_kasir, NULL)) as invoice_kasir,
-                        sum(if(invoice_kasir='$invoice_kasir', invoice_total, NULL)) as invoice_total
+            $sql = "SELECT count(if(invoice_tipe_transaksi='$invoice_tipe_transaksi', invoice_tipe_transaksi, NULL)) as invoice_tipe_transaksi,
+                        sum(if(invoice_tipe_transaksi='$invoice_tipe_transaksi', invoice_total, NULL)) as invoice_total
                         FROM tb_penjualan";
             $total_penjualan = $this->db->query($sql)->row();
 
-            if (!empty($tgl_awal) || !empty($tgl_akhir) || !empty($invoice_kasir)) :
+            if (!empty($tgl_awal) || !empty($tgl_akhir) || !empty($invoice_tipe_transaksi)) :
                 $this->db->where('invoice_date >=', date_indo($tgl_awal));
                 $this->db->where('invoice_date <=', date_indo($tgl_akhir));
-                $this->db->where('invoice_kasir', $invoice_kasir);
+                $this->db->where('invoice_tipe_transaksi', $invoice_tipe_transaksi);
                 $get_penjualan = $this->db->get('tb_penjualan')->result();
             ?>
                 <div class="row">
@@ -99,20 +100,20 @@
                                             <th>No</th>
                                             <th>Invoice</th>
                                             <th>Tanggal</th>
-                                            <th>Kasir</th>
+                                            <th>Kostumer</th>
                                             <th>Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $no = 1;
                                         foreach ($get_penjualan as $data) :
-                                            $user = $this->db->get_where('users', ['id' => $data->invoice_kasir])->row();
+                                            $user = $this->db->get_where('tb_kostumer', ['id_kostumer' => $data->invoice_costumer])->row();
                                         ?>
                                             <tr>
                                                 <td><?= $no++ ?></td>
                                                 <td><?= $data->penjualan_invoice ?></td>
                                                 <td><?= $data->invoice_tgl ?></td>
-                                                <td><?= $user->first_name ?></td>
+                                                <td><?= $user->nama ?></td>
                                                 <td>Rp.<?= rupiah($data->invoice_total) ?></td>
                                             </tr>
                                         <?php endforeach; ?>

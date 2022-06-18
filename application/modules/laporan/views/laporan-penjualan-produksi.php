@@ -27,7 +27,7 @@
                 <div class="col-lg">
                     <div class="card">
                         <div class="card-body table-responsive">
-                            <h4 class="header-title mb-2">Filter data laporan kasir berdasarkan tanggal </h4>
+                            <h4 class="header-title mb-2">Filter data laporan berdasarkan tanggal </h4>
 
                             <form action="" method="POST">
                                 <div class="row">
@@ -48,10 +48,12 @@
 
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="">Nama Kasir</label>
-                                            <select name="invoice_kasir" id="invoice_kasir" class="form-control" data-toggle="select2" required>
-                                                <option value="">-- Pilih Kasir --</option>
-                                                <option value="<?= $get_grup->group_id ?>">Semua Kasir</option>
+                                            <label for="">Nama Produksi</label>
+                                            <select name="id_produksi" id="id_produksi" class="form-control" data-toggle="select2" required>
+                                                <option value="">-- Pilih Produksi --</option>
+                                                <?php foreach ($get_produk as $data) : ?>
+                                                    <option value="<?= $data->id_produksi ?>"><?= $data->produksi_nama ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
                                     </div>
@@ -70,18 +72,21 @@
 
             $tgl_awal = $this->input->post('tgl_awal');
             $tgl_akhir = $this->input->post('tgl_akhir');
-            $invoice_kasir = $this->input->post('invoice_kasir');
+            $id_produksi = $this->input->post('id_produksi');
 
-            $sql = "SELECT count(if(invoice_kasir='$invoice_kasir', invoice_kasir, NULL)) as invoice_kasir,
-                        sum(if(invoice_kasir='$invoice_kasir', invoice_total, NULL)) as invoice_total
-                        FROM tb_penjualan";
-            $total_penjualan = $this->db->query($sql)->row();
+            $sql = "SELECT count(if(id_produksi='$id_produksi', id_produksi, NULL)) as id_produksi,
+                        sum(if(id_produksi='$id_produksi', produksi_terjual, NULL)) as produksi_terjual
+                        FROM tb_produksi";
+            $total_terjual = $this->db->query($sql)->row();
 
-            if (!empty($tgl_awal) || !empty($tgl_akhir) || !empty($invoice_kasir)) :
-                $this->db->where('invoice_date >=', date_indo($tgl_awal));
-                $this->db->where('invoice_date <=', date_indo($tgl_akhir));
-                $this->db->where('invoice_kasir', $invoice_kasir);
-                $get_penjualan = $this->db->get('tb_penjualan')->result();
+            if (!empty($tgl_awal) || !empty($tgl_akhir) || !empty($id_produksi)) :
+                $this->db->where('updated_at >=', date_indo($tgl_awal));
+                $this->db->where('updated_at <=', date_indo($tgl_akhir));
+                $this->db->where('id_produksi', $id_produksi);
+                $get_penjualan = $this->db->get('tb_produksi')->result();
+
+                $this->db->where('id_produksi', $id_produksi);
+                $get_total = $this->db->get('tb_produksi')->num_rows();
             ?>
                 <div class="row">
                     <div class="col-lg">
@@ -99,27 +104,25 @@
                                             <th>No</th>
                                             <th>Invoice</th>
                                             <th>Tanggal</th>
-                                            <th>Kasir</th>
-                                            <th>Total</th>
+                                            <th>Produk</th>
+                                            <th>QTY Terjual</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $no = 1;
-                                        foreach ($get_penjualan as $data) :
-                                            $user = $this->db->get_where('users', ['id' => $data->invoice_kasir])->row();
-                                        ?>
+                                        foreach ($get_penjualan as $data) : ?>
                                             <tr>
                                                 <td><?= $no++ ?></td>
-                                                <td><?= $data->penjualan_invoice ?></td>
-                                                <td><?= $data->invoice_tgl ?></td>
-                                                <td><?= $user->first_name ?></td>
-                                                <td>Rp.<?= rupiah($data->invoice_total) ?></td>
+                                                <td><?= $data->produksi_invoice ?></td>
+                                                <td><?= $data->updated_at ?></td>
+                                                <td><?= $data->produksi_nama ?></td>
+                                                <td><?= $data->produksi_terjual ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
-                                <div class="float-right mt-4"><strong>Total</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <h4 class="text-success">Rp.<?= rupiah($total_penjualan->invoice_total) ?></h4>
+                                <div class="float-right mt-4">
+                                    <h4><strong>Total</strong> <strong class="text-success">terjual <?= $get_total ?>x</strong> dengan jumlah keseluruhan <strong>QTY Terjual <?= $total_terjual->produksi_terjual ?></strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </h4>
                                 </div>
                             </div> <!-- end card body-->
                         </div> <!-- end card -->
