@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-lg-4 col-xl-4">
                     <div class="card-box text-center">
-                        <img src="../assets/images/users/user-1.jpg" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image">
+                        <img src="<?= base_url('assets') ?>/images/users/user.png" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image">
 
                         <h4 class="mb-0"><?= $session->first_name ?> <?= $session->last_name ?></h4>
                         <p class="text-muted"><?= $session->username ?></p>
