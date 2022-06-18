@@ -33,6 +33,27 @@ class Barang extends CI_Controller
         }
     }
 
+    public function inden()
+    {
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth', 'refresh');
+        } else {
+            $data['title'] = "Barang";
+            $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+
+            $data['get_barang'] = $this->m_data->get_all_barang();
+            $data['jml_barang_detail'] = $this->db->get('tb_barang_detail')->num_rows();
+            $data['get_barang_detail'] = $this->db->get('tb_barang_detail')->result();
+            $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+
+            $this->load->view('template/header', $data, FALSE);
+            $this->load->view('template/topbar', $data, FALSE);
+            $this->load->view('template/sidebar', $data, FALSE);
+            $this->load->view('barang-inden', $data, FALSE);
+            $this->load->view('template/footer', $data, FALSE);
+        }
+    }
+
     public function tambah()
     {
         if (!$this->ion_auth->logged_in()) {

@@ -29,21 +29,22 @@
                         <div class="card-body table-responsive">
                             <ul class="nav nav-tabs">
                                 <li class="nav-item">
-                                    <a href="#tersedia" class="nav-link active">
+                                    <a href="<?= base_url('master/barang') ?>" class="nav-link ">
                                         Barang Tersedia
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= base_url('master/barang/inden') ?>" class="nav-link">
+                                    <a href="#inden" class="nav-link active">
                                         Barang Inden
                                     </a>
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane show active" id="tersedia">
+                                <div class="tab-pane show active" id="inden">
+
                                     <form action="<?= base_url('master/barang/hapus_all/') ?>" method="POST" id="form-delete">
 
-                                        <a href="<?= base_url('master/barang/tambah') ?>" class="btn btn-outline-info mb-3 "><i class="fe-plus"></i> Tambah Data</a>
+                                        <a href="<?= base_url('master/barang/tambah') ?>" class="btn btn-outline-info mb-3"><i class="fe-plus"></i> Tambah Data</a>
                                         <button type="submit" class="btn btn-outline-danger mb-3" id="hapus"><i class="fe-trash"></i> Hapus</button>
 
                                         <table id="basic-datatable" class="table nowrap w-100">
@@ -66,54 +67,57 @@
 
                                                 <?php $no = 1;
                                                 foreach ($get_barang as $data) : ?>
-                                                    <tr>
-                                                        <td><input type="checkbox" class="check-item" name="id_barang[]" value="<?= $data->id_barang ?>"></td>
-                                                        <td class="text-center">
-                                                            <a href="javascript:void(0);" class="btn btn-sm btn-info" data-target="#detail<?= $data->id_barang ?>" data-toggle="modal" title="Detail <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
-                                                            <a href="<?= base_url('master/barang/edit/') . base64_encode($data->id_barang) ?>" class="btn btn-sm btn-warning" title="Edit <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
-                                                            <a href="<?= base_url('master/barang/hapus/') . base64_encode($data->id_barang) ?>" class="btn btn-sm btn-danger hapus" title="Hapus <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
-                                                        </td>
-                                                        <td class="text-center"><?= $no++ ?></td>
-                                                        <td><?= $data->barang_kode ?></td>
-                                                        <td><?= $data->barang_nama ?></td>
-                                                        <td>
-                                                            <?php if ($data->barang_harga_beli != null) : ?>
-                                                                Rp.<?= rupiah($data->barang_harga_beli) ?>
-                                                            <?php else : ?>
-                                                                Rp.0
-                                                            <?php endif; ?>
-                                                        </td>
-                                                        <td>
-                                                            <?php if ($data->barang_harga != null) : ?>
-                                                                Rp.<?= rupiah($data->barang_harga) ?>
-                                                            <?php else : ?>
-                                                                Rp.0
-                                                            <?php endif; ?>
-                                                        </td>
-                                                        <td>
-                                                            <?php if ($data->barang_stok > 0) : ?>
-                                                                <?= $data->barang_stok ?> <?= $data->nama_satuan ?>
-                                                            <?php else : ?>
-                                                                <div class="badge badge-danger">Habis</div>
-                                                            <?php endif; ?>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <?php if ($data->barang_kategori_id == 7) : ?>
-                                                                <?php if ($jml_barang_detail == 0) : ?>
-                                                                    <a href="javascript:void(0);" data-target="#tambah-detailbarang<?= $data->barang_kode ?>" data-toggle="modal" class="badge badge-success" title="Tambah panjang x lebar barang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-plus"></i></a>
-                                                                <?php elseif ($jml_barang_detail != 0) : ?>
-                                                                    <a href="javascript:void(0);" data-target="#edit<?= $data->barang_kode ?>" data-toggle="modal" class="badge badge-warning" title="Edit panjang x lebar barang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                    <?php if ($data->status_barang == 0) : ?>
+                                                        <tr>
+                                                            <td><input type="checkbox" class="check-item" name="id_barang[]" value="<?= $data->id_barang ?>"></td>
+                                                            <td class="text-center">
+                                                                <a href="javascript:void(0);" class="btn btn-sm btn-info" data-target="#detail<?= $data->id_barang ?>" data-toggle="modal" title="Detail <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
+                                                                <a href="<?= base_url('master/barang/edit/') . base64_encode($data->id_barang) ?>" class="btn btn-sm btn-warning" title="Edit <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                                <a href="<?= base_url('master/barang/hapus/') . base64_encode($data->id_barang) ?>" class="btn btn-sm btn-danger hapus" title="Hapus <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
+                                                            </td>
+                                                            <td class="text-center"><?= $no++ ?></td>
+                                                            <td><?= $data->barang_kode ?></td>
+                                                            <td><?= $data->barang_nama ?></td>
+                                                            <td>
+                                                                <?php if ($data->barang_harga_beli != null) : ?>
+                                                                    Rp.<?= rupiah($data->barang_harga_beli) ?>
+                                                                <?php else : ?>
+                                                                    Rp.0
                                                                 <?php endif; ?>
-                                                            <?php endif; ?>
-                                                        </td>
-                                                        <td class="text-center"><input type="checkbox" class="ubahstatusbarang" <?= check_status_barang($data->status_barang) ?> data-statusid="<?= $data->id_barang ?>" data-statusbarang="<?= $data->status_barang ?>"></td>
-                                                    </tr>
+                                                            </td>
+                                                            <td>
+                                                                <?php if ($data->barang_harga != null) : ?>
+                                                                    Rp.<?= rupiah($data->barang_harga) ?>
+                                                                <?php else : ?>
+                                                                    Rp.0
+                                                                <?php endif; ?>
+                                                            </td>
+                                                            <td>
+                                                                <?php if ($data->barang_stok > 0) : ?>
+                                                                    <?= $data->barang_stok ?> <?= $data->nama_satuan ?>
+                                                                <?php else : ?>
+                                                                    <div class="badge badge-danger">Habis</div>
+                                                                <?php endif; ?>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <?php if ($data->barang_kategori_id == 7) : ?>
+                                                                    <?php if ($jml_barang_detail == 0) : ?>
+                                                                        <a href="javascript:void(0);" data-target="#tambah-detailbarang<?= $data->barang_kode ?>" data-toggle="modal" class="badge badge-success" title="Tambah panjang x lebar barang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-plus"></i></a>
+                                                                    <?php elseif ($jml_barang_detail != 0) : ?>
+                                                                        <a href="javascript:void(0);" data-target="#edit<?= $data->barang_kode ?>" data-toggle="modal" class="badge badge-warning" title="Edit panjang x lebar barang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                                    <?php endif; ?>
+                                                                <?php endif; ?>
+                                                            </td>
+                                                            <td class="text-center"><input type="checkbox" class="ubahstatusbarang" <?= check_status_barang($data->status_barang) ?> data-statusid="<?= $data->id_barang ?>" data-statusbarang="<?= $data->status_barang ?>"></td>
+                                                        </tr>
+                                                    <?php endif; ?>
                                                 <?php endforeach; ?>
                                             </tbody>
                                         </table>
                                     </form>
                                 </div>
                             </div>
+
                         </div> <!-- end card body-->
                     </div> <!-- end card -->
                 </div><!-- end col-->
