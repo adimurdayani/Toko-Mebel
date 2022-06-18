@@ -84,15 +84,17 @@
                                                 <th class="text-center">Nama Barang</th>
                                                 <th class="text-center" style="width: 20%">Detail</th>
                                                 <th class="text-center" style="width: 10%">Qty</th>
-                                                <th class="text-center" style="width: 10%">Harga Modal</th>
+                                                <th class="text-center" style="width: 10%">Harga</th>
                                                 <th style="width: 10%" class="text-right">Sub Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php $no = 1;
                                             $subtotal = 0;
+                                            $total = 0;
                                             foreach ($get_invoice_produksi as $data) :
-                                                $subtotal  = $data->detail_barang_qty * $data->detail_harga_jual
+                                                $subtotal  = $data->detail_barang_qty * $data->detail_harga_modal;
+                                                $total += $subtotal;
                                             ?>
                                                 <tr>
                                                     <td class="text-center"><?= $no++ ?></td>
@@ -114,10 +116,14 @@
                                                         <?php endif; ?>
                                                     </td>
                                                     <td class="text-center"><?= $data->detail_barang_qty ?></td>
-                                                    <td class="text-right">Rp.<?= rupiah($data->detail_harga_jual) ?></td>
+                                                    <td class="text-right">Rp.<?= rupiah($data->detail_harga_modal) ?></td>
                                                     <td class="text-right">Rp.<?= rupiah($subtotal) ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
+                                            <tr>
+                                                <td colspan="5" class="text-right"><strong>Total</strong></td>
+                                                <td class="text-right"><strong>Rp.<?= rupiah($total) ?></strong></td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div> <!-- end table-responsive -->
@@ -137,8 +143,8 @@
                             </div> <!-- end col -->
                             <div class="col-sm-6">
                                 <div class="float-right">
-                                    <p><b>Total Harga Jual &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;</b> <span class="float-right">Rp.<?= rupiah($get_produksi->produksi_harga_total) ?></span></p>
-                                    <h3 class="text-success">Rp.<?= rupiah($get_produksi->produksi_harga_total) ?></h3>
+                                    <p><b>Total Harga Jual &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;</b> <span class="float-right">Rp.<?= rupiah($total) ?></span></p>
+                                    <h3 class="text-success">Rp.<?= rupiah($total) ?></h3>
                                 </div>
                                 <div class="clearfix"></div>
                             </div> <!-- end col -->

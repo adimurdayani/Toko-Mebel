@@ -115,7 +115,7 @@ class Transaksi_cash extends CI_Controller
         $keranjang_harga = $_POST['keranjang_harga'];
         $penjualan_invoice = $_POST['penjualan_invoice'];
         $penjualan_invoice_count = $this->input->post('penjualan_invoice_count');
-        $invoice_total_beli = $this->input->post('invoice_total_beli');
+        $invoice_total_beli = preg_replace("/[^0-9]/", "", $this->input->post('invoice_total_beli'));
         $penjualan_invoice_get = $this->input->post('penjualan_invoice_get');
 
         $getid = $this->db->get('tb_produksi')->result_array();
@@ -159,17 +159,17 @@ class Transaksi_cash extends CI_Controller
             'invoice_status_kurir' => 1,
             'invoice_tipe_transaksi' => $this->input->post('invoice_tipe_pembayaran'),
             'invoice_total_beli' => $invoice_total_beli,
-            'invoice_total' => $this->input->post('total'),
-            'invoice_sub_total' => $this->input->post('total'),
-            'invoice_bayar' =>  $this->input->post('bayar'),
-            'invoice_kembali' => $this->input->post('total') - $this->input->post('bayar'),
+            'invoice_total' => preg_replace("/[^0-9]/", "", $this->input->post('total')),
+            'invoice_sub_total' => preg_replace("/[^0-9]/", "", $this->input->post('total')),
+            'invoice_bayar' =>  preg_replace("/[^0-9]/", "", $this->input->post('bayar')),
+            'invoice_kembali' => preg_replace("/[^0-9]/", "", $this->input->post('kembali')),
             'invoice_kasir' => $user->id,
             'invoice_date' => date_indo('Y-m-d'),
             'invoice_total_beli_lama' => $invoice_total_beli,
-            'invoice_total_lama' => $this->input->post('total'),
-            'invoice_sub_total_lama' => $this->input->post('total'),
-            'invoice_bayar_lama' => $this->input->post('bayar'),
-            'invoice_kembali_lama' => $this->input->post('total') - $this->input->post('bayar'),
+            'invoice_total_lama' => preg_replace("/[^0-9]/", "", $this->input->post('total')),
+            'invoice_sub_total_lama' => preg_replace("/[^0-9]/", "", $this->input->post('total')),
+            'invoice_bayar_lama' => preg_replace("/[^0-9]/", "", $this->input->post('bayar')),
+            'invoice_kembali_lama' => preg_replace("/[^0-9]/", "", $this->input->post('kembali')),
             'invoice_piutang' => 0,
             'invoice_piutang_dp' => 0,
             'invoice_piutang_jatuh_tempo' => 0,

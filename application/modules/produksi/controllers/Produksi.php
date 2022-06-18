@@ -65,6 +65,7 @@ class Produksi extends CI_Controller
         $parent = $today . $jml;
 
         $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+        $this->_update_barang($data_barang->id_barang);
 
         $data = [
             'keranjang_invoice_parent' => $parent,
@@ -72,9 +73,9 @@ class Produksi extends CI_Controller
             'keranjang_kategori_barang' => $data_barang->barang_kategori_id,
             'keranjang_kode_barang' => $data_barang->barang_kode,
             'keranjang_barang_qty' => 1,
-            'keranjang_harga_modal' => $data_barang->barang_harga_beli,
-            'keranjang_harga_jual' => $data_barang->barang_harga,
-            'keranjang_harga_total' => $data_barang->barang_harga,
+            'keranjang_harga_modal' => $data_barang->barang_harga,
+            'keranjang_harga_jual' => $data_barang->barang_harga_beli,
+            'keranjang_harga_total' => $data_barang->barang_harga_beli,
             'keranjang_date' => date_indo("Y-m-d"),
             'keranjang_kasir_id' => $user->id,
             'keranjang_panjang' => 0,
@@ -92,6 +93,7 @@ class Produksi extends CI_Controller
         $today = date_indo('Ymd');
         $parent = $today . $jml;
         $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+        $this->_update_barang($data_barang->id_barang);
 
         $data = [
             'keranjang_invoice_parent' => $parent,
@@ -99,9 +101,9 @@ class Produksi extends CI_Controller
             'keranjang_kategori_barang' => $data_barang->barang_kategori_id,
             'keranjang_kode_barang' => $data_barang->barang_kode,
             'keranjang_barang_qty' => 1,
-            'keranjang_harga_modal' => $data_barang->barang_harga_beli,
-            'keranjang_harga_jual' => $data_barang->barang_harga,
-            'keranjang_harga_total' => $data_barang->barang_harga,
+            'keranjang_harga_modal' => $data_barang->barang_harga,
+            'keranjang_harga_jual' => $data_barang->barang_harga_beli,
+            'keranjang_harga_total' => $data_barang->barang_harga_beli,
             'keranjang_date' => date_indo("Y-m-d"),
             'keranjang_kasir_id' => $user->id,
             'keranjang_panjang' => 0,
@@ -118,8 +120,8 @@ class Produksi extends CI_Controller
 
         if ($getiddetail->detail_panjang > 1 && $getiddetail->detail_lebar > 1) {
             $data = [
-                'keranjang_harga_modal' => $this->input->post('keranjang_harga_modal'),
-                'keranjang_harga_total' =>  $this->input->post('keranjang_harga_modal'),
+                'keranjang_harga_modal' => preg_replace("/[^0-9]/", "", $this->input->post('keranjang_harga_modal')),
+                'keranjang_harga_total' =>  preg_replace("/[^0-9]/", "", $this->input->post('keranjang_harga_modal')),
                 'keranjang_panjang' => $this->input->post('keranjang_panjang'),
                 'keranjang_lebar' => $this->input->post('keranjang_lebar')
             ];
@@ -154,10 +156,10 @@ class Produksi extends CI_Controller
 
     private function _update_barang($id)
     {
-        $barang = $this->db->get('tb_barang', ['id_barang' => $id])->row();
+        $barang = $this->db->get_where('tb_barang', ['id_barang' => $id])->row();
         $data = [
             'barang_stok' => $barang->barang_stok - 1,
-            'barang_terjual' => $barang->barang_stok + 1
+            'barang_terjual' => $barang->barang_terjual + 1
         ];
         $this->db->where('id_barang', $barang->id_barang);
         $this->db->update('tb_barang', $data);
@@ -183,10 +185,10 @@ class Produksi extends CI_Controller
 
     private function _update_barang_dua($id)
     {
-        $barang = $this->db->get('tb_barang', ['id_barang' => $id])->row();
+        $barang = $this->db->get_where('tb_barang', ['id_barang' => $id])->row();
         $data = [
             'barang_stok' => $barang->barang_stok + 1,
-            'barang_terjual' => $barang->barang_stok - 1
+            'barang_terjual' => $barang->barang_terjual - 1
         ];
         $this->db->where('id_barang', $barang->id_barang);
         $this->db->update('tb_barang', $data);
@@ -257,9 +259,9 @@ class Produksi extends CI_Controller
             'produksi_nama' => $this->input->post('produksi_nama'),
             'produksi_keterangan' => $this->input->post('produksi_keterangan'),
             'produksi_invoice' => $this->input->post('produksi_invoice'),
-            'produksi_harga_modal' => $this->input->post('produksi_harga_modal'),
-            'produksi_harga_jual' => $this->input->post('produksi_harga_jual'),
-            'produksi_harga_total' => $this->input->post('produksi_harga_jual'),
+            'produksi_harga_modal' => preg_replace("/[^0-9]/", "", $this->input->post('produksi_harga_modal')),
+            'produksi_harga_jual' => preg_replace("/[^0-9]/", "", $this->input->post('produksi_harga_jual')),
+            'produksi_harga_total' => preg_replace("/[^0-9]/", "", $this->input->post('produksi_harga_jual')),
             'produksi_stok' => $this->input->post('produksi_stok'),
             'produksi_status' => "Dalam pesanan",
             'created_at' => date_indo('Y-m-d') . ' - ' . date('H:i:s'),

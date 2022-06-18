@@ -27,7 +27,7 @@
             <?php
             $jml = $this->db->get('tb_pembelian_session')->num_rows();
             if ($jml > 0) {
-                $kode_barang = $get_pembelian_session['pembelian_input'];
+                $kode_barang = isset($get_pembelian_session['pembelian_input']);
             } else {
                 $kode_barang = 0;
             }
@@ -59,7 +59,11 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <h5>No.Invoice:</h5>
-                                                    <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $kode_barang; ?>" id="invoice" readonly>
+                                                    <?php if ($kode_barang != null) : ?>
+                                                        <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $get_pembelian_session['pembelian_input']; ?>" id="invoice" readonly>
+                                                    <?php else : ?>
+                                                        <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $get_pembelian_session['pembelian_input']; ?>" id="invoice" readonly>
+                                                    <?php endif; ?>
                                                     <?php if ($kode_barang == null) : ?>
                                                         <div class="input-group-append">
                                                             <button class="btn btn-info waves-effect waves-light" title="Tambah no. invoice" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#tambah" type="button"><i class="fe-plus"></i></button>

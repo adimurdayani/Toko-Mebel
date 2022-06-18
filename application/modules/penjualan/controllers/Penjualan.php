@@ -38,7 +38,7 @@ class Penjualan extends CI_Controller
             $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
 
             $no_invoice = base64_decode($get_invoice);
-            $data['get_kostumer'] = $this->m_penjualan->get_kostumer();
+            $data['get_kostumer'] = $this->m_penjualan->get_kostumer($no_invoice);
             $data['get_invoice_penjualan'] = $this->m_penjualan->get_all_invoice($no_invoice);
             $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
 

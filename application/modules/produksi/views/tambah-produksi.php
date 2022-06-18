@@ -94,7 +94,7 @@
                                         $user_group = $this->db->get_where('users_groups', ['user_id' => $session->id])->row();
                                     ?>
                                         <?php if ($data->keranjang_kasir_id == $user_group->group_id) : ?>
-                                            <?php $harga_modal += $data->keranjang_harga_total; ?>
+                                            <?php $harga_modal += $data->keranjang_harga_modal; ?>
                                             <tr>
                                                 <td style="vertical-align: middle;" class="text-center"><?= $data->keranjang_kode_barang ?></td>
                                                 <td style="vertical-align: middle;"><?= $data->barang_nama ?></td>
@@ -164,7 +164,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                     </div>
-                                                    <input type="number" name="produksi_harga_modal" id="produksi_harga_modal" class="form-control" value="<?= $harga_modal ?>" readonly>
+                                                    <input type="text" name="produksi_harga_modal" id="produksi_harga_modal" class="form-control" value="<?= rupiah($harga_modal) ?>">
                                                 </div>
                                             </div>
 
@@ -177,7 +177,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                     </div>
-                                                    <input type="number" name="produksi_harga_jual" id="produksi_harga_jual" class="form-control" value="<?= set_value('produksi_harga_jual') ?>" required>
+                                                    <input type="text" name="produksi_harga_jual" id="produksi_harga_jual" class="form-control" value="<?= set_value('produksi_harga_jual') ?>" required>
                                                 </div>
                                             </div>
 
@@ -210,7 +210,7 @@
                                 <?php endif; ?>
                             <?php endif; ?>
 
-                            <a href="javascript:history.go(-1)" class="btn btn-secondary mt-4 float-right mr-2"><i class="fe-arrow-left"></i> Kembali</a>
+                            <a href="<?= base_url('produksi') ?>" class="btn btn-secondary mt-4 float-right mr-2"><i class="fe-arrow-left"></i> Kembali</a>
                             <?= form_close() ?>
 
                         </div> <!-- end card body-->
@@ -325,7 +325,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                 </div>
-                                <input type="number" name="keranjang_harga_modal" id="keranjang_harga_modal" class="form-control" value="<?= $tambah->keranjang_harga_modal ?>">
+                                <input type="text" name="keranjang_harga_modal" id="keranjang_harga_modal" class="form-control" value="<?= rupiah($tambah->keranjang_harga_modal) ?>">
                             </div>
                         </div>
 
@@ -381,7 +381,7 @@
                         <input type="hidden" name="id_session" value="<?= base64_encode($get_session_invoice['id_session']) ?>">
                         <div class="form-group mb-3">
                             <label for="session_invoice">No. Invoice <span class="text-danger">*</span></label>
-                            <input type="text" id="session_invoice" name="session_invoice" class="form-control" value="<?= $get_session_invoice['session_invoice'] ?>" require>
+                            <input type="text" id="session_invoice" name="session_invoice" class="form-control" value="<?= $get_session_invoice['session_invoice'] ?>" required>
                         </div>
 
                     </div>
@@ -439,4 +439,35 @@
                 }
             })
         });
+
+        var keranjang_harga_modal = document.getElementById('keranjang_harga_modal');
+        keranjang_harga_modal.addEventListener('keyup', function(e) {
+            keranjang_harga_modal.value = formatRupiah(this.value);
+        });
+
+        var produksi_harga_jual = document.getElementById('produksi_harga_jual');
+        produksi_harga_jual.addEventListener('keyup', function(e) {
+            produksi_harga_jual.value = formatRupiah(this.value);
+        });
+        var produksi_harga_modal = document.getElementById('produksi_harga_modal');
+        produksi_harga_modal.addEventListener('keyup', function(e) {
+            produksi_harga_modal.value = formatRupiah(this.value);
+        });
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
     </script>

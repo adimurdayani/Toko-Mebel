@@ -33,11 +33,12 @@ class M_penjualan extends CI_Model
         return $this->db->query($queryPenjualan)->result();
     }
 
-    public function get_kostumer()
+    public function get_kostumer($no_invoice)
     {
         $querybarang = "SELECT *
                         FROM `tb_penjualan`
                         JOIN  `tb_kostumer` ON `tb_penjualan`.`invoice_costumer` = `tb_kostumer`.`id_kostumer`
+                        WHERE `tb_penjualan`.`penjualan_invoice`=$no_invoice
                         ORDER BY `tb_penjualan`.`invoice_id` DESC
                         ";
         return $this->db->query($querybarang)->row();

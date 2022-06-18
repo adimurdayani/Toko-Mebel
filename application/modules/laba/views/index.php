@@ -39,7 +39,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="number" name="gaji" class="form-control" value="0">
+                                            <input type="text" name="gaji" class="form-control" id="gaji" value="0">
                                         </div>
                                     </div>
 
@@ -49,7 +49,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="number" name="listrik" class="form-control" value="0">
+                                            <input type="text" name="listrik" id="listrik" class="form-control" value="0">
                                         </div>
                                     </div>
 
@@ -59,7 +59,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="number" name="telp_internet" class="form-control" value="0">
+                                            <input type="text" name="telp_internet" id="telp_internet" class="form-control" value="0">
                                         </div>
                                     </div>
 
@@ -69,7 +69,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="number" name="bank" class="form-control" value="0">
+                                            <input type="text" name="bank" id="bank" class="form-control" value="0">
                                         </div>
                                     </div>
 
@@ -79,7 +79,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="number" name="pemeliharaan" class="form-control" value="0">
+                                            <input type="text" name="pemeliharaan" id="pemeliharaan" class="form-control" value="0">
                                         </div>
                                     </div>
 
@@ -92,7 +92,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="number" name="perbaikan" class="form-control" value="0">
+                                            <input type="text" name="perbaikan" id="perbaikan" class="form-control" value="0">
                                         </div>
                                     </div>
 
@@ -102,7 +102,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="number" name="sewa" class="form-control" value="0">
+                                            <input type="text" name="sewa" id="sewa" class="form-control" value="0">
                                         </div>
                                     </div>
 
@@ -112,7 +112,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="number" name="motor" class="form-control" value="0">
+                                            <input type="text" name="motor" id="motor" class="form-control" value="0">
                                         </div>
                                     </div>
 
@@ -122,7 +122,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="number" name="pengeluaran_lain" class="form-control" value="0">
+                                            <input type="text" name="pengeluaran_lain" id="pengeluaran_lain" class="form-control" value="0">
                                         </div>
                                     </div>
 
@@ -132,7 +132,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="number" name="biaya_tak_terduga" class="form-control" value="0">
+                                            <input type="text" name="biaya_tak_terduga" id="biaya_tak_terduga" class="form-control" value="0">
                                         </div>
                                     </div>
 
@@ -151,3 +151,73 @@
         </div> <!-- container -->
 
     </div> <!-- content -->
+
+    <?php echo $this->load->view('template/footer'); ?>
+    <script type="text/javascript">
+        var bank = document.getElementById('bank');
+        bank.addEventListener('keyup', function(e) {
+            bank.value = formatRupiah(this.value);
+        });
+
+        var motor = document.getElementById('motor');
+        motor.addEventListener('keyup', function(e) {
+            motor.value = formatRupiah(this.value);
+        });
+
+        var listrik = document.getElementById('listrik');
+        listrik.addEventListener('keyup', function(e) {
+            listrik.value = formatRupiah(this.value);
+        });
+
+        var perbaikan = document.getElementById('perbaikan');
+        perbaikan.addEventListener('keyup', function(e) {
+            perbaikan.value = formatRupiah(this.value);
+        });
+
+        var pemeliharaan = document.getElementById('pemeliharaan');
+        pemeliharaan.addEventListener('keyup', function(e) {
+            pemeliharaan.value = formatRupiah(this.value);
+        });
+
+        var sewa = document.getElementById('sewa');
+        sewa.addEventListener('keyup', function(e) {
+            sewa.value = formatRupiah(this.value);
+        });
+
+        var pengeluaran_lain = document.getElementById('pengeluaran_lain');
+        pengeluaran_lain.addEventListener('keyup', function(e) {
+            pengeluaran_lain.value = formatRupiah(this.value);
+        });
+
+        var telp_internet = document.getElementById('telp_internet');
+        telp_internet.addEventListener('keyup', function(e) {
+            telp_internet.value = formatRupiah(this.value);
+        });
+
+        var biaya_tak_terduga = document.getElementById('biaya_tak_terduga');
+        biaya_tak_terduga.addEventListener('keyup', function(e) {
+            biaya_tak_terduga.value = formatRupiah(this.value);
+        });
+
+        var gaji = document.getElementById('gaji');
+        gaji.addEventListener('keyup', function(e) {
+            gaji.value = formatRupiah(this.value);
+        });
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
+    </script>

@@ -45,31 +45,23 @@
 
                                     <?php $no = 1;
                                     foreach ($get_penjualan_invoice as $data) : ?>
-                                        <?php if ($data->invoice_piutang == 0 && $data->invoice_kasir == $session->id) : ?>
-                                            <tr>
-                                                <td class="text-center">
-                                                    <a href="<?= base_url('penjualan/detail_invoice/') . base64_encode($data->penjualan_invoice) ?>" class="btn btn-sm btn-success" title="Detail Invoice Penjualan" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
-                                                    <!-- <a href="<?= base_url('penjualan/detail_invoice/') . base64_encode($data->penjualan_invoice) ?>" class="btn btn-sm btn-warning" title="Retur Penjualan" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a> -->
-                                                    <a href="javascript:void(0);" data-target="#edit-kurir<?= $data->invoice_id ?>" class="btn btn-sm btn-secondary" data-toggle="modal" title="Edit Kurir" data-plugin="tippy" data-tippy-placement="top"><i class="fe-user-plus"></i></a>
-                                                    <a href="<?= base_url('penjualan/cetak_nota/') . base64_encode($data->penjualan_invoice) ?>" target="_blank" class="btn btn-sm btn-primary" title="Cetak Nota" data-plugin="tippy" data-tippy-placement="top"><i class="fe-printer"></i></a>
-                                                    <a href="<?= base_url('penjualan/surat_jalan/') . base64_encode($data->penjualan_invoice) ?>" target="_blank" class="btn btn-sm btn-blue" title="Cetak Surat Jalan" data-plugin="tippy" data-tippy-placement="top"><i class="fe-printer"></i></a>
-                                                </td>
-                                                <td><?= $no++ ?></td>
-                                                <td><?= $data->penjualan_invoice ?></td>
-                                                <td><?= $data->invoice_tgl ?></td>
-                                                <td>
-                                                    <?php if ($data->invoice_costumer == 0) : ?>
-                                                        Costumer Umum
-                                                    <?php else :
-                                                        $costumer = $this->db->get_where('tb_kostumer', ['id_kostumer' => $data->invoice_costumer])->row();
-                                                    ?>
-                                                        <?= $costumer->nama ?>
-                                                    <?php endif; ?>
-                                                </td>
-                                                <td><?= $data->first_name ?> </td>
-                                                <td>Rp.<?= rupiah($data->invoice_total) ?></td>
-                                            </tr>
-                                        <?php endif; ?>
+                                        <tr>
+                                            <td class="text-center">
+                                                <a href="<?= base_url('penjualan/detail_invoice/') . base64_encode($data->penjualan_invoice) ?>" class="btn btn-sm btn-success" title="Detail Invoice Penjualan" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
+                                                <!-- <a href="<?= base_url('penjualan/detail_invoice/') . base64_encode($data->penjualan_invoice) ?>" class="btn btn-sm btn-warning" title="Retur Penjualan" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a> -->
+                                                <a href="javascript:void(0);" data-target="#edit-kurir<?= $data->invoice_id ?>" class="btn btn-sm btn-secondary" data-toggle="modal" title="Edit Kurir" data-plugin="tippy" data-tippy-placement="top"><i class="fe-user-plus"></i></a>
+                                                <a href="<?= base_url('penjualan/cetak_nota/') . base64_encode($data->penjualan_invoice) ?>" target="_blank" class="btn btn-sm btn-primary" title="Cetak Nota" data-plugin="tippy" data-tippy-placement="top"><i class="fe-printer"></i></a>
+                                                <a href="<?= base_url('penjualan/surat_jalan/') . base64_encode($data->penjualan_invoice) ?>" target="_blank" class="btn btn-sm btn-blue" title="Cetak Surat Jalan" data-plugin="tippy" data-tippy-placement="top"><i class="fe-printer"></i></a>
+                                            </td>
+                                            <td><?= $no++ ?></td>
+                                            <td><?= $data->penjualan_invoice ?></td>
+                                            <td><?= $data->invoice_tgl ?></td>
+                                            <td>
+                                                <?= $data->nama ?>
+                                            </td>
+                                            <td><?= $data->first_name ?> </td>
+                                            <td>Rp.<?= rupiah($data->invoice_total) ?></td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
