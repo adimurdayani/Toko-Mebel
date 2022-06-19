@@ -29,13 +29,13 @@
                         <div class="card-body table-responsive">
                             <h4 class="header-title mb-2">Filter data laporan kasir berdasarkan tanggal </h4>
 
-                            <form action="" method="POST">
+                            <form action="<?= base_url('laporan') ?>" method="POST">
                                 <div class="row">
 
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="">Tanggal Awal</label>
-                                            <input type="date" name="tgl_awal" id="tgl_awal" class="form-control" required>
+                                            <input type="date" name="tgl_awal" id="tgl_awal" class="form-control tgl_awal" required>
                                         </div>
                                     </div>
 
@@ -57,7 +57,7 @@
                                     </div>
 
                                 </div>
-                                <button type="submit" class="btn btn-info mt-4 float-right"><i class="fe-filter"></i> Filter</button>
+                                <button type="submit" class="btn btn-info mt-4 float-right filter"><i class="fe-filter"></i> Filter</button>
                             </form>
                         </div> <!-- end card body-->
                     </div> <!-- end card -->
@@ -89,9 +89,9 @@
                             <div class="card-body table-responsive">
                                 <h4 class="header-title mb-2">Tabel <?= $title ?></h4>
                                 <div class="btn-group mb-2">
-                                    <button type="button" class="btn btn-light">Export Excel</button>
-                                    <button type="button" class="btn btn-light">Export PDF</button>
-                                    <button type="button" class="btn btn-light">Export CSV</button>
+                                    <a href="<?= base_url('laporan/eksport/laporan_kasir_excel/') . base64_encode($invoice_kasir) ?>" class="btn btn-light excel">Export to excel</a>
+                                    <a href="<?= base_url('laporan/eksport/laporan_kasir_pdf/') . base64_encode($invoice_kasir) ?>" target="_blank" class="btn btn-light">Export to pdf</a>
+                                    <a href="<?= base_url('laporan/eksport/laporan_csv') ?>" class="btn btn-light">Export to csv</a>
                                 </div>
                                 <table id="basic-datatable" class="table nowrap w-100">
                                     <thead>

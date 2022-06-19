@@ -48,13 +48,11 @@
 
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="">Nama Produksi</label>
-                                            <select name="produksi_kategori" id="produksi_kategori" class="form-control" data-toggle="select2" required>
-                                                <option value="">-- Pilih Produksi --</option>
-                                                <?php foreach ($get_kategori as $data) : ?>
-                                                    <?php if ($data->status_kategori == 1) : ?>
-                                                        <option value="<?= $data->id ?>"><?= $data->nama_kategori ?></option>
-                                                    <?php endif; ?>
+                                            <label for="">Nama Material</label>
+                                            <select name="id_barang" id="id_barang" class="form-control" data-toggle="select2" required>
+                                                <option value="">-- Pilih material --</option>
+                                                <?php foreach ($get_material as $data) : ?>
+                                                    <option value="<?= $data->id_barang ?>"><?= $data->barang_nama ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
@@ -74,21 +72,21 @@
 
             $tgl_awal = $this->input->post('tgl_awal');
             $tgl_akhir = $this->input->post('tgl_akhir');
-            $produksi_kategori = $this->input->post('produksi_kategori');
+            $barang_id = $this->input->post('id_barang');
 
-            $sql = "SELECT count(if(produksi_kategori='$produksi_kategori', produksi_kategori, NULL)) as produksi_kategori,
-                        sum(if(produksi_kategori='$produksi_kategori', produksi_terjual, NULL)) as produksi_terjual
-                        FROM tb_produksi";
-            $total_terjual = $this->db->query($sql)->row();
+            $sql = "SELECT count(if(barang_id='$barang_id', barang_id, NULL)) as barang_id,
+                        sum(if(barang_id='$barang_id', barang_qty, NULL)) as barang_qty
+                        FROM tb_pembelian_detail";
+            $total_barang = $this->db->query($sql)->row();
 
-            if (!empty($tgl_awal) || !empty($tgl_akhir) || !empty($produksi_kategori)) :
-                $this->db->where('updated_at >=', date_indo($tgl_awal));
-                $this->db->where('updated_at <=', date_indo($tgl_akhir));
-                $this->db->where('produksi_kategori', $produksi_kategori);
-                $get_penjualan = $this->db->get('tb_produksi')->result();
+            if (!empty($tgl_awal) || !empty($tgl_akhir) || !empty($id_produksi)) :
+                $this->db->where('pembelian_date >=', date_indo($tgl_awal));
+                $this->db->where('pembelian_date <=', date_indo($tgl_akhir));
+                $this->db->where('barang_id', $barang_id);
+                $get_penjualan = $this->db->get('tb_pembelian_detail')->result();
 
-                $this->db->where('produksi_kategori', $produksi_kategori);
-                $get_total = $this->db->get('tb_produksi')->num_rows();
+                $this->db->where('barang_id', $barang_id);
+                $jml_barang = $this->db->get('tb_pembelian_detail')->num_rows();
             ?>
                 <div class="row">
                     <div class="col-lg">
@@ -96,35 +94,37 @@
                             <div class="card-body table-responsive">
                                 <h4 class="header-title mb-2">Tabel <?= $title ?></h4>
                                 <div class="btn-group mb-2">
-                                    <a href="<?= base_url('laporan/eksport_penjualan/laporan_penjualan_produksi_excel/') . base64_encode($produksi_kategori) ?>" class="btn btn-light">Export to Excel</a>
-                                    <a href="<?= base_url('laporan/eksport_penjualan/laporan_penjualan_produksi_pdf/') . base64_encode($produksi_kategori) ?>" target="_blank" class="btn btn-light">Export to PDF</a>
-                                    <a href="<?= base_url('laporan/eksport_penjualan/laporan_csv') ?>" class="btn btn-light">Export to CSV</a>
+                                    <a href="<?= base_url('laporan/eksport_pembelian/laporan_pembelian_material_excel/') . base64_encode($barang_id) ?>" class="btn btn-light">Export to Excel</a>
+                                    <a href="<?= base_url('laporan/eksport_pembelian/laporan_pembelian_material_pdf/') . base64_encode($barang_id) ?>" target="_blank" class="btn btn-light">Export to PDF</a>
+                                    <a href="<?= base_url('laporan/eksport_pembelian/laporan_pembelian_material_csv') ?>" class="btn btn-light">Export to CSV</a>
                                 </div>
                                 <table id="basic-datatable" class="table nowrap w-100">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Invoice</th>
-                                            <th>Tanggal</th>
-                                            <th>Produk</th>
-                                            <th>QTY Terjual</th>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Invoice</th>
+                                            <th class="text-center">Tanggal</th>
+                                            <th class="text-center">Material</th>
+                                            <th class="text-center">QTY Pembelian</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $no = 1;
-                                        foreach ($get_penjualan as $data) : ?>
+                                        foreach ($get_penjualan as $data) :
+                                            $material = $this->db->get('tb_barang', ['id_barang' => $barang_id])->row();
+                                        ?>
                                             <tr>
-                                                <td><?= $no++ ?></td>
-                                                <td><?= $data->produksi_invoice ?></td>
-                                                <td><?= $data->updated_at ?></td>
-                                                <td><?= $data->produksi_nama ?></td>
-                                                <td><?= $data->produksi_terjual ?></td>
+                                                <td class="text-center"><?= $no++ ?></td>
+                                                <td class="text-center"><?= $data->pembelian_invoice ?></td>
+                                                <td class="text-center"><?= $data->pembelian_date ?></td>
+                                                <td><?= $material->barang_nama ?></td>
+                                                <td class="text-center"><?= $data->barang_qty ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
                                 <div class="float-right mt-4">
-                                    <h4><strong>Total</strong> <strong class="text-success">terjual <?= $get_total ?>x</strong> dengan jumlah keseluruhan <strong>QTY Terjual <?= $total_terjual->produksi_terjual ?></strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </h4>
+                                    <h4><strong>Total</strong> <strong class="text-success">pembelian <?= $jml_barang ?>x</strong> dengan jumlah keseluruhan <strong>QTY pembelian <?= $total_barang->barang_qty ?></strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </h4>
                                 </div>
                             </div> <!-- end card body-->
                         </div> <!-- end card -->

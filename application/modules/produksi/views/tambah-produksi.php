@@ -144,6 +144,16 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="">Kategori Produk <span class="text-danger">*</span></label>
+                                        <select type="text" name="produksi_kategori" id="produksi_kategori" class="form-control" data-toggle="select2" required>
+                                            <option value="">-- Pilih Kategori --</option>
+                                            <?php foreach ($get_kategori_produksi as $kategori) : ?>
+                                                <option value="<?= $kategori['id'] ?>"><?= $kategori['nama_kategori'] ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="">Keterangan Produk <span class="text-danger">*</span></label>
                                         <textarea name="produksi_keterangan" id="produksi_keterangan" class="form-control" rows="5"></textarea>
                                     </div>

@@ -61,6 +61,17 @@ function check_kategori($id_kategori)
   }
 }
 
+function check_kategori_produk($id_kategori)
+{
+  $ci = get_instance();
+  $ci->db->where('status_kategori', $id_kategori);
+  $result = $ci->db->get('tb_kategori_produk')->row_array();
+
+  if ($result['status_kategori'] > 0) {
+    return "checked='checked'";
+  }
+}
+
 function check_satuan($id_satuan)
 {
   $ci = get_instance();

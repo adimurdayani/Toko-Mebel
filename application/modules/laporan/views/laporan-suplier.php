@@ -92,9 +92,9 @@
                             <div class="card-body table-responsive">
                                 <h4 class="header-title mb-2">Tabel <?= $title ?></h4>
                                 <div class="btn-group mb-2">
-                                    <button type="button" class="btn btn-light">Export Excel</button>
-                                    <button type="button" class="btn btn-light">Export PDF</button>
-                                    <button type="button" class="btn btn-light">Export CSV</button>
+                                    <a href="<?= base_url('laporan/eksport/laporan_suplier_excel/') . base64_encode($invoice_suplier) ?>" class="btn btn-light">Export to Excel</a>
+                                    <a href="<?= base_url('laporan/eksport/laporan_suplier_pdf/') . base64_encode($invoice_suplier) ?>" target="_blank" class="btn btn-light">Export to PDF</a>
+                                    <a href="<?= base_url('laporan/eksport/laporan_suplier_csv') ?>" class="btn btn-light">Export to CSV</a>
                                 </div>
                                 <table id="basic-datatable" class="table nowrap w-100">
                                     <thead>

@@ -47,6 +47,7 @@ class Produksi extends CI_Controller
             $array = array('session_kasir_id' => $user->id, 'session_date' => date_indo('Y-m-d'));
             $this->db->where($array);
             $data['get_session_invoice'] = $this->db->get('tb_produksi_session')->row_array();
+            $data['get_kategori_produksi'] = $this->db->get('tb_kategori_produk')->result_array();
 
             $this->load->view('template/header', $data, FALSE);
             $this->load->view('template/topbar', $data, FALSE);
@@ -257,6 +258,7 @@ class Produksi extends CI_Controller
 
         $data = [
             'produksi_nama' => $this->input->post('produksi_nama'),
+            'produksi_kategori' => $this->input->post('produksi_kategori'),
             'produksi_keterangan' => $this->input->post('produksi_keterangan'),
             'produksi_invoice' => $this->input->post('produksi_invoice'),
             'produksi_harga_modal' => preg_replace("/[^0-9]/", "", $this->input->post('produksi_harga_modal')),

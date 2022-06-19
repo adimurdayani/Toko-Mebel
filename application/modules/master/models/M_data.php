@@ -11,6 +11,13 @@ class M_data extends CI_Model
         $this->db->delete('tb_kategori');
     }
 
+    public function delete_produk($id)
+    {
+        $this->db->where_in('id', $id);
+        $this->db->delete('tb_kategori_produk');
+    }
+
+
     public function delete_satuan($id)
     {
         $this->db->where_in('id', $id);

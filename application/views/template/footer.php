@@ -217,7 +217,24 @@
                 statuskategori: statuskategori
             },
             success: function() {
-                document.location.href = "<?= base_url('master/kategori/') ?>";
+                document.location.href = "<?= base_url('master/kategori') ?>";
+            }
+        })
+    })
+
+    $('.ubah-kategori-produk').on('click', function() {
+        const kategoriid = $(this).data('kategoriid');
+        const statuskategori = $(this).data('statuskategori');
+
+        $.ajax({
+            url: "<?= base_url('master/kategori_produk/ubahaktif_produk') ?>",
+            type: 'post',
+            data: {
+                kategoriid: kategoriid,
+                statuskategori: statuskategori
+            },
+            success: function() {
+                document.location.href = "<?= base_url('master/kategori_produk') ?>";
             }
         })
     })
