@@ -98,14 +98,14 @@
                                     <a href="<?= base_url('laporan/eksport_pembelian/laporan_pembelian_material_pdf/') . base64_encode($barang_id) ?>" target="_blank" class="btn btn-light">Export to PDF</a>
                                     <a href="<?= base_url('laporan/eksport_pembelian/laporan_pembelian_material_csv') ?>" class="btn btn-light">Export to CSV</a>
                                 </div>
-                                <table id="basic-datatable" class="table nowrap w-100">
+                                <table id="basic-datatable" class="table table-bordered nowrap w-100">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">No</th>
+                                            <th class="text-center" >No</th>
                                             <th class="text-center">Invoice</th>
                                             <th class="text-center">Tanggal</th>
                                             <th class="text-center">Material</th>
-                                            <th class="text-center">QTY Pembelian</th>
+                                            <th class="text-center" >QTY Pembelian</th>
                                         </tr>
                                     </thead>
                                     <tbody>

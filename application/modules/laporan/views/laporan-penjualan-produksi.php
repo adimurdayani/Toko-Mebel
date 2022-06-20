@@ -100,25 +100,25 @@
                                     <a href="<?= base_url('laporan/eksport_penjualan/laporan_penjualan_produksi_pdf/') . base64_encode($produksi_kategori) ?>" target="_blank" class="btn btn-light">Export to PDF</a>
                                     <a href="<?= base_url('laporan/eksport_penjualan/laporan_csv') ?>" class="btn btn-light">Export to CSV</a>
                                 </div>
-                                <table id="basic-datatable" class="table nowrap w-100">
+                                <table id="basic-datatable" class="table table-bordered nowrap w-100">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Invoice</th>
-                                            <th>Tanggal</th>
-                                            <th>Produk</th>
-                                            <th>QTY Terjual</th>
+                                            <th class="text-center" >No</th>
+                                            <th class="text-center">Invoice</th>
+                                            <th class="text-center">Tanggal</th>
+                                            <th class="text-center">Produk</th>
+                                            <th class="text-center" >QTY Terjual</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $no = 1;
                                         foreach ($get_penjualan as $data) : ?>
                                             <tr>
-                                                <td><?= $no++ ?></td>
-                                                <td><?= $data->produksi_invoice ?></td>
-                                                <td><?= $data->updated_at ?></td>
-                                                <td><?= $data->produksi_nama ?></td>
-                                                <td><?= $data->produksi_terjual ?></td>
+                                                <td  class="text-center"><?= $no++ ?></td>
+                                                <td  class="text-center"><?= $data->produksi_invoice ?></td>
+                                                <td  class="text-center"><?= $data->updated_at ?></td>
+                                                <td ><?= $data->produksi_nama ?></td>
+                                                <td  class="text-center"><?= $data->produksi_terjual ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

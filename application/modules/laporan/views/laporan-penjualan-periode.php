@@ -94,14 +94,14 @@
                                     <a href="<?= base_url('laporan/eksport_penjualan/laporan_penjualan_periode_pdf/') . base64_encode($invoice_tipe_transaksi) ?>" target="_blank" class="btn btn-light">Export to PDF</a>
                                     <a href="<?= base_url('laporan/eksport/laporan_csv') ?>" class="btn btn-light">Export to CSV</a>
                                 </div>
-                                <table id="basic-datatable" class="table nowrap w-100">
+                                <table id="basic-datatable" class="table table-bordered nowrap w-100">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Invoice</th>
-                                            <th>Tanggal</th>
-                                            <th>Kostumer</th>
-                                            <th>Total</th>
+                                            <th class="text-center" >No</th>
+                                            <th class="text-center">Invoice</th>
+                                            <th class="text-center">Tanggal</th>
+                                            <th class="text-center">Kostumer</th>
+                                            <th class="text-center">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -110,11 +110,11 @@
                                             $user = $this->db->get_where('tb_kostumer', ['id_kostumer' => $data->invoice_costumer])->row();
                                         ?>
                                             <tr>
-                                                <td><?= $no++ ?></td>
-                                                <td><?= $data->penjualan_invoice ?></td>
-                                                <td><?= $data->invoice_tgl ?></td>
+                                                <td class="text-center"><?= $no++ ?></td>
+                                                <td class="text-center"><?= $data->penjualan_invoice ?></td>
+                                                <td class="text-center"><?= $data->invoice_tgl ?></td>
                                                 <td><?= $user->nama ?></td>
-                                                <td>Rp.<?= rupiah($data->invoice_total) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data->invoice_total) ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

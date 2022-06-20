@@ -97,11 +97,11 @@
                                 <table id="basic-datatable" class="table nowrap w-100">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Invoice</th>
-                                            <th>Tanggal</th>
-                                            <th>Kustomer</th>
-                                            <th>Total</th>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Invoice</th>
+                                            <th class="text-center">Tanggal</th>
+                                            <th class="text-center">Kustomer</th>
+                                            <th class="text-center">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -110,11 +110,11 @@
                                             $kostumer = $this->db->get_where('tb_kostumer', ['id_kostumer' => $data->invoice_costumer])->row();
                                         ?>
                                             <tr>
-                                                <td><?= $no++ ?></td>
-                                                <td><?= $data->penjualan_invoice ?></td>
-                                                <td><?= $data->invoice_tgl ?></td>
-                                                <td><?= $kostumer->nama ?></td>
-                                                <td>Rp.<?= rupiah($data->invoice_total) ?></td>
+                                                <td class="text-center"><?= $no++ ?></td>
+                                                <td class="text-center"><?= $data->penjualan_invoice ?></td>
+                                                <td class="text-center"><?= $data->invoice_tgl ?></td>
+                                                <td class="text-center"><?= $kostumer->nama ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data->invoice_total) ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
