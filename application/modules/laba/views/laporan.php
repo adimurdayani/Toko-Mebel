@@ -68,7 +68,7 @@
                                                 <td><input type="checkbox" class="check-item" value="<?= $data['id_biaya'] ?>" name="id_biaya[]"></td>
                                                 <td class="text-center">
                                                     <a href="<?= base_url('laba/laporan/edit/') . base64_encode($data['id_biaya']) ?>" class="btn btn-sm btn-warning" title="Edit" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
-                                                    <a href="<?= base_url('laba/laporan/cetak/') . base64_encode($data['id_biaya']) ?>" class="btn btn-sm btn-info" title="Cetak Laba Bersih" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                    <a href="<?= base_url('laba/laporan/cetak/') . base64_encode($data['id_biaya']) ?>" target="_blank" class="btn btn-sm btn-info" title="Cetak Laba Bersih" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
                                                     <a href="<?= base_url('laba/laporan/hapus/') . base64_encode($data['id_biaya']) ?>" class="btn btn-sm btn-danger hapus" title="Hapus" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i></a>
                                                 </td>
                                                 <td class="text-center"><?= $no++ ?></td>
