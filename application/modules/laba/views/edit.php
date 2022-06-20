@@ -27,9 +27,9 @@
                 <div class="col-lg">
                     <div class="card">
                         <div class="card-body table-responsive">
-                            <h4 class="header-title mb-2">Data Operasional Toko dari Pendapatan dan Pengeluaran</h4>
+                            <h4 class="header-title mb-2">Edit Data Operasional Toko dari Pendapatan dan Pengeluaran</h4>
 
-                            <?= form_open('laba/tambah') ?>
+                            <?= form_open() ?>
                             <div class="row">
                                 <div class="col-md-6">
 
@@ -39,7 +39,8 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="text" name="gaji" class="form-control" id="gaji" value="0">
+                                            <input type="hidden" name="id_biaya" value="<?= rupiah($get_laba['id_biaya']) ?>">
+                                            <input type="text" name="gaji" class="form-control" id="gaji" value="<?= rupiah($get_laba['gaji']) ?>">
                                         </div>
                                     </div>
 
@@ -49,7 +50,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="text" name="listrik" id="listrik" class="form-control" value="0">
+                                            <input type="text" name="listrik" id="listrik" class="form-control" value="<?= rupiah($get_laba['listrik']) ?>">
                                         </div>
                                     </div>
 
@@ -59,7 +60,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="text" name="telp_internet" id="telp_internet" class="form-control" value="0">
+                                            <input type="text" name="telp_internet" id="telp_internet" class="form-control" value="<?= rupiah($get_laba['telp_internet']) ?>">
                                         </div>
                                     </div>
 
@@ -69,7 +70,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="text" name="bank" id="bank" class="form-control" value="0">
+                                            <input type="text" name="bank" id="bank" class="form-control" value="<?= rupiah($get_laba['bank']) ?>">
                                         </div>
                                     </div>
 
@@ -79,7 +80,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="text" name="pemeliharaan" id="pemeliharaan" class="form-control" value="0">
+                                            <input type="text" name="pemeliharaan" id="pemeliharaan" class="form-control" value="<?= rupiah($get_laba['pemeliharaan']) ?>">
                                         </div>
                                     </div>
 
@@ -92,7 +93,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="text" name="perbaikan" id="perbaikan" class="form-control" value="0">
+                                            <input type="text" name="perbaikan" id="perbaikan" class="form-control" value="<?= rupiah($get_laba['perbaikan']) ?>">
                                         </div>
                                     </div>
 
@@ -102,7 +103,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="text" name="sewa" id="sewa" class="form-control" value="0">
+                                            <input type="text" name="sewa" id="sewa" class="form-control" value="<?= rupiah($get_laba['sewa']) ?>">
                                         </div>
                                     </div>
 
@@ -112,7 +113,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="text" name="motor" id="motor" class="form-control" value="0">
+                                            <input type="text" name="motor" id="motor" class="form-control" value="<?= rupiah($get_laba['motor']) ?>">
                                         </div>
                                     </div>
 
@@ -122,7 +123,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="text" name="pengeluaran_lain" id="pengeluaran_lain" class="form-control" value="0">
+                                            <input type="text" name="pengeluaran_lain" id="pengeluaran_lain" class="form-control" value="<?= rupiah($get_laba['pengeluaran_lain']) ?>">
                                         </div>
                                     </div>
 
@@ -132,13 +133,13 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <input type="text" name="biaya_tak_terduga" id="biaya_tak_terduga" class="form-control" value="0">
+                                            <input type="text" name="biaya_tak_terduga" id="biaya_tak_terduga" class="form-control" value="<?= rupiah($get_laba['biaya_tak_terduga']) ?>">
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
-                            <button class="btn btn-success mt-4 float-right"><i class="fe-save"></i> Simpan</button>
+                            <button class="btn btn-warning mt-4 float-right"><i class="fe-save"></i> Ubah</button>
                             <?= form_close() ?>
 
                         </div> <!-- end card body-->

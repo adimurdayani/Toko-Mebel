@@ -22,32 +22,77 @@
                 </div>
             </div>
             <!-- end page title -->
-
             <div class="row">
-                <div class="col-lg">
+                <div class="col-12">
                     <div class="card">
                         <div class="card-body table-responsive">
-                            <h4 class="header-title mb-2">Filter data laporan berdasarkan tanggal </h4>
 
-                            <form action="" method="POST">
-                                <div class="row">
+                            <form action="<?= base_url('laba/laporan/hapus_all/') ?>" method="POST" id="form-delete">
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="">Tanggal Awal</label>
-                                            <input type="date" name="tgl_awal" id="tgl_awal" class="form-control" required>
-                                        </div>
-                                    </div>
+                                <button type="submit" class="btn btn-outline-danger mb-3" id="hapus"><i class="fe-trash"></i> Hapus</button>
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="">Tanggal Akhir</label>
-                                            <input type="date" name="tgl_akhir" id="tgl_akhir" class="form-control" required>
-                                        </div>
-                                    </div>
+                                <table id="basic-datatable" class="table table-bordered nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2" style="vertical-align: middle;"><input type="checkbox" id="chack-all"></th>
+                                            <th style="vertical-align: middle;" class="text-center" rowspan="2">Aksi</th>
+                                            <th style="vertical-align: middle;" class="text-center" rowspan="2">No.</th>
+                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Tanggal</th>
+                                            <th style="vertical-align: middle;" class="text-center" colspan="6">Operasional</th>
+                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Gaji</th>
+                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Pengeluaran Lain</th>
+                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Biaya tak terduga</th>
+                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Total</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center">Bank</th>
+                                            <th class="text-center">Kendaraan</th>
+                                            <th class="text-center">Listrik</th>
+                                            <th class="text-center">Perbaikan & <br> Pemeliharaan</th>
+                                            <th class="text-center">Telp/Internet</th>
+                                            <th class="text-center">Sewa</th>
+                                        </tr>
+                                    </thead>
 
-                                </div>
-                                <button type="submit" class="btn btn-info mt-4 float-right"><i class="fe-filter"></i> Filter</button>
+                                    <tbody>
+                                        <?php $no = 1;
+                                        $jml = 0;
+                                        $total = 0;
+                                        $subtotal = 0;
+                                        foreach ($get_laba as $data) :
+                                            $jml =  $data['perbaikan'] + $data['pemeliharaan'];
+                                            $total +=  $data['perbaikan'] + $data['pemeliharaan'] + $data['bank'] + $data['motor'] + $data['listrik'] + $data['telp_internet'] + $data['sewa'] + $data['gaji'] + $data['pengeluaran_lain'] + $data['biaya_tak_terduga'];
+                                            $subtotal += $total;
+                                        ?>
+                                            <tr>
+                                                <td><input type="checkbox" class="check-item" value="<?= $data['id_biaya'] ?>" name="id_biaya[]"></td>
+                                                <td class="text-center">
+                                                    <a href="<?= base_url('laba/laporan/edit/') . base64_encode($data['id_biaya']) ?>" class="btn btn-sm btn-warning" title="Edit" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                    <a href="<?= base_url('laba/laporan/cetak/') . base64_encode($data['id_biaya']) ?>" class="btn btn-sm btn-info" title="Cetak Laba Bersih" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                    <a href="<?= base_url('laba/laporan/hapus/') . base64_encode($data['id_biaya']) ?>" class="btn btn-sm btn-danger hapus" title="Hapus" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i></a>
+                                                </td>
+                                                <td class="text-center"><?= $no++ ?></td>
+                                                <td><?= $data['biaya_tanggal'] ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['bank']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['motor']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['listrik']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($jml) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['telp_internet']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['sewa']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['gaji']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['pengeluaran_lain']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['biaya_tak_terduga']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($total) ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="13"><strong class="float-right font-18">Total</strong></td>
+                                            <td class="text-center" style="vertical-align:middle;"><strong class="text-danger float-right">Rp.<?= rupiah($subtotal) ?></strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
                             </form>
                         </div> <!-- end card body-->
                     </div> <!-- end card -->
@@ -55,61 +100,6 @@
 
             </div>
             <!-- end row-->
-
-            <?php
-
-            $tgl_awal = $this->input->post('tgl_awal');
-            $tgl_akhir = $this->input->post('tgl_akhir');
-            $invoice_kasir = $this->input->post('invoice_kasir');
-
-            if (!empty($tgl_awal) || !empty($tgl_akhir) || !empty($invoice_kasir)) :
-                $this->db->where('invoice_date >=', date_indo($tgl_awal));
-                $this->db->where('invoice_date <=', date_indo($tgl_akhir));
-                $this->db->where('invoice_kasir', $invoice_kasir);
-                $get_penjualan = $this->db->get('tb_penjualan')->result();
-            ?>
-                <div class="row">
-                    <div class="col-lg">
-                        <div class="card">
-                            <div class="card-body table-responsive">
-                                <h4 class="header-title mb-2">Tabel <?= $title ?></h4>
-                                <div class="btn-group mb-2">
-                                    <button type="button" class="btn btn-light">Export Excel</button>
-                                    <button type="button" class="btn btn-light">Export PDF</button>
-                                    <button type="button" class="btn btn-light">Export CSV</button>
-                                </div>
-                                <table id="basic-datatable" class="table nowrap w-100">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Invoice</th>
-                                            <th>Tanggal</th>
-                                            <th>Kasir</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php $no = 1;
-                                        foreach ($get_penjualan as $data) :
-                                            $user = $this->db->get_where('users', ['id' => $data->invoice_kasir])->row();
-                                        ?>
-                                            <tr>
-                                                <td><?= $no++ ?></td>
-                                                <td><?= $data->penjualan_invoice ?></td>
-                                                <td><?= $data->invoice_tgl ?></td>
-                                                <td><?= $user->first_name ?></td>
-                                                <td>Rp.<?= rupiah($data->invoice_total) ?></td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div> <!-- end card body-->
-                        </div> <!-- end card -->
-                    </div><!-- end col-->
-
-                </div>
-                <!-- end row-->
-            <?php endif; ?>
 
         </div> <!-- container -->
 
