@@ -8,8 +8,11 @@
     <meta content="Toko Mebel Bajo" name="description" />
     <meta content="Adi Murdayani" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <?php $get_config = $this->db->get('tb_konfigurasi')->row(); ?>
     <!-- App favicon -->
-    <link rel="shortcut icon" href="<?= base_url('assets/'); ?>/images/favicon.ico">
+    <?php if (!empty($get_config)) : ?>
+        <link rel="shortcut icon" href="<?= base_url('assets/images/upload/') . $get_config->icon_web ?>">
+    <?php endif; ?>
 
     <!-- App css -->
     <link href="<?= base_url('assets/'); ?>/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />

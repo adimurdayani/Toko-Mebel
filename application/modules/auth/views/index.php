@@ -1,4 +1,5 @@
 <?php $this->load->view('auth/template/header'); ?>
+<?php $get_config = $this->db->get('tb_konfigurasi')->row(); ?>
 
 <div class="account-pages mt-5 mb-5">
     <div class="container">
@@ -10,9 +11,9 @@
 
                         <div class="text-center w-75 m-auto">
                             <div class="auth-logo">
-                                <a href="index.html" class="logo logo-dark text-center">
+                                <a href="<?= base_url() ?>" class="logo logo-dark text-center">
                                     <span class="logo-lg">
-                                        <img src="<?= base_url('assets/'); ?>/images/logo_luwu.png" alt="" height="50">
+                                        <img src="<?= base_url('assets/images/upload/') . $get_config->logo_web; ?>" alt="" height="50">
                                     </span>
                                 </a>
                             </div>

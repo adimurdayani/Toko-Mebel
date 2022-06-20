@@ -1,7 +1,8 @@
+<?php $get_config = $this->db->get('tb_konfigurasi')->row(); ?>
 <footer class="footer footer-alt">
     <script>
         document.write(new Date().getFullYear())
-    </script> &copy; Techno Kreatif Solusindo.
+    </script> &copy; <?= $get_config->nama_web; ?>.
 </footer>
 
 <!-- Vendor js -->
