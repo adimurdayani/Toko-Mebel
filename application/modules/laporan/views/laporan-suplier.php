@@ -96,14 +96,14 @@
                                     <a href="<?= base_url('laporan/eksport/laporan_suplier_pdf/') . base64_encode($invoice_suplier) ?>" target="_blank" class="btn btn-light">Export to PDF</a>
                                     <a href="<?= base_url('laporan/eksport/laporan_suplier_csv') ?>" class="btn btn-light">Export to CSV</a>
                                 </div>
-                                <table id="basic-datatable" class="table nowrap w-100">
+                                <table id="basic-datatable" class="table table-bordered nowrap w-100">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Invoice</th>
-                                            <th>Tanggal</th>
-                                            <th>Suplier</th>
-                                            <th>Total</th>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Invoice</th>
+                                            <th class="text-center">Tanggal</th>
+                                            <th class="text-center">Suplier</th>
+                                            <th class="text-center">Sub Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -112,17 +112,21 @@
                                             $suplier = $this->db->get_where('tb_suplier', ['id_suplier' => $data->invoice_suplier_id])->row();
                                         ?>
                                             <tr>
-                                                <td><?= $no++ ?></td>
-                                                <td><?= $data->invoice_pembelian ?></td>
-                                                <td><?= $data->invoice_tgl ?></td>
+                                                <td class="text-center"><?= $no++ ?></td>
+                                                <td class="text-center"><?= $data->invoice_pembelian ?></td>
+                                                <td class="text-center"><?= $data->invoice_tgl ?></td>
                                                 <td><?= $suplier->nama_perusahaan ?></td>
-                                                <td>Rp.<?= rupiah($data->invoice_total) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data->invoice_total) ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4"><strong class="float-right font-20">Total</strong></td>
+                                            <td style="vertical-align: middle;"><strong class="text-success float-right">Rp.<?= rupiah($total_penjualan->invoice_total) ?></strong></td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
-                                <div class="float-right mt-4"><strong>Total</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h4 class="text-success">Rp.<?= rupiah($total_penjualan->invoice_total) ?></h4>
-                                </div> <!-- end card body-->
                             </div> <!-- end card -->
                         </div><!-- end col-->
 

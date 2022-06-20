@@ -20,6 +20,7 @@ class Laba extends CI_Controller
             $data['title'] = 'Data Operasional Toko';
             $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
             $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+            $data['get_laba'] = $this->db->get('tb_biaya_kas')->result_array();
 
             $this->load->view('template/header', $data, FALSE);
             $this->load->view('template/topbar', $data, FALSE);

@@ -101,11 +101,11 @@
                                 <table id="basic-datatable" class="table table-bordered nowrap w-100">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" >No</th>
+                                            <th class="text-center">No</th>
                                             <th class="text-center">Invoice</th>
                                             <th class="text-center">Tanggal</th>
                                             <th class="text-center">Material</th>
-                                            <th class="text-center" >QTY Pembelian</th>
+                                            <th class="text-center">QTY Pembelian</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -122,10 +122,17 @@
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4"><strong class="float-right font-20">Total pembelian</strong></td>
+                                            <td class="text-center" style="vertical-align: middle;"><strong class="text-success"><?= $jml_barang ?>x</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4"><strong class="float-right font-20">Jumlah keseluruhan</strong></td>
+                                            <td class="text-center" style="vertical-align: middle;"><strong><?= $total_barang->barang_qty ?></strong></td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
-                                <div class="float-right mt-4">
-                                    <h4><strong>Total</strong> <strong class="text-success">pembelian <?= $jml_barang ?>x</strong> dengan jumlah keseluruhan <strong>QTY pembelian <?= $total_barang->barang_qty ?></strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </h4>
-                                </div>
                             </div> <!-- end card body-->
                         </div> <!-- end card -->
                     </div><!-- end col-->

@@ -94,14 +94,14 @@
                                 <a href="<?= base_url('laporan/eksport/laporan_costumer_excel/') . base64_encode($invoice_costumer) ?>" class="btn btn-light excel">Export to excel</a>
                                 <a href="<?= base_url('laporan/eksport/laporan_costumer_pdf/') . base64_encode($invoice_costumer) ?>" target="_blank" class="btn btn-light">Export to pdf</a>
                                 <a href="<?= base_url('laporan/eksport/laporan_csv') ?>" class="btn btn-light">Export to csv</a>
-                                <table id="basic-datatable" class="table nowrap w-100">
+                                <table id="basic-datatable" class="table table-bordered nowrap w-100">
                                     <thead>
                                         <tr>
                                             <th class="text-center">No</th>
                                             <th class="text-center">Invoice</th>
                                             <th class="text-center">Tanggal</th>
                                             <th class="text-center">Kustomer</th>
-                                            <th class="text-center">Total</th>
+                                            <th class="text-center">Sub Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -118,9 +118,13 @@
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4"><strong class="float-right font-20">Total</strong></td>
+                                            <td style="vertical-align: middle;"><strong class="text-success float-right">Rp.<?= rupiah($total_penjualan->invoice_total) ?></strong></td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
-                                <div class="float-right mt-4"><strong>Total</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h4 class="text-success">Rp.<?= rupiah($total_penjualan->invoice_total) ?></h4>
-                                </div> <!-- end card body-->
                             </div> <!-- end card -->
                         </div><!-- end col-->
 

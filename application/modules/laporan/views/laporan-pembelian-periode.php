@@ -87,7 +87,7 @@
                                             <th class="text-center">Invoice</th>
                                             <th class="text-center">Tanggal</th>
                                             <th class="text-center">Suplier</th>
-                                            <th class="text-center">Total</th>
+                                            <th class="text-center">Sub Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -109,10 +109,13 @@
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4"><strong class="float-right font-20">Total</strong></td>
+                                            <td style="vertical-align: middle;"><strong class="text-success float-right">Rp.<?= rupiah($total_penjualan->invoice_total) ?></strong></td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
-                                <div class="float-right mt-4"><strong>Total</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <h4 class="text-success">Rp.<?= rupiah($total_penjualan->invoice_total) ?></h4>
-                                </div>
                             </div> <!-- end card body-->
                         </div> <!-- end card -->
                     </div><!-- end col-->

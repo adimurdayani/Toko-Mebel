@@ -148,6 +148,85 @@
             </div>
             <!-- end row-->
 
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body table-responsive">
+
+                            <form action="<?= base_url('master/barang/hapus_all/') ?>" method="POST" id="form-delete">
+
+                                <a href="<?= base_url('master/barang/tambah') ?>" class="btn btn-outline-info mb-3 "><i class="fe-plus"></i> Tambah Data</a>
+                                <button type="submit" class="btn btn-outline-danger mb-3" id="hapus"><i class="fe-trash"></i> Hapus</button>
+
+                                <table id="basic-datatable" class="table table-bordered nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2" style="vertical-align: middle;"><input type="checkbox" id="chack-all"></th>
+                                            <th style="vertical-align: middle;" class="text-center" rowspan="2">Aksi</th>
+                                            <th style="vertical-align: middle;" class="text-center" rowspan="2">No.</th>
+                                            <th style="vertical-align: middle;" class="text-center" colspan="6">Operasional</th>
+                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Gaji</th>
+                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Pengeluaran Lain</th>
+                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Biaya tak terduga</th>
+                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Total</th>
+                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Tanggal</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center">Bank</th>
+                                            <th class="text-center">Kendaraan</th>
+                                            <th class="text-center">Listrik</th>
+                                            <th class="text-center">Perbaikan & <br> Pemeliharaan</th>
+                                            <th class="text-center">Telp/Internet</th>
+                                            <th class="text-center">Sewa</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <?php $no = 1;
+                                        $jml = 0;
+                                        $total = 0;
+                                        $subtotal = 0;
+                                        foreach ($get_laba as $data) :
+                                            $jml =  $data['perbaikan'] + $data['pemeliharaan'];
+                                            $total +=  $data['perbaikan'] + $data['pemeliharaan'] + $data['bank'] + $data['motor'] + $data['listrik'] + $data['telp_internet'] + $data['sewa'] + $data['gaji'] + $data['pengeluaran_lain'] + $data['biaya_tak_terduga'];
+                                            $subtotal += $total;
+                                        ?>
+                                            <tr>
+                                                <td><input type="checkbox" value="<?= $data['id_biaya'] ?>" name="id_biaya[]"></td>
+                                                <td class="text-center">
+                                                    <a href="" class="btn btn-sm btn-warning" title="Edit" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                    <a href="" class="btn btn-sm btn-danger" title="Hapus" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i></a>
+                                                </td>
+                                                <td class="text-center"><?= $no++ ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['bank']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['motor']) ?></td>
+                                                <td class="text-right">Rp<?= rupiah($data['listrik']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($jml) ?></td>
+                                                <td class="text-right">Rp<?= rupiah($data['telp_internet']) ?></td>
+                                                <td class="text-right">Rp<?= rupiah($data['sewa']) ?></td>
+                                                <td class="text-right">Rp<?= rupiah($data['gaji']) ?></td>
+                                                <td class="text-right">Rp<?= rupiah($data['pengeluaran_lain']) ?></td>
+                                                <td class="text-right">Rp<?= rupiah($data['biaya_tak_terduga']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($total) ?></td>
+                                                <td><?= $data['biaya_tanggal'] ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="12"><strong class="float-right">Total Keseluruhan</strong></td>
+                                            <td colspan="2"><strong class="text-success">Rp.<?= rupiah($subtotal) ?></strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </form>
+                        </div> <!-- end card body-->
+                    </div> <!-- end card -->
+                </div><!-- end col-->
+
+            </div>
+            <!-- end row-->
+
         </div> <!-- container -->
 
     </div> <!-- content -->

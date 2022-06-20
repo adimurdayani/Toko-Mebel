@@ -103,29 +103,36 @@
                                 <table id="basic-datatable" class="table table-bordered nowrap w-100">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" >No</th>
+                                            <th class="text-center">No</th>
                                             <th class="text-center">Invoice</th>
                                             <th class="text-center">Tanggal</th>
                                             <th class="text-center">Produk</th>
-                                            <th class="text-center" >QTY Terjual</th>
+                                            <th class="text-center">QTY Terjual</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $no = 1;
                                         foreach ($get_penjualan as $data) : ?>
                                             <tr>
-                                                <td  class="text-center"><?= $no++ ?></td>
-                                                <td  class="text-center"><?= $data->produksi_invoice ?></td>
-                                                <td  class="text-center"><?= $data->updated_at ?></td>
-                                                <td ><?= $data->produksi_nama ?></td>
-                                                <td  class="text-center"><?= $data->produksi_terjual ?></td>
+                                                <td class="text-center"><?= $no++ ?></td>
+                                                <td class="text-center"><?= $data->produksi_invoice ?></td>
+                                                <td class="text-center"><?= $data->updated_at ?></td>
+                                                <td><?= $data->produksi_nama ?></td>
+                                                <td class="text-center"><?= $data->produksi_terjual ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4"><strong class="float-right font-20">Jumlah pembelian</strong></td>
+                                            <td class="text-center" style="vertical-align: middle;"><strong class="text-success"><?= $get_total ?>x</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4"><strong class="float-right font-20">Jumlah keseluruhan</strong></td>
+                                            <td class="text-center" style="vertical-align: middle;"><strong><?= $total_terjual->produksi_terjual ?></strong></td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
-                                <div class="float-right mt-4">
-                                    <h4><strong>Total</strong> <strong class="text-success">terjual <?= $get_total ?>x</strong> dengan jumlah keseluruhan <strong>QTY Terjual <?= $total_terjual->produksi_terjual ?></strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </h4>
-                                </div>
                             </div> <!-- end card body-->
                         </div> <!-- end card -->
                     </div><!-- end col-->
