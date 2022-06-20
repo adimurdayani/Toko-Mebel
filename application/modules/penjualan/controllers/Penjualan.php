@@ -67,6 +67,23 @@ class Penjualan extends CI_Controller
         }
     }
 
+    public function surat_jalan($get_invoice)
+    {
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth', 'refresh');
+        } else {
+            $data['title'] = "Nota Penjualan";
+            $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
+
+            $no_invoice = base64_decode($get_invoice);
+            $data['get_kostumer'] = $this->m_penjualan->get_kostumer($no_invoice);
+            $data['get_invoice_penjualan'] = $this->m_penjualan->get_all_invoice($no_invoice);
+            $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+
+            $this->load->view('surat-jalan', $data, FALSE);
+        }
+    }
+
     public function cetak_nota_hutang($get_invoice)
     {
         if (!$this->ion_auth->logged_in()) {
