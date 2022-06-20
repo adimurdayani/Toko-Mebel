@@ -164,12 +164,12 @@
                                             <th rowspan="2" style="vertical-align: middle;"><input type="checkbox" id="chack-all"></th>
                                             <th style="vertical-align: middle;" class="text-center" rowspan="2">Aksi</th>
                                             <th style="vertical-align: middle;" class="text-center" rowspan="2">No.</th>
+                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Tanggal</th>
                                             <th style="vertical-align: middle;" class="text-center" colspan="6">Operasional</th>
                                             <th class="text-center" style="vertical-align: middle;" rowspan="2">Gaji</th>
                                             <th class="text-center" style="vertical-align: middle;" rowspan="2">Pengeluaran Lain</th>
                                             <th class="text-center" style="vertical-align: middle;" rowspan="2">Biaya tak terduga</th>
                                             <th class="text-center" style="vertical-align: middle;" rowspan="2">Total</th>
-                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Tanggal</th>
                                         </tr>
                                         <tr>
                                             <th class="text-center">Bank</th>
@@ -198,16 +198,16 @@
                                                     <a href="" class="btn btn-sm btn-danger" title="Hapus" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i></a>
                                                 </td>
                                                 <td class="text-center"><?= $no++ ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($total) ?></td>
                                                 <td class="text-right">Rp.<?= rupiah($data['bank']) ?></td>
                                                 <td class="text-right">Rp.<?= rupiah($data['motor']) ?></td>
-                                                <td class="text-right">Rp<?= rupiah($data['listrik']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['listrik']) ?></td>
                                                 <td class="text-right">Rp.<?= rupiah($jml) ?></td>
-                                                <td class="text-right">Rp<?= rupiah($data['telp_internet']) ?></td>
-                                                <td class="text-right">Rp<?= rupiah($data['sewa']) ?></td>
-                                                <td class="text-right">Rp<?= rupiah($data['gaji']) ?></td>
-                                                <td class="text-right">Rp<?= rupiah($data['pengeluaran_lain']) ?></td>
-                                                <td class="text-right">Rp<?= rupiah($data['biaya_tak_terduga']) ?></td>
-                                                <td class="text-right">Rp.<?= rupiah($total) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['telp_internet']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['sewa']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['gaji']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['pengeluaran_lain']) ?></td>
+                                                <td class="text-right">Rp.<?= rupiah($data['biaya_tak_terduga']) ?></td>
                                                 <td><?= $data['biaya_tanggal'] ?></td>
                                             </tr>
                                         <?php endforeach; ?>

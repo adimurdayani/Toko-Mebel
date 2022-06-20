@@ -8,8 +8,8 @@
                 </script> &copy;
                 <?php if (!empty($get_config)) : ?>
                     <?= $get_config->nama_web ?>
-                <?php endif; ?>.
-                Created by <a href="javascript:void(0);">Adi Murdayani</a>
+                    <?php endif; ?>.
+                    Created by <a href="javascript:void(0);">Adi Murdayani</a>
             </div>
             <div class="col-md-6">
                 <div class="text-md-right footer-links d-none d-sm-block">

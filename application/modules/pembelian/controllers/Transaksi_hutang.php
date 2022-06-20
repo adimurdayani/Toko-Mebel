@@ -131,7 +131,7 @@ class Transaksi_hutang extends CI_Controller
         $keranjang_id = base64_decode($this->input->post('keranjang_id'));
 
         $data = [
-            'keranjang_harga' => $this->input->post('keranjang_harga')
+            'keranjang_harga' => preg_replace("/[^0-9]/", "", $this->input->post('keranjang_harga'))
         ];
 
         $this->db->where('keranjang_id', $keranjang_id);
@@ -303,17 +303,17 @@ class Transaksi_hutang extends CI_Controller
             'invoice_suplier_id' => $this->input->post('invoice_suplier_id'),
             'invoice_pembelian' => $kode_barang,
             'invoice_parent' => $pembeliansekarang,
-            'invoice_total' => $this->input->post('total'),
-            'invoice_bayar' => $this->input->post('bayar'),
-            'invoice_kembali' => $this->input->post('total') - $this->input->post('bayar'),
+            'invoice_total' => preg_replace("/[^0-9]/", "", $this->input->post('total')),
+            'invoice_bayar' => preg_replace("/[^0-9]/", "", $this->input->post('bayar')),
+            'invoice_kembali' => preg_replace("/[^0-9]/", "", $this->input->post('kembali')),
             'invoice_kasir' => $group->group_id,
             'invoice_tgl' => date_indo('Y-m-d'),
             'invoice_created' => date_indo('Y-m-d'),
-            'invoice_total_lama' => $this->input->post('total'),
-            'invoice_bayar_lama' => $this->input->post('bayar'),
-            'invoice_kembali_lama' => $this->input->post('total') - $this->input->post('bayar'),
+            'invoice_total_lama' => preg_replace("/[^0-9]/", "", $this->input->post('total')),
+            'invoice_bayar_lama' => preg_replace("/[^0-9]/", "", $this->input->post('bayar')),
+            'invoice_kembali_lama' => preg_replace("/[^0-9]/", "", $this->input->post('kembali')),
             'invoice_hutang' => 1,
-            'invoice_hutang_dp' => $this->input->post('total') - $this->input->post('bayar'),
+            'invoice_hutang_dp' => preg_replace("/[^0-9]/", "", $this->input->post('kembali')),
             'invoice_hutang_jatuh_tempo' => date_indo($this->input->post('invoice_hutang_jatuh_tempo')),
             'invoice_hutang_lunas' => 0,
             'invoice_pembelian_cabang' => $group->group_id,

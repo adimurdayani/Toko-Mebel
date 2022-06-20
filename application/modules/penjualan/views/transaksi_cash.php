@@ -74,7 +74,7 @@
                                                         <select name="invoice_barang_id" id="invoice_barang_id" class="form-control" data-toggle="select2">
                                                             <option value="">-- Kode Barang --</option>
                                                             <?php foreach ($get_barang as $kode) : ?>
-                                                                <?php if ($kode->is_active > 0) : ?>
+                                                                <?php if ($kode->is_active > 0 && $kode->produksi_stok > 0) : ?>
                                                                     <option value="<?= $kode->id_produksi  ?>"><?= $kode->produksi_invoice ?> - <?= $kode->produksi_nama ?> - Rp.<?= rupiah($kode->produksi_harga_total) ?></option>
                                                                 <?php endif; ?>
                                                             <?php endforeach; ?>

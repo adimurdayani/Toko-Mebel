@@ -415,6 +415,12 @@ class Produksi extends CI_Controller
             );
         }
     }
+
+    public function hapus_parent()
+    {
+        $parent = $this->input->post('parent');
+        $this->db->delete('tb_produksi_keranjang', ['keranjang_invoice_parent' => $parent]);
+    }
 }
 
 /* End of file Produksi.php */

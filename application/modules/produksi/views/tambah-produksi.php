@@ -37,6 +37,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body table-responsive">
+                            <div id="hitungmundur" class="text-success font-20 inline mb-4"></div>
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -174,7 +175,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                     </div>
-                                                    <input type="text" name="produksi_harga_modal" id="produksi_harga_modal" class="form-control" value="<?= rupiah($harga_modal) ?>">
+                                                    <input type="text" name="produksi_harga_modal" id="produksi_harga_modal" autocomplete="off" class="form-control" value="<?= rupiah($harga_modal) ?>">
                                                 </div>
                                             </div>
 
@@ -187,7 +188,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                     </div>
-                                                    <input type="text" name="produksi_harga_jual" id="produksi_harga_jual" class="form-control" value="<?= set_value('produksi_harga_jual') ?>" required>
+                                                    <input type="text" name="produksi_harga_jual" id="produksi_harga_jual" autocomplete="off" class="form-control" value="<?= set_value('produksi_harga_jual') ?>" required>
                                                 </div>
                                             </div>
 
@@ -335,7 +336,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                 </div>
-                                <input type="text" name="keranjang_harga_modal" id="keranjang_harga_modal" class="form-control" value="<?= rupiah($tambah->keranjang_harga_modal) ?>">
+                                <input type="text" name="keranjang_harga_modal" id="keranjang_harga_modal" class="form-control" value="<?= $tambah->keranjang_harga_modal ?>">
                             </div>
                         </div>
 
@@ -449,11 +450,12 @@
                 }
             })
         });
-
-        var keranjang_harga_modal = document.getElementById('keranjang_harga_modal');
-        keranjang_harga_modal.addEventListener('keyup', function(e) {
-            keranjang_harga_modal.value = formatRupiah(this.value);
-        });
+        if (document.getElementById('keranjang_harga_modal') != null) {
+            var keranjang_harga_modal = document.getElementById('keranjang_harga_modal');
+            keranjang_harga_modal.addEventListener('keyup', function(e) {
+                keranjang_harga_modal.value = formatRupiah(this.value);
+            });
+        }
 
         var produksi_harga_jual = document.getElementById('produksi_harga_jual');
         produksi_harga_jual.addEventListener('keyup', function(e) {
@@ -480,4 +482,56 @@
             rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
             return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
         }
+    </script>
+
+    <script>
+        // Mengatur waktu akhir perhitungan mundur
+        <?php
+        $tgl = "";
+        $tgl = date('d') + 1 . ' ' . date('M') . ' ' . date('Y');
+
+        $parent = "";
+        $jml_dta = $this->db->get('tb_produksi_keranjang')->num_rows();
+        $jml = $jml_dta + 1;
+        $today = date('Ymd');
+        $parent = $today . $jml;
+        ?>
+
+        var countDownDate = new Date('<?= $tgl ?>').getTime();
+
+        // Memperbarui hitungan mundur setiap 1 detik
+        var x = setInterval(function() {
+
+            // Untuk mendapatkan tanggal dan waktu hari ini
+            var now = new Date().getTime();
+
+            // Temukan jarak antara sekarang dan tanggal hitung mundur
+            var distance = countDownDate - now;
+
+            // Perhitungan waktu untuk hari, jam, menit dan detik
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Keluarkan hasil dalam elemen dengan id = "demo"
+            document.getElementById("hitungmundur").innerHTML = days + "d " + hours + "h " +
+                minutes + "m " + seconds + "s ";
+
+            var parent = "<?= $parent ?>";
+            // Jika hitungan mundur selesai, tulis beberapa teks 
+            if (distance < 0) {
+                clearInterval(x);
+                $.ajax({
+                    url: "<?= base_url('produksi/hapus_parent') ?>",
+                    type: 'post',
+                    data: {
+                        parent: parent
+                    },
+                    success: function() {
+                        document.location.href = "<?= base_url('produksi/tambah') ?>";
+                    }
+                })
+            }
+        }, 1000);
     </script>

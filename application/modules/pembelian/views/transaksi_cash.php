@@ -169,7 +169,11 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="col ml-6">
-                                                <h4>Total &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Rp.<input type="text" style="border: 0px;" autocomplete="off" id="angka1" name="total" value="<?= $total ?>" readonly></h4>
+                                                <h4>
+                                                    Total &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="hidden" id="angka0" name="total" value="<?= $total ?>" readonly>
+                                                    Rp.<input type="text" style="border: 0px;" autocomplete="off" id="angka1" name="total" value="<?= $total ?>" readonly>
+                                                </h4>
 
                                                 <div class="row mt-3">
                                                     <div class="col-md-2">
@@ -180,12 +184,12 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                             </div>
-                                                            <input type="number" autocomplete="off" id="angka2" name="bayar" class="form-control" required>
+                                                            <input type="text" autocomplete="off" id="angka2" min="0" value="0" name="bayar" class="form-control" required>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <p class="text-success mt-3">Sisa Piutang &nbsp;&nbsp;&nbsp;&nbsp; Rp.<input type="text" style="border: 0px;" autocomplete="off" id="angka3" value="<?= $total - $total - $total ?>" name="kembali" disabled></p>
+                                                <p class="text-success mt-3">Sisa Piutang &nbsp;&nbsp;&nbsp;&nbsp; Rp.<input type="text" style="border: 0px;" autocomplete="off" id="angka3" value="" name="kembali" disabled></p>
                                             </div>
                                         </div>
                                     </div>
@@ -272,7 +276,7 @@
                             <input type="hidden" name="keranjang_id" value="<?= base64_encode($edit->keranjang_id) ?>">
                             <div class="form-group mb-3">
                                 <label for="keranjang_harga">Harga Beli Persatuan <span class="text-danger">*</span></label>
-                                <input type="number" id="keranjang_harga" name="keranjang_harga" class="form-control" value="<?= $edit->keranjang_harga ?>" require>
+                                <input type="text" id="keranjang_harga" name="keranjang_harga" class="form-control" value="<?= $edit->keranjang_harga ?>" require>
                             </div>
 
                         </div>
@@ -381,18 +385,39 @@
         <?php $this->load->view('template/footer'); ?>
 
         <script>
-            $(document).ready(function() {
-                $('#angka1, #angka2').keyup(function() {
-                    var total_hargabarang = $('#angka1').val();
-                    var bayar = (isNaN($('#angka2').val())) ? 0 : $('#angka2').val();
+            function negativ(num) {
+                return -Math.abs(num);
+            }
 
-                    var jml = parseInt(bayar) - parseInt(total_hargabarang);
-                    if (bayar != 0) {
-                        $('#angka3').val(jml);
-                    } else {
-                        $('#angka3').val();
-                    }
-                })
+            function price_to_number(v) {
+                if (!v) {
+                    return 0;
+                }
+                v = v.split('.').join('');
+                v = v.split(',').join('.');
+                return Number(v.replace(/[^0-9.]/g, ""));
+            }
+
+            var motor = document.getElementById('keranjang_harga');
+            motor.addEventListener('keyup', function(e) {
+                motor.value = formatRupiah(this.value);
+            });
+
+            var angka0 = document.getElementById('angka0');
+            var angka1 = document.getElementById('angka1').value = formatRupiah(angka0.value, 'Rp.');
+
+            var angka2 = document.getElementById('angka2');
+            angka2.addEventListener('keyup', function(e) {
+                angka2.value = formatRupiah(this.value);
+                var number = price_to_number(angka2.value);
+                var total = parseInt(angka0.value) - parseInt(number);
+                console.log(total);
+                document.getElementById('angka3').value = formatRupiah(total.toString(), 'Rp.');
+            });
+
+            var angka4 = document.getElementById('angka3');
+            angka4.addEventListener('keyup', function(e) {
+                angka4.value = formatRupiah(angka1.value, 'Rp.');
             });
 
             $('.idbarang').on('click', function() {
