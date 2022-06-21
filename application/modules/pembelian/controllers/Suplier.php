@@ -80,7 +80,7 @@ class Suplier extends CI_Controller
         }
     }
 
-    public function edit()
+    public function edit($id)
     {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth', 'refresh');
@@ -88,6 +88,10 @@ class Suplier extends CI_Controller
             $data['title'] = "Tambah Data Suplier";
             $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
             $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+
+            $getid = base64_decode($id);
+            $data['get_suplier'] = $this->db->get_where('tb_suplier', ['id_suplier' => $getid])->row_array();
+
 
             $this->form_validation->set_rules('nama', 'nama lengkap', 'trim|required');
             $this->form_validation->set_rules('phone', 'nomor hp', 'trim|required');
@@ -110,7 +114,6 @@ class Suplier extends CI_Controller
                     'phone' => $this->input->post('phone'),
                     'email' => $this->input->post('email'),
                     'alamat' => $this->input->post('alamat'),
-                    'status_kostumer' => $this->input->post('status_kostumer'),
                     'created_at' => date_indo("Y-m-d"),
                     'updated_at' => date_indo("Y-m-d")
                 ];
@@ -153,7 +156,7 @@ class Suplier extends CI_Controller
     public function hapus($id)
     {
         $get_id = base64_decode($id);
-        $this->db->delete('tb_pembelian', ['id' => $get_id]);
+        $this->db->delete('tb_suplier', ['id_suplier' => $get_id]);
         $this->session->set_flashdata(
             'success',
             '$(document).ready(function(e) {
@@ -164,7 +167,7 @@ class Suplier extends CI_Controller
                 })
             })'
         );
-        redirect('kostumer');
+        redirect('pembelian/suplier');
     }
 
     public function cetak()

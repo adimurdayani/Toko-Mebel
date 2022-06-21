@@ -26,8 +26,10 @@
 
             <?php
             $jml = $this->db->get('tb_produksi_session')->num_rows();
+            $date = date('Ymd');
+            $invoice = $date . $jml + 1;
             if ($jml > 0) {
-                $kode_barang = $get_session_invoice['session_invoice'];
+                $kode_barang = isset($get_session_invoice['session_invoice']);
             } else {
                 $kode_barang = 0;
             }
@@ -40,31 +42,15 @@
                             <div id="hitungmundur" class="text-success font-20 inline mb-4"></div>
 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <h5>No.Invoice Produksi: &nbsp;</h5>
-                                            <?php if ($kode_barang != 0) : ?>
-                                                <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $kode_barang; ?>" id="invoice" readonly>
-                                            <?php else : ?>
-                                                <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="0" id="invoice" readonly>
-                                            <?php endif; ?>
-
-                                            <?php if ($kode_barang == 0) : ?>
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-info waves-effect waves-light" title="Tambah no. invoice" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#tambah" type="button"><i class="fe-plus"></i></button>
-                                                </div>
-                                            <?php endif; ?>
-
-                                            <?php if ($kode_barang != 0) : ?>
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-warning waves-effect waves-light" title="Edit no. invoice" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#edit" type="button"><i class="fe-edit"></i></button>
-                                                </div>
-                                            <?php endif; ?>
+                                            <h3>No.Invoice Produksi: &nbsp;</h3>
+                                            <h3><?= $invoice; ?></h3>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-7">
                                     <div class="form-group">
                                         <select name="kode_barang" id="kode_barang" class="form-control" data-toggle="select2">
                                             <option value="">-- Pilih kode material --</option>
@@ -76,7 +62,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md">
                                     <a href="" class="btn btn-info" title="Cari kode barang" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#databarang"><i class="fe-search"></i></a>
                                 </div>
                             </div>
@@ -161,14 +147,14 @@
 
                                     <div class="form-group">
                                         <label for="">Keterangan Produk <span class="text-danger">*</span></label>
-                                        <textarea name="produksi_keterangan" id="produksi_keterangan" class="form-control" rows="5"></textarea>
+                                        <textarea name="produksi_keterangan" id="produksi_keterangan" class="form-control" rows="5" required></textarea>
                                     </div>
 
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">Stok Produk </label>
-                                        <input type="number" name="produksi_stok" min="1" id="produksi_stok" class="form-control" placeholder="Input nama produk" value="1">
+                                        <input type="number" name="produksi_stok" min="1" id="produksi_stok" class="form-control" placeholder="Input nama produk" value="1" required>
                                     </div>
 
                                     <div class="row">
@@ -180,7 +166,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                     </div>
-                                                    <input type="text" name="produksi_harga_modal" id="produksi_harga_modal" autocomplete="off" class="form-control" value="<?= rupiah($harga_modal) ?>">
+                                                    <input type="text" name="produksi_harga_modal" id="produksi_harga_modal" autocomplete="off" class="form-control" value="<?= rupiah($harga_modal) ?>" required>
                                                 </div>
                                             </div>
 
@@ -202,9 +188,9 @@
                                 </div>
                             </div>
 
-                            <input type="hidden" name="produksi_invoice" value="<?= $kode_barang; ?>">
+                            <input type="hidden" name="produksi_invoice" value="<?= $invoice; ?>">
                             <?php foreach ($get_produksi_keranjang as $gps) : ?>
-                                <input type="hidden" name="detail_invoice_produksi[]" value="<?= $kode_barang; ?>">
+                                <input type="hidden" name="detail_invoice_produksi[]" value="<?= $invoice; ?>">
                                 <input type="hidden" name="detail_material_id[]" value="<?= $gps->keranjang_id_barang ?>">
                                 <input type="hidden" name="detail_kode_barang[]" value="<?= $gps->keranjang_kode_barang ?>">
                                 <input type="hidden" name="detail_harga_modal[]" value="<?= $gps->keranjang_harga_modal ?>">
@@ -216,16 +202,7 @@
                                 <input type="hidden" name="detail_barang_qty[]" value="<?= $gps->keranjang_barang_qty ?>">
                             <?php endforeach; ?>
 
-                            <?php if ($session_jml == 0) : ?>
-                                <button type="button" class="btn btn-secondary mt-4 float-right"><i class="fe-package"></i> Proses</button>
-                            <?php elseif ($session_jml != 0) : ?>
-                                <?php if ($keranjang_jml == 0) : ?>
-                                    <button type="button" class="btn btn-secondary mt-4 float-right"><i class="fe-package"></i> Proses</button>
-                                <?php elseif ($keranjang_jml != 0) : ?>
-                                    <button type="submit" class="btn btn-success mt-4 float-right"><i class="fe-package"></i> Proses</button>
-                                <?php endif; ?>
-                            <?php endif; ?>
-
+                            <button type="submit" class="btn btn-success mt-4 float-right"><i class="fe-package"></i> Proses</button>
                             <a href="<?= base_url('produksi') ?>" class="btn btn-secondary mt-4 float-right mr-2"><i class="fe-arrow-left"></i> Kembali</a>
                             <?= form_close() ?>
 
@@ -355,61 +332,6 @@
             </div>
         </div><!-- /.modal -->
     <?php endforeach; ?>
-
-    <!-- Tambah modal -->
-    <div id="tambah" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Tambah No. Invoice</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                </div>
-                <?php echo form_open("produksi/tambah_nomor_invoice"); ?>
-                <div class="modal-body p-4">
-
-                    <input type="hidden" name="pembelian_user" value="<?= base64_encode($session->id) ?>">
-                    <div class="form-group mb-3">
-                        <label for="session_invoice">No. Invoice <span class="text-danger">*</span></label>
-                        <input type="text" id="session_invoice" name="session_invoice" class="form-control" value="<?= set_value('session_invoice') ?>" require>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary waves-effect" data-dismiss="modal"><i class="fe-arrow-left"></i> Tutup</button>
-                    <button type="submit" class="btn btn-outline-success"><i class="fa fa-save"></i> Simpan</button>
-                </div>
-                <?php echo form_close(); ?>
-            </div>
-        </div>
-    </div><!-- /.modal -->
-
-    <?php if ($session_jml != 0) : ?>
-        <div id="edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Edit No. Invoice</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    </div>
-                    <?php echo form_open("produksi/edit_nomor_invoice"); ?>
-                    <div class="modal-body p-4">
-
-                        <input type="hidden" name="id_session" value="<?= base64_encode($get_session_invoice['id_session']) ?>">
-                        <div class="form-group mb-3">
-                            <label for="session_invoice">No. Invoice <span class="text-danger">*</span></label>
-                            <input type="text" id="session_invoice" name="session_invoice" class="form-control" value="<?= $get_session_invoice['session_invoice'] ?>" required>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary waves-effect" data-dismiss="modal"><i class="fe-arrow-left"></i> Tutup</button>
-                        <button type="submit" class="btn btn-outline-warning"><i class="fa fa-save"></i> Update</button>
-                    </div>
-                    <?php echo form_close(); ?>
-                </div>
-            </div>
-        </div><!-- /.modal -->
-    <?php endif; ?>
 
     <?php $this->load->view('template/footer'); ?>
 

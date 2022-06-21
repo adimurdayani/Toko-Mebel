@@ -52,7 +52,6 @@ class Belum_lunas extends CI_Controller
                 $this->load->view('template/topbar', $data, FALSE);
                 $this->load->view('template/sidebar', $data, FALSE);
                 $this->load->view('cicilan_hutang', $data, FALSE);
-                $this->load->view('template/footer', $data, FALSE);
             } else {
                 # code...
                 $pembelian = $this->db->get_where('tb_pembelian', ['invoice_parent' => $get_id])->row();
@@ -71,7 +70,7 @@ class Belum_lunas extends CI_Controller
                     'hutang_invoice_parent' => $this->input->post('hutang_invoice_parent'),
                     'hutang_date' => $this->input->post('hutang_date'),
                     'hutang_date_time' => date_indo('Y-m-d') . ' - ' . date('H:i:s'),
-                    'hutang_nominal' => $this->input->post('hutang_nominal'),
+                    'hutang_nominal' => preg_replace("/[^0-9]/", "", $this->input->post('hutang_nominal')),
                     'hutang_tipe_pembayaran' => $this->input->post('hutang_tipe_pembayaran'),
                     'hutang_cabang' => $this->input->post('hutang_cabang')
                 ];
@@ -124,6 +123,13 @@ class Belum_lunas extends CI_Controller
             $this->load->view('cicilan_lunas', $data, FALSE);
             $this->load->view('template/footer', $data, FALSE);
         }
+    }
+
+    public function hapus($id)
+    {
+        $get_id = base64_decode($id);
+        $this->db->delete('tb_hutang', ['hutang_id' => $get_id]);
+        redirect('belum_lunas', 'refresh');
     }
 }
 

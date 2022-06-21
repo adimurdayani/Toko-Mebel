@@ -75,7 +75,7 @@
                                                             <option value="">-- Kode Barang --</option>
                                                             <?php foreach ($get_barang as $kode) : ?>
                                                                 <?php if ($kode->is_active > 0 && $kode->produksi_stok > 0) : ?>
-                                                                    <option value="<?= $kode->id_produksi  ?>"><?= $kode->produksi_invoice ?> - <?= $kode->produksi_nama ?> - Rp.<?= rupiah($kode->produksi_harga_total) ?></option>
+                                                                    <option value="<?= $kode->id_produksi  ?>"><?= $kode->produksi_invoice ?> - <?= $kode->produksi_nama ?> - Rp.<?= rupiah($kode->produksi_harga_jual) ?></option>
                                                                 <?php endif; ?>
                                                             <?php endforeach; ?>
                                                         </select>
@@ -340,11 +340,6 @@
                         idproduksi: idproduksi
                     },
                     success: function() {
-                        Swal.fire({
-                            type: "success",
-                            title: "Sukses",
-                            text: "Barang berhasil ditambahkan ke keranjang!"
-                        })
                         document.location.href = "<?= base_url('penjualan/transaksi_cash') ?>";
                     }
                 })
@@ -361,11 +356,6 @@
                         id_produksi: id_produksi
                     },
                     success: function() {
-                        Swal.fire({
-                            type: "success",
-                            title: "Sukses",
-                            text: "Barang berhasil ditambahkan ke keranjang!"
-                        })
                         document.location.href = "<?= base_url('penjualan/transaksi_cash') ?>";
                     }
                 })

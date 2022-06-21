@@ -105,7 +105,7 @@
                                         </thead>
                                         <tbody>
                                             <?php $no = 1;
-                                            foreach ($get_invoice_penjualan as $data ) :
+                                            foreach ($get_invoice_penjualan as $data) :
                                                 $subtotal = $data->keranjang_harga * $data->barang_qty;
                                             ?>
                                                 <tr>
@@ -134,9 +134,9 @@
                             </div> <!-- end col -->
                             <div class="col-sm-6">
                                 <div class="float-right">
-                                    <p><b>Total:</b> <span class="float-right">Rp.<?= rupiah($get_kostumer->invoice_total) ?></span></p>
-                                    <p><b class="text-danger">DP:</b> <span class="float-right"> &nbsp;&nbsp;&nbsp; Rp.<?= rupiah($get_kostumer->invoice_bayar) ?></span></p>
-                                    <p><b class="text-success">Kembalian:</b> <span class="float-right"> &nbsp;&nbsp;&nbsp; Rp.<?= rupiah($get_kostumer->invoice_kembali) ?></span></p>
+                                    <p><b>Total &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> <span class="float-right">Rp.<?= rupiah($get_kostumer->invoice_total) ?></span></p>
+                                    <p><b class="text-danger">DP &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> <span class="float-right"> &nbsp;&nbsp;&nbsp; Rp.<?= rupiah($get_kostumer->invoice_bayar) ?></span></p>
+                                    <p><b class="text-success">Sisa Hutang &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> <span class="float-right"> &nbsp;&nbsp;&nbsp; Rp.<?= rupiah($get_kostumer->invoice_kembali) ?></span></p>
                                     <h3 class="text-danger">Rp.<?= rupiah($get_kostumer->invoice_total) ?></h3>
                                 </div>
                                 <div class="clearfix"></div>

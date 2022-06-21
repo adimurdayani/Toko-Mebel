@@ -39,12 +39,12 @@
                                             <th style="width: 50px;"><input type="checkbox" id="chack-all"></th>
                                             <th class="text-center">Aksi</th>
                                             <th>No</th>
-                                            <th>Invoice</th>
-                                            <th>Tanggal</th>
-                                            <th>Suplier</th>
-                                            <th>Total</th>
-                                            <th>Bayar</th>
-                                            <th>Kembali</th>
+                                            <th class="text-center">Invoice</th>
+                                            <th class="text-center">Tanggal</th>
+                                            <th class="text-center">Suplier</th>
+                                            <th class="text-center">Total</th>
+                                            <th class="text-center">Bayar</th>
+                                            <th class="text-center">Kembali</th>
                                         </tr>
                                     </thead>
 
@@ -58,16 +58,16 @@
                                                     <td class="text-center">
                                                         <a href="<?= base_url('pembelian/hapus/') . base64_encode($data->invoice_parent) ?>" class="btn btn-sm btn-danger hapus" title="Hapus Pembelian" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
                                                         <a href="<?= base_url('pembelian/invoice/detail_invoice/') . base64_encode($data->invoice_parent) ?>" class="btn btn-sm btn-info" title="Detail Invoice Pembelian" data-plugin="tippy" data-tippy-placement="top"><i class="fe-eye"></i></a>
-                                                        <a href="<?= base_url('pembelian/invoice/detail/') . base64_encode($data->invoice_parent) ?>" class="btn btn-sm btn-warning" title="Retur Pembelian" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
+                                                        <!-- <a href="<?= base_url('pembelian/invoice/detail/') . base64_encode($data->invoice_parent) ?>" class="btn btn-sm btn-warning" title="Retur Pembelian" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a> -->
                                                         <a href="<?= base_url('pembelian/cetak_nota/') . base64_encode($data->invoice_parent) ?>" target="_blank" class="btn btn-sm btn-success" title="Cetak Nota" data-plugin="tippy" data-tippy-placement="top"><i class="fe-printer"></i> </a>
                                                     </td>
                                                     <td><?= $no++ ?></td>
-                                                    <td><?= $data->invoice_pembelian ?></td>
-                                                    <td><?= $data->invoice_created ?></td>
+                                                    <td class="text-center"><?= $data->invoice_pembelian ?></td>
+                                                    <td class="text-center"><?= $data->invoice_created ?></td>
                                                     <td><?= $data->nama_perusahaan ?> </td>
-                                                    <td>Rp.<?= rupiah($data->invoice_total) ?></td>
-                                                    <td>Rp.<?= rupiah($data->invoice_bayar) ?></td>
-                                                    <td>Rp.<?= rupiah($data->invoice_kembali) ?></td>
+                                                    <td class="text-right">Rp.<?= rupiah($data->invoice_total) ?></td>
+                                                    <td class="text-right">Rp.<?= rupiah($data->invoice_bayar) ?></td>
+                                                    <td class="text-right">Rp.<?= rupiah($data->invoice_kembali) ?></td>
                                                 </tr>
                                             <?php endif; ?>
                                         <?php endforeach; ?>

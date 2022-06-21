@@ -80,7 +80,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                 </div>
-                                                <input type="number" name="hutang_nominal" id="hutang_nominal" class="form-control" value="0">
+                                                <input type="text" name="hutang_nominal" id="hutang_nominal" class="form-control" value="0">
                                             </div>
                                             <small class="text-danger"><?= form_error('hutang_nominal') ?></small>
                                         </div>
@@ -188,3 +188,31 @@
         </div> <!-- container -->
 
     </div> <!-- content -->
+
+    <?php $this->load->view('template/footer'); ?>
+
+    <script>
+        if (document.getElementById('hutang_nominal') != null) {
+            var hutang_nominal = document.getElementById('hutang_nominal');
+            hutang_nominal.addEventListener('keyup', function(e) {
+                hutang_nominal.value = formatRupiah(this.value);
+            });
+        }
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
+    </script>

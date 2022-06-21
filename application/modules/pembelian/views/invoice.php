@@ -91,14 +91,14 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="table-responsive">
-                                    <table class="table mt-4 table-centered">
+                                    <table class="table table-bordered mt-4 table-centered">
                                         <thead>
                                             <tr>
-                                                <th>#</th>
-                                                <th>Nama Barang</th>
-                                                <th style="width: 10%">Harga Beli</th>
-                                                <th style="width: 10%">Qty</th>
-                                                <th style="width: 10%" class="text-right">Sub Total</th>
+                                                <th class="text-center">#</th>
+                                                <th class="text-center">Nama Barang</th>
+                                                <th class="text-center" style="width: 10%">Harga Beli</th>
+                                                <th class="text-center" style="width: 10%">Qty</th>
+                                                <th class="text-center" style="width: 10%" class="text-right">Sub Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -107,11 +107,11 @@
                                                 $subtotal = $data->barang_harga_beli * $data->barang_qty;
                                             ?>
                                                 <tr>
-                                                    <td><?= $no++ ?></td>
+                                                    <td class="text-center"><?= $no++ ?></td>
                                                     <td><?= $data->barang_nama ?></td>
-                                                    <td>Rp.<?= rupiah($data->barang_harga_beli) ?></td>
-                                                    <td><?= $data->barang_qty ?></td>
-                                                    <td>Rp.<?= rupiah($subtotal) ?></td>
+                                                    <td class="text-right">Rp.<?= rupiah($data->barang_harga_beli) ?></td>
+                                                    <td class="text-center"><?= $data->barang_qty ?></td>
+                                                    <td class="text-right">Rp.<?= rupiah($subtotal) ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>

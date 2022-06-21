@@ -53,6 +53,7 @@ class Transaksi_cash extends CI_Controller
             $update_keranjang = [
                 'keranjang_qty' => $keranjang->keranjang_qty + 1,
             ];
+            $this->m_penjualan->update_produk($data_barang->id_produksi);
             $this->db->where('barang_id', $keranjang->barang_id);
             $this->db->update('tb_penjualan_keranjang', $update_keranjang);
         } else {
@@ -67,6 +68,8 @@ class Transaksi_cash extends CI_Controller
                 'keranjang_id_cek' => $id_produksi . $user->id . $jml_penjualan,
                 'keranjang_cabang' => $group_id->group_id
             ];
+            $this->m_penjualan->update_produk($data_barang->id_produksi);
+            $this->db->where('barang_id', $keranjang->barang_id);
             $this->db->insert('tb_penjualan_keranjang', $data);
         }
     }
@@ -86,6 +89,7 @@ class Transaksi_cash extends CI_Controller
             $update_keranjang = [
                 'keranjang_qty' => $keranjang->keranjang_qty + 1,
             ];
+            $this->m_penjualan->update_produk($data_barang->id_produksi);
             $this->db->where('barang_id', $keranjang->barang_id);
             $this->db->update('tb_penjualan_keranjang', $update_keranjang);
         } else {
@@ -100,6 +104,7 @@ class Transaksi_cash extends CI_Controller
                 'keranjang_id_cek' => $id_produksi . $user->id . $jml_penjualan,
                 'keranjang_cabang' => $group_id->group_id
             ];
+            $this->m_penjualan->update_produk($data_barang->id_produksi);
             $this->db->insert('tb_penjualan_keranjang', $data);
         }
     }
@@ -119,15 +124,6 @@ class Transaksi_cash extends CI_Controller
         $penjualan_invoice_get = $this->input->post('penjualan_invoice_get');
 
         $getid = $this->db->get('tb_produksi')->result_array();
-        foreach ($getid as $key => $value) {
-            $data_barang[] = [
-                'id_produksi' => $barang_id[0],
-                'produksi_stok' => $value['produksi_stok'] - $barang_qty[0],
-                'produksi_status' => "Proses",
-                'produksi_terjual' => $barang_qty[0]
-            ];
-            $this->db->update_batch('tb_produksi', $data_barang, 'id_produksi');
-        }
 
         $get_data = array();
         $index = 0;
@@ -234,17 +230,12 @@ class Transaksi_cash extends CI_Controller
     public function hapus_keranjang($id)
     {
         $getId =  base64_decode($id);
+        $keranjang = $this->db->get('tb_penjualan_keranjang', [['keranjang_id' => $getId]])->row();
+        $produk = $this->db->get_where('tb_produksi', ['id_produksi' => $keranjang->barang_id])->row();
+
+        $this->m_penjualan->update_produk_stok($produk->id_produksi);
+
         $this->db->delete('tb_penjualan_keranjang', ['keranjang_id' => $getId]);
-        $this->session->set_flashdata(
-            'success',
-            '$(document).ready(function(e) {
-                Swal.fire({
-                    type: "success",
-                    title: "Sukses",
-                    text: "Data berhasil dihapus!"
-                })
-            })'
-        );
         redirect('penjualan/transaksi_cash');
     }
 }

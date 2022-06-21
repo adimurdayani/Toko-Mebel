@@ -83,6 +83,27 @@ class M_pembelian extends CI_Model
                         FROM tb_hutang";
         return $this->db->query($sql)->row();
     }
+
+    public function update_harga_barang()
+    {
+        $data = [
+            'barang_harga_beli' => preg_replace("/[^0-9]/", "", $this->input->post('keranjang_harga'))
+        ];
+        $this->db->where('id_barang', base64_decode($this->input->post('barang_id')));
+        return $this->db->update('tb_barang', $data);
+    }
+
+    public function update_qty_barang($id)
+    {
+
+        $keranjang = $this->db->get_where('tb_pembelian_keranjang', ['keranjang_id' => $id])->row();
+        $barang = $this->db->get_where('tb_barang', ['id_barang' => $keranjang->barang_id])->row();
+        $data = [
+            'barang_stok' => $barang->barang_stok + $this->input->post('keranjang_qty') - 1
+        ];
+        $this->db->where('id_barang', $keranjang->barang_id);
+        return $this->db->update('tb_barang', $data);
+    }
 }
 
 /* End of file m_loguser.php */

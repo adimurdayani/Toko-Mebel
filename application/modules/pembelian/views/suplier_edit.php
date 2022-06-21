@@ -33,32 +33,32 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">Nama Lengkap <span class="text-danger">*</span></label>
-                                        <input type="text" name="nama" id="nama" class="form-control" placeholder="Input nama lengkap" value="<?= set_value('nama') ?>">
+                                        <input type="hidden" name="id_suplier"  value="<?= $get_suplier['id_suplier'] ?>">
+                                        <input type="text" name="nama" id="nama" class="form-control" placeholder="Input nama lengkap" value="<?= $get_suplier['nama'] ?>">
                                         <small class="text-danger"><?= form_error('nama') ?></small>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="">No. Whatshapp <span class="text-danger">*</span></label>
-                                        <input type="number" name="phone" id="phone" class="form-control" placeholder="Input nomor whatsapp" value="<?= set_value('phone') ?>">
+                                        <input type="number" name="phone" id="phone" class="form-control" placeholder="Input nomor whatsapp" value="<?= $get_suplier['phone'] ?>">
                                         <small class="text-danger"><?= form_error('phone') ?></small>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="">Email <small class="text-danger">(Tidak Wajib)</small></label>
-                                        <input type="text" name="email" id="email" class="form-control" placeholder="Input email" value="<?= set_value('email') ?>">
-                                        <small class="text-danger"><?= form_error('email') ?></small>
+                                        <input type="text" name="email" id="email" class="form-control" placeholder="Input email" value="<?=  $get_suplier['email'] ?>">
                                     </div>
 
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">Nama Perusahaan Suplier</label>
-                                        <input type="text" name="nama_perusahaan" id="nama_perusahaan" class="form-control" placeholder="Contoh: PT. Bintang" value="<?= set_value('nama_perusahaan') ?>">
+                                        <input type="text" name="nama_perusahaan" id="nama_perusahaan" class="form-control" placeholder="Contoh: PT. Bintang" value="<?=  $get_suplier['nama_perusahaan'] ?>">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="">Alamat</label>
-                                        <textarea name="alamat" id="alamat" rows="5" class="form-control"></textarea>
+                                        <textarea name="alamat" id="alamat" rows="5" class="form-control"><?=  $get_suplier['alamat'] ?></textarea>
                                         <small class="text-danger"><?= form_error('alamat') ?></small>
                                     </div>
                                 </div>

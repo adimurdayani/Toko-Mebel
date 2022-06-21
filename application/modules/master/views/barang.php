@@ -46,12 +46,12 @@
                                         <a href="<?= base_url('master/barang/tambah') ?>" class="btn btn-outline-info mb-3 "><i class="fe-plus"></i> Tambah Data</a>
                                         <button type="submit" class="btn btn-outline-danger mb-3" id="hapus"><i class="fe-trash"></i> Hapus</button>
 
-                                        <table id="basic-datatable" class="table nowrap w-100">
+                                        <table id="basic-datatable" class="table table-bordered nowrap w-100">
                                             <thead>
                                                 <tr>
                                                     <th><input type="checkbox" id="chack-all"></th>
                                                     <th class="text-center">Aksi</th>
-                                                    <th class="text-center">No.</th>
+                                                    <th>#</th>
                                                     <th class="text-center">Kode Barang</th>
                                                     <th class="text-center">Nama Barang</th>
                                                     <th class="text-center">Harga Beli</th>
@@ -74,24 +74,16 @@
                                                                 <a href="<?= base_url('master/barang/edit/') . base64_encode($data->id_barang) ?>" class="btn btn-sm btn-warning" title="Edit <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-edit"></i></a>
                                                                 <a href="<?= base_url('master/barang/hapus/') . base64_encode($data->id_barang) ?>" class="btn btn-sm btn-danger hapus" title="Hapus <?= $data->barang_nama ?>" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
                                                             </td>
-                                                            <td class="text-center"><?= $no++ ?></td>
-                                                            <td><?= $data->barang_kode ?></td>
+                                                            <td><?= $no++ ?></td>
+                                                            <td class="text-center"><?= $data->barang_kode ?></td>
                                                             <td><?= $data->barang_nama ?></td>
-                                                            <td>
-                                                                <?php if ($data->barang_harga_beli != null) : ?>
-                                                                    Rp.<?= rupiah($data->barang_harga_beli) ?>
-                                                                <?php else : ?>
-                                                                    Rp.0
-                                                                <?php endif; ?>
+                                                            <td class="text-right">
+                                                                Rp.<?= rupiah($data->barang_harga_beli) ?>
                                                             </td>
-                                                            <td>
-                                                                <?php if ($data->barang_harga != null) : ?>
-                                                                    Rp.<?= rupiah($data->barang_harga) ?>
-                                                                <?php else : ?>
-                                                                    Rp.0
-                                                                <?php endif; ?>
+                                                            <td class="text-right">
+                                                                Rp.<?= rupiah($data->barang_harga) ?>
                                                             </td>
-                                                            <td>
+                                                            <td class="text-center">
                                                                 <?php if ($data->barang_stok > 0) : ?>
                                                                     <?= $data->barang_stok ?> <?= $data->nama_satuan ?>
                                                                 <?php else : ?>

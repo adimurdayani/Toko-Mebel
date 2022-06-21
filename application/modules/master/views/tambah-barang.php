@@ -34,7 +34,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">Kode Barang <span class="text-danger">*</span></label>
-                                        <input type="text" name="barang_kode" id="barang_kode" class="form-control" placeholder="Contoh: 001" value="<?= set_value('barang_kode') ?>" required>
+                                        <input type="text" name="barang_kode" id="barang_kode" class="form-control" placeholder="Contoh: 001" value="<?= $kode ?>" readonly>
                                         <small class="text-danger"><?= form_error('barang_kode') ?></small>
                                     </div>
 

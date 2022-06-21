@@ -133,9 +133,9 @@
                             </div> <!-- end col -->
                             <div class="col-sm-6">
                                 <div class="float-right">
-                                    <p><b>Total &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> <span class="float-right">Rp.<?= rupiah($get_suplier->invoice_total) ?></span></p>
-                                    <p><b class="text-success">DP. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> <span class="float-right"> &nbsp;&nbsp;&nbsp; Rp.<?= rupiah($get_suplier->invoice_bayar) ?></span></p>
-                                    <p><b class="text-danger">Sisa Hutang &nbsp;:</b> <span class="float-right"> &nbsp;&nbsp;&nbsp; Rp.<?= rupiah($get_suplier->invoice_kembali) ?></span></p>
+                                    <p><b>Total &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> &nbsp;&nbsp;&nbsp;<span class="float-right">Rp.<?= rupiah($get_suplier->invoice_total) ?></span></p>
+                                    <p><b class="text-success">DP. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> &nbsp;<span class="float-right"> &nbsp;&nbsp;&nbsp; Rp.<?= rupiah($get_suplier->invoice_bayar) ?></span></p>
+                                    <p><b class="text-danger">Sisa Hutang &nbsp;&nbsp;&nbsp;:</b> <span class="float-right"> &nbsp;&nbsp;&nbsp; Rp.<?= rupiah($get_suplier->invoice_kembali) ?></span></p>
                                     <h3 class="text-danger">Rp.<?= rupiah($get_suplier->invoice_total) ?></h3>
                                 </div>
                                 <div class=" clearfix">

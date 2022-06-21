@@ -66,6 +66,7 @@ class Barang extends CI_Controller
             $data['get_kategori'] = $this->db->get('tb_kategori')->result();
             $data['get_satuan'] = $this->db->get('tb_satuan')->result();
             $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
+            $data['kode'] = $this->generate_code(4);
 
             $this->form_validation->set_rules('barang_kode', 'kode barang', 'trim|required|is_unique[tb_barang.barang_kode]');
             $this->form_validation->set_rules('barang_nama', 'nama barang', 'trim|required');
@@ -185,7 +186,7 @@ class Barang extends CI_Controller
             $pos = rand(0, strlen($code) - 1);
             $string .= $code[$pos];
         }
-        return 'KB-' . date('Y') . '/' . date('m') . '/' . $string;
+        return 'MT-' . date('Y') . date('m') . $string;
     }
 
     public function ubahstatusbarang()

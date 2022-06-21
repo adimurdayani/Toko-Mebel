@@ -198,17 +198,10 @@ class Produksi extends CI_Controller
     public function hapus_produksi($id)
     {
         $getId =  base64_decode($id);
+        $produksi = $this->db->get_where('tb_produksi', ['id_produksi' => $getId])->row();
+        $this->db->delete('tb_produksi_detail', ['detail_invoice_produksi' => $produksi->produksi_invoice]);
+
         $this->db->delete('tb_produksi', ['id_produksi' => $getId]);
-        $this->session->set_flashdata(
-            'success',
-            '$(document).ready(function(e) {
-                Swal.fire({
-                    type: "success",
-                    title: "Sukses",
-                    text: "Data berhasil dihapus!"
-                })
-            })'
-        );
         redirect('produksi');
     }
 
@@ -230,6 +223,7 @@ class Produksi extends CI_Controller
         $detail_barang_lebar = $_POST['detail_barang_lebar'];
         $detail_barang_qty = $_POST['detail_barang_qty'];
         $detail_invoice_produksi = $_POST['detail_invoice_produksi'];
+        $invoice = $this->input->post('produksi_invoice');
 
         $get_data = array();
         $index = 0;
@@ -273,7 +267,6 @@ class Produksi extends CI_Controller
         ];
 
         $this->db->insert('tb_produksi', $data);
-        $detail = $this->db->get_where('tb_produksi', ['produksi_invoice' => $this->input->post('produksi_invoice')])->row();
         $this->session->set_flashdata(
             'success',
             '$(document).ready(function(e) {
@@ -284,90 +277,7 @@ class Produksi extends CI_Controller
                 })
             })'
         );
-        redirect('produksi/invoice/detail/' . base64_encode($detail->produksi_invoice));
-    }
-
-    public function tambah_nomor_invoice()
-    {
-        $this->form_validation->set_rules('session_invoice', 'no. invoice produksi', 'trim|required|is_unique[tb_produksi.produksi_invoice]');
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->session->set_flashdata(
-                'error',
-                '$(document).ready(function(e) {
-                    Swal.fire({
-                        icon: "error",
-                        type: "error",
-                        title: "Oops...",
-                        text: "No. Invoice sudah digunakan. Atau belum terisi!"
-                    })
-                })'
-            );
-
-            redirect('produksi/tambah', 'refresh');
-        } else {
-            $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
-            $data = [
-                'session_invoice' => $this->input->post('session_invoice'),
-                'session_date' => date_indo('Y-m-d'),
-                'session_kasir_id' => $user->id
-            ];
-            $this->db->insert('tb_produksi_session', $data);
-            $this->session->set_flashdata(
-                'success',
-                '$(document).ready(function(e) {
-                        Swal.fire({
-                        type: "success",
-                        title: "Sukses",
-                        text: "No. invoice produksi berhasil disimpan!"
-                    })
-                })'
-            );
-            redirect('produksi/tambah', 'refresh');
-        }
-    }
-
-    public function edit_nomor_invoice()
-    {
-        $this->form_validation->set_rules('session_invoice', 'no. invoice produksi', 'trim|required|is_unique[tb_produksi_session.session_invoice]');
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->session->set_flashdata(
-                'error',
-                '$(document).ready(function(e) {
-                    Swal.fire({
-                        icon: "error",
-                        type: "error",
-                        title: "Oops...",
-                        text: "No. Invoice sudah digunakan. Atau belum terisi!"
-                    })
-                })'
-            );
-
-            redirect('produksi/tambah', 'refresh');
-        } else {
-            $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
-            $id = base64_decode($this->input->post('id_session'));
-
-            $data = [
-                'session_invoice' => $this->input->post('session_invoice'),
-                'session_date' => date_indo('Y-m-d'),
-                'session_kasir_id' => $user->id
-            ];
-            $this->db->where('id_session', $id);
-            $this->db->update('tb_produksi_session', $data);
-            $this->session->set_flashdata(
-                'success',
-                '$(document).ready(function(e) {
-                        Swal.fire({
-                        type: "success",
-                        title: "Sukses",
-                        text: "No. invoice produksi berhasil diupdate!"
-                    })
-                })'
-            );
-            redirect('produksi/tambah', 'refresh');
-        }
+        redirect('produksi/invoice/detail/' . base64_encode($invoice));
     }
 
     public function editstatusproduksi()

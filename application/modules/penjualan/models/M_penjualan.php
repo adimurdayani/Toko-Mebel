@@ -39,7 +39,6 @@ class M_penjualan extends CI_Model
                         FROM `tb_penjualan`
                         JOIN  `tb_kostumer` ON `tb_penjualan`.`invoice_costumer` = `tb_kostumer`.`id_kostumer`
                         WHERE `tb_penjualan`.`penjualan_invoice`= $no_invoice
-                        ORDER BY `tb_penjualan`.`invoice_id` DESC
                         ";
         return $this->db->query($querybarang)->row();
     }
@@ -61,6 +60,26 @@ class M_penjualan extends CI_Model
                         sum(if(piutang_invoice='$piutang_invoice',piutang_nominal, NULL)) as piutang_nominal
                         FROM tb_penjualan_piutang";
         return $this->db->query($sql)->row();
+    }
+
+    public function update_produk($get_id)
+    {
+        $data_barang = $this->db->get_where('tb_produksi', ['id_produksi' => $get_id])->row();
+        $data = [
+            'produksi_stok' => $data_barang->produksi_stok - 1
+        ];
+        $this->db->where('id_produksi', $data_barang->id_produksi);
+        return $this->db->update('tb_produksi', $data);
+    }
+
+    public function update_produk_stok($get_id)
+    {
+        $data_barang = $this->db->get_where('tb_produksi', ['id_produksi' => $get_id])->row();
+        $data = [
+            'produksi_stok' => $data_barang->produksi_stok + 1
+        ];
+        $this->db->where('id_produksi', $data_barang->id_produksi);
+        return $this->db->update('tb_produksi', $data);
     }
 }
 

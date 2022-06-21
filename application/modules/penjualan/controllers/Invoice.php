@@ -19,8 +19,8 @@ class Invoice extends CI_Controller
         } else {
             $data['title'] = "Invoice Penjualan";
             $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
-            $data['get_kostumer'] = $this->m_penjualan->get_kostumer();
             $getinvoice = base64_decode($invoice_penjualan);
+            $data['get_kostumer'] = $this->m_penjualan->get_kostumer($getinvoice);
             $data['get_invoice_penjualan'] = $this->m_penjualan->get_all_invoice($getinvoice);
             $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
 
@@ -39,8 +39,8 @@ class Invoice extends CI_Controller
         } else {
             $data['title'] = "Invoice Penjualan";
             $data['session'] = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
-            $data['get_kostumer'] = $this->m_penjualan->get_kostumer();
             $getinvoice = base64_decode($invoice_penjualan);
+            $data['get_kostumer'] = $this->m_penjualan->get_kostumer($getinvoice);
             $data['get_invoice_penjualan'] = $this->m_penjualan->get_all_invoice($getinvoice);
             $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
 

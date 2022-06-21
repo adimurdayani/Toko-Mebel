@@ -26,6 +26,8 @@
 
             <?php
             $jml = $this->db->get('tb_pembelian_session')->num_rows();
+            $date = date('Ymd');
+            $invoice = $date . $jml + 1;
             if ($jml > 0) {
                 $kode_barang = isset($get_pembelian_session['pembelian_input']);
             } else {
@@ -59,23 +61,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <h5>No.Invoice:</h5>
-                                                    <?php if ($kode_barang != null) : ?>
-                                                        <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $get_pembelian_session['pembelian_input']; ?>" id="invoice" readonly>
-                                                    <?php else : ?>
-                                                        <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="0" id="invoice" readonly>
-                                                    <?php endif; ?>
-                                                    <?php if ($kode_barang == null) : ?>
-                                                        <div class="input-group-append">
-                                                            <button class="btn btn-info waves-effect waves-light" title="Tambah no. invoice" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#tambah" type="button"><i class="fe-plus"></i></button>
-                                                        </div>
-                                                    <?php endif; ?>
-
-                                                    <?php if ($kode_barang != null) : ?>
-                                                        <div class="input-group-append">
-                                                            <button class="btn btn-warning waves-effect waves-light" title="Edit no. invoice" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#edit" type="button"><i class="fe-edit"></i></button>
-                                                        </div>
-                                                    <?php endif; ?>
+                                                    <h3>No. Invoice Pembelian: &nbsp;&nbsp;&nbsp;</h3>
+                                                    <h3>INV-BL<?= $invoice; ?></h3>
                                                 </div>
                                             </div>
                                         </div>
@@ -128,20 +115,13 @@
                                                         <td class="text-center"><?= $no++ ?></td>
                                                         <td><?= $k->keranjang_nama ?></td>
                                                         <td>
-                                                            Rp.<?= rupiah($k->keranjang_harga) ?>
-                                                            <a href="javascript:void(0);" class="btn btn-outline-info waves-effect waves-light float-right" title="Edit harga beli" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#hargabeli<?= $k->keranjang_id ?>"><i class="fe-edit"></i></a>
+                                                            <a href="javascript:void(0);" class="btn btn-outline-info waves-effect waves-light" title="Edit harga beli" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#hargabeli<?= $k->keranjang_id ?>"><i class="fe-edit"></i></a>
+                                                            <span class="float-right">Rp.<?= rupiah($k->keranjang_harga) ?></span>
                                                         </td>
                                                         <td class="text-center" style="width: 150px;">
-                                                            <?php echo form_open("pembelian/transaksi_hutang/edit_qty_hutang") ?>
-                                                            <input type="hidden" name="keranjang_id" value="<?= base64_encode($k->keranjang_id) ?>">
-                                                            <input type="hidden" name="id_barang" class="form-control" value="<?= base64_encode($k->barang_id) ?>">
-                                                            <div class="input-group">
-                                                                <input type="number" name="keranjang_qty" class="form-control" value="<?= $k->keranjang_qty ?>">
-                                                                <button type="submit" class="btn btn-sm btn-outline-info waves-effect waves-light" title="Refresh" data-plugin="tippy" data-tippy-placement="top"><i class="fe-refresh-ccw"></i></button>
-                                                            </div>
-                                                            <?php echo form_close() ?>
+                                                            <?= $k->keranjang_qty ?>
                                                         </td>
-                                                        <td>Rp.<?= rupiah($sub_total) ?></td>
+                                                        <td class="text-right">Rp.<?= rupiah($sub_total) ?></td>
                                                         <td class="text-center">
                                                             <a href="<?= base_url('pembelian/transaksi_hutang/hapus_keranjang_barang_hutang/') . base64_encode($k->keranjang_id) ?>" class="btn btn-outline-danger hapus" title="Hapus Barang" data-plugin="tippy" data-tippy-placement="top"><i class="fe-trash"></i> </a>
                                                         </td>
@@ -194,34 +174,21 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-success mt-3">Sisa Piutang &nbsp;&nbsp;&nbsp;&nbsp;
-                                                    Rp.<input type="text" style="border: 0px;" autocomplete="off" id="angka3" value="" name="kembali" disabled></p>
+                                                    Rp.<input type="text" style="border: 0px;" autocomplete="off" id="angka3" value="" name="kembali" readonly></p>
                                             </div>
                                         </div>
                                     </div>
                                     <?php foreach ($get_keranjang as $gk) : ?>
-                                        <input type="hidden" name="kode_barang" value="<?= $kode_barang ?>">
+                                        <input type="hidden" name="kode_barang" value="INV-BL<?= $invoice; ?>">
                                         <input type="hidden" name="barang_id[]" value="<?= $gk->barang_id; ?>">
                                         <input type="hidden" name="keranjang_qty[]" value="<?= $gk->keranjang_qty; ?>">
                                         <input type="hidden" name="keranjang_id_kasir[]" value="<?= $gk->keranjang_id_kasir; ?>">
-                                        <input type="hidden" name="pembelian_invoice[]" value="<?= $kode_barang ?>">
+                                        <input type="hidden" name="pembelian_invoice[]" value="INV-BL<?= $invoice; ?>">
                                         <input type="hidden" name="barang_harga_beli[]" value="<?= $gk->keranjang_harga; ?>">
                                     <?php endforeach; ?>
-                                    <input type="hidden" name="pembelian_invoice_get" value="<?= $kode_barang ?>">
+                                    <input type="hidden" name="pembelian_invoice_get" value="INV-BL<?= $invoice; ?>">
 
-                                    <?php if ($kode_barang != null) : ?>
-
-                                        <?php if ($get_keranjang_jml < 1) : ?>
-                                            <button type="submit" class="btn btn-success mt-4 float-right"><i class="fe-credit-card"></i> Simpan Payment</button>
-                                        <?php endif; ?>
-
-                                        <?php if ($get_keranjang_jml > 0) : ?>
-                                            <a href="javascript:void(0);" class="btn btn-secondary mt-4 float-right btn-disabled"><i class="fe-credit-card"></i> Simpan Payment</a>
-                                        <?php endif; ?>
-
-                                    <?php endif; ?>
-                                    <?php if ($kode_barang == null) : ?>
-                                        <a href="javascript:void(0);" class="btn btn-secondary mt-4 float-right btn-disabled"><i class="fe-credit-card"></i> Simpan Payment</a>
-                                    <?php endif; ?>
+                                    <button type="submit" class="btn btn-success mt-4 float-right"><i class="fe-credit-card"></i> Simpan Payment</button>
                                     <?php echo form_close() ?>
 
                                 </div>
@@ -236,33 +203,6 @@
             </div> <!-- container -->
 
         </div> <!-- content -->
-
-        <!-- Tambah modal -->
-        <div id="tambah" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Tambah No. Invoice</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    </div>
-                    <?php echo form_open("pembelian/transaksi_hutang/tambah_no_invoice"); ?>
-                    <div class="modal-body p-4">
-
-                        <input type="hidden" name="pembelian_user" value="<?= base64_encode($session->id) ?>">
-                        <div class="form-group mb-3">
-                            <label for="pembelian_input">No. Invoice <span class="text-danger">*</span></label>
-                            <input type="text" id="pembelian_input" name="pembelian_input" class="form-control" value="<?= set_value('pembelian_input') ?>" require>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary waves-effect" data-dismiss="modal"><i class="fe-arrow-left"></i> Tutup</button>
-                        <button type="submit" class="btn btn-outline-success"><i class="fa fa-save"></i> Simpan</button>
-                    </div>
-                    <?php echo form_close(); ?>
-                </div>
-            </div>
-        </div><!-- /.modal -->
 
 
         <!-- Tambah modal -->
@@ -357,35 +297,6 @@
             </div>
         </div><!-- /.modal -->
 
-        <!-- Tambah modal -->
-        <?php if ($kode_barang != null) : ?>
-            <div id="edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Edit No. Invoice</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        </div>
-                        <?php echo form_open("pembelian/transaksi_hutang/edit_no_invoice"); ?>
-                        <div class="modal-body p-4">
-
-                            <input type="hidden" name="pembelian_id" value="<?= base64_encode($get_pembelian_session['pembelian_id']) ?>">
-                            <div class="form-group mb-3">
-                                <label for="pembelian_input">No. Invoice <span class="text-danger">*</span></label>
-                                <input type="text" id="pembelian_input" name="pembelian_input" class="form-control" value="<?= $get_pembelian_session['pembelian_input'] ?>" require>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary waves-effect" data-dismiss="modal"><i class="fe-arrow-left"></i> Tutup</button>
-                            <button type="submit" class="btn btn-outline-warning"><i class="fa fa-save"></i> Update</button>
-                        </div>
-                        <?php echo form_close(); ?>
-                    </div>
-                </div>
-            </div><!-- /.modal -->
-        <?php endif; ?>
-
         <?php $this->load->view('template/footer'); ?>
 
         <script>
@@ -411,7 +322,7 @@
             }
 
             var angka0 = document.getElementById('angka0');
-            var angka1 = document.getElementById('angka1').value = formatRupiah(angka0.value, 'Rp.');
+            var angka1 = document.getElementById('angka1').value = formatRupiah(angka0.value);
 
             var angka2 = document.getElementById('angka2');
             angka2.addEventListener('keyup', function(e) {
@@ -419,7 +330,7 @@
                 var number = price_to_number(angka2.value);
                 var total = parseInt(angka0.value) - parseInt(number);
                 console.log(total);
-                document.getElementById('angka3').value = formatRupiah(total.toString(), 'Rp.');
+                document.getElementById('angka3').value = formatRupiah(total.toString());
             });
 
 
@@ -439,11 +350,6 @@
                         idbarang: idbarang
                     },
                     success: function() {
-                        Swal.fire({
-                            type: "success",
-                            title: "Sukses",
-                            text: "Barang berhasil ditambahkan ke keranjang!"
-                        })
                         document.location.href = "<?= base_url('pembelian/transaksi_hutang') ?>";
                     }
                 })
@@ -460,11 +366,6 @@
                         id_barang: id_barang
                     },
                     success: function() {
-                        Swal.fire({
-                            type: "success",
-                            title: "Sukses",
-                            text: "Barang berhasil ditambahkan ke keranjang!"
-                        })
                         document.location.href = "<?= base_url('pembelian/transaksi_hutang') ?>";
                     }
                 })

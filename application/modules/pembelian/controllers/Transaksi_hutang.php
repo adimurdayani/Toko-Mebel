@@ -44,85 +44,12 @@ class Transaksi_hutang extends CI_Controller
             $data['get_keranjang_jml'] = $this->db->get('tb_pembelian_keranjang')->num_rows();
             $data['get_config'] = $this->db->get('tb_konfigurasi')->row();
 
+            $data['kode'] = $this->generate_code(6);
+
             $this->load->view('template/header', $data, FALSE);
             $this->load->view('template/topbar', $data, FALSE);
             $this->load->view('template/sidebar', $data, FALSE);
             $this->load->view('transaksi_hutang', $data, FALSE);
-        }
-    }
-
-    public function tambah_no_invoice()
-    {
-
-        $this->form_validation->set_rules('pembelian_input', 'No. invoice', 'trim|required|is_unique[tb_pembelian.invoice_pembelian]');
-
-        if ($this->form_validation->run() == FALSE) {
-            # code...
-            $this->session->set_flashdata(
-                'error',
-                '$(document).ready(function(e) {
-                    Swal.fire({
-                        icon: "error",
-                        type: "error",
-                        title: "Oops...",
-                        text: "No. Invoice sudah digunakan!"
-                    })
-                })'
-            );
-
-            redirect('pembelian/transaksi_cash', 'refresh');
-        } else {
-            # code...
-
-            $user =  $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
-            $group_id = $this->db->get_where('users_groups', ['user_id' => $user->id])->row();
-            $get_pembelian = $this->db->get('tb_pembelian')->num_rows();
-            $jmlPembelian = $get_pembelian + 1;
-
-            $data = [
-                'pembelian_input' => $this->input->post('pembelian_input'),
-                'pembelian_parent' => date("Ymd") . $jmlPembelian,
-                'pembelian_user' => base64_decode($this->input->post('pembelian_user')),
-                'pembelian_delete' => date("Ymd") . rand(0, 10000),
-                'pembelian_cabang' => $group_id->group_id,
-            ];
-
-            $this->db->insert('tb_pembelian_session', $data);
-            redirect('pembelian/transaksi_hutang', 'refresh');
-        }
-    }
-
-
-    public function edit_no_invoice()
-    {
-        $pembelian_id = base64_decode($this->input->post('pembelian_id'));
-
-        $this->form_validation->set_rules('pembelian_input', 'No. invoice', 'trim|required|is_unique[tb_pembelian.invoice_pembelian]');
-
-        if ($this->form_validation->run() == FALSE) {
-            # code...
-            $this->session->set_flashdata(
-                'error',
-                '$(document).ready(function(e) {
-                    Swal.fire({
-                        icon: "error",
-                        type: "error",
-                        title: "Oops...",
-                        text: "No. Invoice sudah digunakan!"
-                    })
-                })'
-            );
-
-            redirect('pembelian/transaksi_hutang', 'refresh');
-        } else {
-
-            $data = [
-                'pembelian_input' => $this->input->post('pembelian_input')
-            ];
-
-            $this->db->where('pembelian_id', $pembelian_id);
-            $this->db->update('tb_pembelian_session', $data);
-            redirect('pembelian/transaksi_hutang', 'refresh');
         }
     }
 
@@ -320,7 +247,6 @@ class Transaksi_hutang extends CI_Controller
         ];
 
         $this->db->insert('tb_pembelian', $data);
-        $detail = $this->db->get_where('tb_pembelian_detail', ['pembelian_invoice' => $kode_barang])->row();
         $this->session->set_flashdata(
             'success',
             '$(document).ready(function(e) {
@@ -333,7 +259,7 @@ class Transaksi_hutang extends CI_Controller
         );
         $this->hapus_session_id($user->id);
         $this->hapus_keranjang_id($user->id);
-        redirect('pembelian/invoice/detail_hutang/' . base64_encode($detail->pembelian_invoice_parent));
+        redirect('pembelian/invoice/detail_hutang/' . base64_encode($pembeliansekarang));
     }
 
     public function hapus_session_id($id)
@@ -343,6 +269,17 @@ class Transaksi_hutang extends CI_Controller
     public function hapus_keranjang_id($id)
     {
         $this->db->delete('tb_pembelian_keranjang', ['keranjang_id_kasir' => $id]);
+    }
+
+    private function generate_code($panjang_angka)
+    {
+        $code = '1234567890QWERTYUIOPASDFGHJKLZXCVBNM' . time();
+        $string = '';
+        for ($i = 0; $i < $panjang_angka; $i++) {
+            $pos = rand(0, strlen($code) - 1);
+            $string .= $code[$pos];
+        }
+        return 'INv-' . date('Y') . date('m') . $string;
     }
 }
 
