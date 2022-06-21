@@ -62,7 +62,7 @@
                                                     <?php if ($kode_barang != null) : ?>
                                                         <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $get_pembelian_session['pembelian_input']; ?>" id="invoice" readonly>
                                                     <?php else : ?>
-                                                        <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $get_pembelian_session['pembelian_input']; ?>" id="invoice" readonly>
+                                                        <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="0" id="invoice" readonly>
                                                     <?php endif; ?>
                                                     <?php if ($kode_barang == null) : ?>
                                                         <div class="input-group-append">

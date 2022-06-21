@@ -50,14 +50,25 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="">Harga Beli <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">Rp.</span>
+                                                    </div>
+                                                    <input type="text" name="barang_harga_beli" id="barang_harga_beli" class="form-control" value="<?= rupiah($get_barang->barang_harga_beli) ?>" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="">Harga Jual <span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">Rp.</span>
                                                     </div>
-                                                    <input type="number" name="barang_harga" id="barang_harga" class="form-control" value="<?= $get_barang->barang_harga ?>">
+                                                    <input type="text" name="barang_harga" id="barang_harga" class="form-control" value="<?= rupiah($get_barang->barang_harga) ?>">
                                                 </div>
                                                 <small class="text-danger"><?= form_error('barang_harga') ?></small>
                                             </div>
@@ -110,3 +121,29 @@
         </div> <!-- container -->
 
     </div> <!-- content -->
+
+    <?php echo $this->load->view('template/footer'); ?>
+
+    <script>
+        var barang_harga = document.getElementById('barang_harga');
+        barang_harga.addEventListener('keyup', function(e) {
+            barang_harga.value = formatRupiah(barang_harga.value);
+        });
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
+    </script>

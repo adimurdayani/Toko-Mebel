@@ -34,13 +34,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">Kode Barang <span class="text-danger">*</span></label>
-                                        <input type="text" name="barang_kode" id="barang_kode" class="form-control" placeholder="Contoh: 001" value="<?= set_value('barang_kode') ?>">
+                                        <input type="text" name="barang_kode" id="barang_kode" class="form-control" placeholder="Contoh: 001" value="<?= set_value('barang_kode') ?>" required>
                                         <small class="text-danger"><?= form_error('barang_kode') ?></small>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="">Nama Barang <span class="text-danger">*</span></label>
-                                        <input type="text" name="barang_nama" id="barang_nama" class="form-control" placeholder="Input nama barang" value="<?= set_value('barang_nama') ?>">
+                                        <input type="text" name="barang_nama" id="barang_nama" class="form-control" placeholder="Input nama barang" value="<?= set_value('barang_nama') ?>" required>
                                         <small class="text-danger"><?= form_error('barang_nama') ?></small>
                                     </div>
 
@@ -57,7 +57,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">Rp.</span>
                                                     </div>
-                                                    <input type="number" name="barang_harga" id="barang_harga" class="form-control" value="0">
+                                                    <input type="text" name="barang_harga" id="barang_harga" class="form-control" value="0" required>
                                                 </div>
                                                 <small class="text-danger"><?= form_error('barang_harga') ?></small>
                                             </div>
@@ -68,7 +68,7 @@
 
                                     <div class="form-group">
                                         <label for="">Kategori <span class="text-danger">*</span></label>
-                                        <select name="barang_kategori_id" id="barang_kategori_id" class="form-control " data-toggle="select2">
+                                        <select name="barang_kategori_id" id="barang_kategori_id" class="form-control " data-toggle="select2" required>
                                             <option value="">-- Pilih kategori --</option>
                                             <?php foreach ($get_kategori as $kategori) : ?>
                                                 <?php if ($kategori->status_kategori == 1) : ?>
@@ -81,7 +81,7 @@
 
                                     <div class="form-group">
                                         <label for="">Satuan <span class="text-danger">*</span></label>
-                                        <select name="barang_satuan_id" id="barang_satuan_id" class="form-control " data-select2-id="satuan">
+                                        <select name="barang_satuan_id" id="barang_satuan_id" class="form-control " data-select2-id="satuan" required>
                                             <option value="">-- Pilih satuan --</option>
                                             <?php foreach ($get_satuan as $satuan) : ?>
                                                 <?php if ($satuan->status_satuan == 1) : ?>
@@ -114,3 +114,28 @@
         </div> <!-- container -->
 
     </div> <!-- content -->
+    <?php echo $this->load->view('template/footer'); ?>
+
+    <script>
+        var barang_harga = document.getElementById('barang_harga');
+        barang_harga.addEventListener('keyup', function(e) {
+            barang_harga.value = formatRupiah(barang_harga.value);
+        });
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
+    </script>

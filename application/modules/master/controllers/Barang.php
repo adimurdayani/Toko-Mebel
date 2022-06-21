@@ -9,6 +9,7 @@ class Barang extends CI_Controller
     {
         parent::__construct();
         $this->load->model('m_data');
+        $this->load->model('m_barang');
         is_logged_in();
     }
 
@@ -71,36 +72,17 @@ class Barang extends CI_Controller
             $this->form_validation->set_rules('barang_harga', 'harga jual', 'trim|required');
             $this->form_validation->set_rules('barang_kategori_id', 'harga jual', 'trim|required');
             $this->form_validation->set_rules('barang_satuan_id', 'harga jual', 'trim|required');
-            $no = $this->db->get('tb_barang')->num_rows();
 
             if ($this->form_validation->run() == FALSE) {
                 $this->load->view('template/header', $data, FALSE);
                 $this->load->view('template/topbar', $data, FALSE);
                 $this->load->view('template/sidebar', $data, FALSE);
                 $this->load->view('tambah-barang', $data, FALSE);
-                $this->load->view('template/footer', $data, FALSE);
                 # code...
             } else {
                 # code...
-                $data = [
-                    'barang_kode' => $this->input->post('barang_kode'),
-                    'barang_kode_slug' => $this->input->post('barang_kode'),
-                    'barang_kode_count' => $no + 1,
-                    'barang_nama' => $this->input->post('barang_nama'),
-                    'barang_harga_beli' => 0,
-                    'barang_harga' => $this->input->post('barang_harga'),
-                    'barang_tanggal' => date_indo("Y-m-d"),
-                    'barang_stok' => $this->input->post('barang_stok'),
-                    'barang_kategori_id' => $this->input->post('barang_kategori_id'),
-                    'barang_satuan_id' => $this->input->post('barang_satuan_id'),
-                    'barang_deskripsi' => $this->input->post('barang_deskripsi'),
-                    'barang_terjual' => 0,
-                    'status_barang' => 1,
-                    'barang_panjang' => 0,
-                    'barang_lebar' => 0
-                ];
-
-                $this->db->insert('tb_barang', $data);
+                $this->m_barang->tambah();
+                $this->m_barang->tambah_detail();
                 $this->session->set_flashdata(
                     'success',
                     '$(document).ready(function(e) {
@@ -141,23 +123,10 @@ class Barang extends CI_Controller
                 $this->load->view('template/topbar', $data, FALSE);
                 $this->load->view('template/sidebar', $data, FALSE);
                 $this->load->view('edit-barang', $data, FALSE);
-                $this->load->view('template/footer', $data, FALSE);
                 # code...
             } else {
                 # code...
-                $id =  base64_decode($this->input->post('id_barang'));
-                $data = [
-                    'barang_nama' => $this->input->post('barang_nama'),
-                    'barang_harga' => $this->input->post('barang_harga'),
-                    'barang_kategori_id' => $this->input->post('barang_kategori_id'),
-                    'barang_stok' => $this->input->post('barang_stok'),
-                    'barang_tanggal' => date_indo("Y-m-d"),
-                    'barang_satuan_id' => $this->input->post('barang_satuan_id'),
-                    'barang_deskripsi' => $this->input->post('barang_deskripsi')
-                ];
-
-                $this->db->where('id_barang', $id);
-                $this->db->update('tb_barang', $data);
+                $this->m_barang->edit();
                 $this->session->set_flashdata(
                     'success',
                     '$(document).ready(function(e) {

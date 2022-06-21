@@ -44,14 +44,19 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <h5>No.Invoice Produksi: &nbsp;</h5>
-                                            <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $kode_barang; ?>" id="invoice" readonly>
-                                            <?php if ($session_jml == 0) : ?>
+                                            <?php if ($kode_barang != 0) : ?>
+                                                <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="<?= $kode_barang; ?>" id="invoice" readonly>
+                                            <?php else : ?>
+                                                <input type="text" class="form-control" placeholder="Input no. invoice" name="invoice" value="0" id="invoice" readonly>
+                                            <?php endif; ?>
+
+                                            <?php if ($kode_barang == 0) : ?>
                                                 <div class="input-group-append">
                                                     <button class="btn btn-info waves-effect waves-light" title="Tambah no. invoice" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#tambah" type="button"><i class="fe-plus"></i></button>
                                                 </div>
                                             <?php endif; ?>
 
-                                            <?php if ($session_jml != 0) : ?>
+                                            <?php if ($kode_barang != 0) : ?>
                                                 <div class="input-group-append">
                                                     <button class="btn btn-warning waves-effect waves-light" title="Edit no. invoice" data-plugin="tippy" data-tippy-placement="top" data-toggle="modal" data-target="#edit" type="button"><i class="fe-edit"></i></button>
                                                 </div>
