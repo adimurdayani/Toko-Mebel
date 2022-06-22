@@ -10,6 +10,7 @@ class Belum_lunas extends CI_Controller
         parent::__construct();
         is_logged_in();
         $this->load->model('m_pembelian');
+        $this->load->model('m_hutang');
     }
 
     public function index()
@@ -55,35 +56,40 @@ class Belum_lunas extends CI_Controller
             } else {
                 # code...
                 $pembelian = $this->db->get_where('tb_pembelian', ['invoice_parent' => $get_id])->row();
-                $invoice = $this->input->post('invoice_cicilan');
-                if ($invoice == 0) {
+                $this->m_hutang->tambah();
+
+                $nominal = preg_replace("/[^0-9]/", "", $this->input->post('hutang_nominal'));
+                $invoice_bayar_lama = $this->input->post('invoice_bayar');
+                $invoice_bayar = $invoice_bayar_lama + $nominal;
+                $invoice_total = $this->input->post('invoice_total');
+                $invoice_kembali = $invoice_bayar - $invoice_total;
+
+                if ($invoice_bayar >= $invoice_total) {
                     $update_lunas = [
+                        'invoice_bayar' => $invoice_bayar,
+                        'invoice_kembali' => $invoice_kembali,
                         'invoice_hutang' => 0,
                         'invoice_hutang_lunas' => 1
                     ];
-                    $this->db->where('invoice_parent', $pembelian->invoice_parent);
+                    $this->db->where('invoice_parent', $get_id);
+                    $this->db->update('tb_pembelian', $update_lunas);
+                } else {
+                    $update_lunas = [
+                        'invoice_bayar' => $invoice_bayar,
+                        'invoice_kembali' => $invoice_kembali
+                    ];
+                    $this->db->where('invoice_parent', $get_id);
                     $this->db->update('tb_pembelian', $update_lunas);
                 }
-
-                $data = [
-                    'hutang_invoice' => $this->input->post('hutang_invoice'),
-                    'hutang_invoice_parent' => $this->input->post('hutang_invoice_parent'),
-                    'hutang_date' => $this->input->post('hutang_date'),
-                    'hutang_date_time' => date_indo('Y-m-d') . ' - ' . date('H:i:s'),
-                    'hutang_nominal' => preg_replace("/[^0-9]/", "", $this->input->post('hutang_nominal')),
-                    'hutang_tipe_pembayaran' => $this->input->post('hutang_tipe_pembayaran'),
-                    'hutang_cabang' => $this->input->post('hutang_cabang')
-                ];
-                $this->db->insert('tb_hutang', $data);
                 $this->session->set_flashdata(
                     'success',
                     '$(document).ready(function(e) {
-                            Swal.fire({
-                            type: "success",
-                            title: "Sukses",
-                            text: "No. invoice berhasil disimpan!"
-                        })
-                    })'
+                                Swal.fire({
+                                type: "success",
+                                title: "Sukses",
+                                text: "No. invoice berhasil disimpan!"
+                            })
+                        })'
                 );
                 $this->bayar_kembali($pembelian->id);
                 redirect('pembelian/belum_lunas/cicilan_hutang/' . base64_encode($get_id));

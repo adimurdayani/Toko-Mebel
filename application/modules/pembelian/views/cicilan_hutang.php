@@ -59,54 +59,23 @@
                                         </div>
                                     </div>
 
+                                    <?php
+                                    $hasil = 0;
+                                    foreach ($get_hutang as $t) :
+                                        $hasil += $t->hutang_nominal;
+                                    ?>
+                                    <?php endforeach; ?>
+
                                     <div class="form-group">
                                         <label for="">Total Cicilan</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <?php if (isset($get_total_cicilan->hutang_nominal)) : ?>
-                                                <input type="text" name="" id="" class="form-control" readonly value="<?= rupiah($get_total_cicilan->hutang_nominal) ?>">
-                                            <?php else : ?>
-                                                <input type="text" name="invoice_cicilan" id="" class="form-control" readonly value="0">
-                                            <?php endif; ?>
+                                            <input type="text" class="form-control" value="<?= rupiah($hasil) ?>">
                                         </div>
                                     </div>
 
-                                    <?php if ($get_pembelian->invoice_hutang != 0) : ?>
-                                        <div class="form-group">
-                                            <label for="">Nominal Cicilan</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
-                                                </div>
-                                                <input type="text" name="hutang_nominal" id="hutang_nominal" class="form-control" value="0">
-                                            </div>
-                                            <small class="text-danger"><?= form_error('hutang_nominal') ?></small>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="">DP</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
-                                            </div>
-                                            <input type="text" name="" id="" class="form-control" readonly value="<?= rupiah($get_pembelian->invoice_bayar_lama) ?>">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="">Sisa Hutang</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
-                                            </div>
-                                            <input type="text" name="" id="" class="form-control" readonly value="<?= rupiah($get_pembelian->invoice_kembali) ?>">
-                                        </div>
-                                    </div>
 
                                     <?php if ($get_pembelian->invoice_hutang != 0) : ?>
                                         <div class="form-group">
@@ -119,8 +88,47 @@
                                             <small class="text-danger"><?= form_error('hutang_tipe_pembayaran') ?></small>
                                         </div>
                                     <?php endif; ?>
+
                                 </div>
 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">DP</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                            </div>
+                                            <input type="text" class="form-control" readonly value="<?= rupiah($get_pembelian->invoice_bayar_lama) ?>">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="">Sisa Hutang</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                            </div>
+                                            <input type="text" autocomplete="off" class="form-control" value="<?= rupiah($get_pembelian->invoice_kembali) ?>" readonly>
+                                        </div>
+                                    </div>
+
+                                    <?php if ($get_pembelian->invoice_hutang != 0) : ?>
+                                        <div class="form-group">
+                                            <label for="">Nominal Cicilan</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                                </div>
+                                                <input type="text" autocomplete="off" id="hutang_nominal" name="hutang_nominal" class="form-control" value="0">
+                                            </div>
+                                            <small class="text-danger"><?= form_error('hutang_nominal') ?></small>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <input type="hidden" name="invoice_total" value="<?= $get_pembelian->invoice_total ?>">
+                                <input type="hidden" name="invoice_kembali" value="<?= $get_pembelian->invoice_kembali ?>">
+                                <input type="hidden" name="invoice_bayar" value="<?= $get_pembelian->invoice_bayar ?>">
                             </div>
                             <?php if ($get_pembelian->invoice_hutang != 0) : ?>
                                 <button type="submit" class="btn btn-success mt-4 float-right"><i class="fe-save"></i> Simpan</button>
@@ -155,7 +163,10 @@
                                 <tbody>
 
                                     <?php $no = 1;
-                                    foreach ($get_hutang as $data) : ?>
+                                    $total_nominal = 0;
+                                    foreach ($get_hutang as $data) :
+                                        $total_nominal += $data->hutang_nominal;
+                                    ?>
                                         <tr>
                                             <td><?= $no++ ?></td>
                                             <td><?= $data->hutang_date_time ?></td>
@@ -177,6 +188,11 @@
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td><?= rupiah($total_nominal) ?></td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div> <!-- end card body-->
                     </div> <!-- end card -->

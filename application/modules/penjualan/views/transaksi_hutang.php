@@ -74,7 +74,7 @@
                                                         <select name="invoice_barang_id" id="invoice_barang_id" class="form-control" data-toggle="select2">
                                                             <option value="">Kode Barang</option>
                                                             <?php foreach ($get_barang as $kode) : ?>
-                                                                <?php if ($kode->is_active > 0) : ?>
+                                                                <?php if ($kode->is_active > 0 && $kode->produksi_stok > 0) : ?>
                                                                     <option value="<?= $kode->id_produksi  ?>"><?= $kode->produksi_invoice ?> - <?= $kode->produksi_nama ?> - Rp.<?= rupiah($kode->produksi_harga_total) ?></option>
                                                                 <?php endif; ?>
                                                             <?php endforeach; ?>
@@ -189,7 +189,7 @@
                                                     </div>
                                                 </div>
 
-                                                <p class="text-success mt-3">Sisa Piutang &nbsp;&nbsp;&nbsp;&nbsp; <input type="text" style="border: 0px;" autocomplete="off" id="angka3" value="" name="kembali" disabled></p>
+                                                <p class="text-success mt-3">Sisa Piutang &nbsp;&nbsp;&nbsp;&nbsp; <input type="text" style="border: 0px;" autocomplete="off" id="angka3" value="" name="kembali" readonly></p>
 
                                             </div>
                                         </div>

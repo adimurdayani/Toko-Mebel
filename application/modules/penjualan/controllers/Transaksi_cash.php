@@ -207,7 +207,7 @@ class Transaksi_cash extends CI_Controller
             redirect('penjualan/transaksi_cash');
         } else {
             $data = [
-                'keranjang_harga' => $this->input->post('keranjang_harga'),
+                'keranjang_harga' => preg_replace("/[^0-9]/", "",$this->input->post('keranjang_harga')),
                 'keranjang_qty' => $this->input->post('keranjang_qty')
             ];
 

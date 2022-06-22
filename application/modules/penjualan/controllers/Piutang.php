@@ -10,6 +10,7 @@ class Piutang extends CI_Controller
         parent::__construct();
         is_logged_in();
         $this->load->model('m_penjualan');
+        $this->load->model('m_piutang');
     }
 
     public function index()
@@ -51,33 +52,35 @@ class Piutang extends CI_Controller
                 $this->load->view('template/topbar', $data, FALSE);
                 $this->load->view('template/sidebar', $data, FALSE);
                 $this->load->view('cicilan-piutang', $data, FALSE);
-                $this->load->view('template/footer', $data, FALSE);
             } else {
                 # code...
+                $this->m_piutang->tambah();
                 $penjualan = $this->db->get_where('tb_penjualan', ['penjualan_invoice' => $get_id])->row();
-                $user = $this->db->get_where('users', ['email' => $this->session->userdata('email')])->row();
-                $grup = $this->db->get_where('users_groups', ['user_id' => $user->id])->row();
-                $invoice = $this->input->post('invoice_cicilan');
 
-                if ($invoice == 0) {
+                $piutang_nominal = preg_replace("/[^0-9]/", "", $this->input->post('piutang_nominal'));
+                $invoice_bayar_lama  = $this->input->post('invoice_bayar');
+                $invoice_bayar = $invoice_bayar_lama + $piutang_nominal;
+                $invoice_total = $this->input->post('invoice_total');
+                $invoice_kembali = $invoice_bayar - $invoice_total;
+
+
+                if ($invoice_bayar >= $invoice_total) {
                     $update_lunas = [
+                        'invoice_bayar' => $invoice_bayar,
+                        'invoice_kembali' => $invoice_kembali,
                         'invoice_piutang' => 0,
                         'invoice_piutang_lunas' => 1
                     ];
-                    $this->db->where('penjualan_invoice', $penjualan->penjualan_invoice);
+                    $this->db->where('penjualan_invoice', $get_id);
+                    $this->db->update('tb_penjualan', $update_lunas);
+                } else {
+                    $update_lunas = [
+                        'invoice_bayar' => $invoice_bayar,
+                        'invoice_kembali' => $invoice_kembali
+                    ];
+                    $this->db->where('penjualan_invoice', $get_id);
                     $this->db->update('tb_penjualan', $update_lunas);
                 }
-
-                $data = [
-                    'piutang_invoice' => $this->input->post('piutang_invoice'),
-                    'piutang_date' => date_indo('Y-m-d'),
-                    'piutang_date_time' => date_indo('Y-m-d') . ' - ' . date('H:i:s'),
-                    'piutang_kasir' => $grup->group_id,
-                    'piutang_nominal' => $this->input->post('piutang_nominal'),
-                    'piutang_tipe_pembayaran' => $this->input->post('piutang_tipe_pembayaran'),
-                    'piutang_cabang' => $grup->group_id
-                ];
-                $this->db->insert('tb_penjualan_piutang', $data);
 
                 $this->session->set_flashdata(
                     'success',

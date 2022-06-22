@@ -190,7 +190,7 @@
 
                                                 <p class="text-danger mt-3">
                                                     Kembalian &nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <input type="text" style="border: 0px;" autocomplete="off" class="angka3" id="angka3" value="" name="kembali" disabled>
+                                                    <input type="text" style="border: 0px;" autocomplete="off" class="angka3" id="angka3" value="" name="kembali" readonly>
                                                 </p>
 
                                             </div>

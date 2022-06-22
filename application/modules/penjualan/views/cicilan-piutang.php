@@ -55,6 +55,11 @@
                                             <input type="text" class="form-control" readonly value="<?= rupiah($get_penjualan->invoice_total) ?>">
                                         </div>
                                     </div>
+                                    <?php $no = 1;
+                                    $total_cicilan = 0;
+                                    foreach ($get_piutang as $data) :
+                                        $total_cicilan += $data->piutang_nominal ?>
+                                    <?php endforeach; ?>
 
                                     <div class="form-group">
                                         <label for="">Total Cicilan</label>
@@ -62,46 +67,8 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                             </div>
-                                            <?php if (isset($get_total_cicilan->piutang_nominal)) : ?>
-                                                <input type="text" class="form-control" readonly value="<?= rupiah($get_total_cicilan->piutang_nominal) ?>">
-                                            <?php else : ?>
-                                                <input type="text" name="invoice_cicilan" class="form-control" readonly value="0">
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
+                                            <input type="text" class="form-control" readonly value="<?= rupiah($total_cicilan) ?>">
 
-                                    <?php if ($get_penjualan->invoice_piutang_lunas != 1) : ?>
-                                        <div class="form-group">
-                                            <label for="">Nominal Cicilan</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
-                                                </div>
-                                                <input type="number" name="piutang_nominal" id="piutang_nominal" class="form-control" value="0">
-                                            </div>
-                                            <small class="text-danger"><?= form_error('piutang_nominal') ?></small>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="">DP</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
-                                            </div>
-                                            <input type="text" name="" id="" class="form-control" readonly value="<?= rupiah($get_penjualan->invoice_bayar_lama) ?>">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="">Sisa Hutang</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
-                                            </div>
-                                            <input type="text" name="" id="" class="form-control" readonly value="<?= rupiah($get_penjualan->invoice_kembali) ?>">
                                         </div>
                                     </div>
 
@@ -118,7 +85,47 @@
                                     <?php endif; ?>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">DP</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                            </div>
+                                            <input type="text" name="" id="" class="form-control" value="<?= rupiah($get_penjualan->invoice_bayar_lama) ?>" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="">Sisa Hutang</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                            </div>
+                                            <input type="text" autocomplete="off" class="form-control" value="<?= rupiah($get_penjualan->invoice_kembali) ?>" readonly>
+                                        </div>
+                                    </div>
+
+                                    <?php if ($get_penjualan->invoice_piutang_lunas != 1) : ?>
+                                        <div class="form-group">
+                                            <label for="">Nominal Cicilan</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                                </div>
+                                                <input type="text" name="piutang_nominal" autocomplete="off" id="piutang_nominal" class="form-control" value="0">
+                                            </div>
+                                            <small class="text-danger"><?= form_error('piutang_nominal') ?></small>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+
                             </div>
+
+                            <input type="hidden" name="invoice_total" value="<?= $get_penjualan->invoice_total ?>">
+                            <input type="hidden" name="invoice_kembali" value="<?= $get_penjualan->invoice_kembali ?>">
+                            <input type="hidden" name="invoice_bayar" value="<?= $get_penjualan->invoice_bayar ?>">
+
                             <?php if ($get_penjualan->invoice_piutang_lunas != 1) : ?>
                                 <button type="submit" class="btn btn-success mt-4 float-right"><i class="fe-save"></i> Simpan</button>
                             <?php endif; ?>
@@ -190,3 +197,31 @@
         </div> <!-- container -->
 
     </div> <!-- content -->
+
+    <?php $this->load->view('template/footer'); ?>
+
+    <script>
+        if (document.getElementById('piutang_nominal')) {
+            var hutang_nominal = document.getElementById('piutang_nominal');
+            hutang_nominal.addEventListener('keyup', function(e) {
+                hutang_nominal.value = formatRupiah(this.value);
+            });
+        }
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
+    </script>
