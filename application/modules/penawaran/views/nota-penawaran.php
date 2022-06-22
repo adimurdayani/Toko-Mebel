@@ -43,7 +43,7 @@
 
         <div class="row mt-2 mb-4">
             <div class="col-md-8">
-
+                <p>(......................................) <br> </p>
             </div>
             <?php
             $jml = $this->db->get('tb_toko', ['toko_user_id' => $session->id])->num_rows();
@@ -55,7 +55,7 @@
             <div class="col-md">
                 <div class="row">
                     <div class="col-md-6">
-                        <strong class="float-right">Tanggal Pembelian</strong><br>
+                        <strong class="float-right">Tanggal</strong><br>
                         <span class="float-right"><?= $get_penawaran['tanggal'] ?></span>
                     </div>
                     <div class="verikal_center"></div>
@@ -67,28 +67,32 @@
                 </div>
             </div>
         </div>
-        <table class="table table-bordered">
+        <h5><strong><?= $get_penawaran['nama_barang'] ?></strong></h5>
+        <table class="table table-bordered mt-4">
             <thead>
                 <tr>
-                    <th class="text-center">Nama Barang</th>
                     <th class="text-center">Keterangan</th>
                     <th class="text-center">Qty barang</th>
                     <th class="text-center">Harga</th>
                     <th class="text-center">Diskon</th>
-                    <th class="text-center">Total</th>
                 </tr>
             </thead>
 
             <tbody>
                 <tr>
-                    <td><?= $get_penawaran['nama_barang'] ?></td>
                     <td><?= $get_penawaran['keterangan'] ?></td>
                     <td class="text-center"><?= $get_penawaran['penawaran_qty'] ?></td>
                     <td class="text-right">Rp.<?= rupiah($get_penawaran['harga']) ?></td>
                     <td class="text-right">Rp.<?= rupiah($get_penawaran['diskon']) ?></td>
-                    <td class="text-right">Rp.<?= rupiah($get_penawaran['total']) ?></td>
+
                 </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong class="float-right">Total</strong></td>
+                    <td class="text-right"><strong>Rp.<?= rupiah($get_penawaran['total']) ?></strong></td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 
